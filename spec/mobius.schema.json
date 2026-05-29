@@ -1,0 +1,127 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://mobius-os.github.io/spec/mobius.schema.json",
+  "title": "Möbius app manifest",
+  "description": "Schema for mobius.json — the manifest file at the root of every Möbius app repo. See https://mobius-os.github.io/spec/manifest for prose.",
+  "type": "object",
+  "required": ["id", "name", "version", "description", "entry"],
+  "additionalProperties": false,
+  "properties": {
+    "id": {
+      "type": "string",
+      "pattern": "^[a-z][a-z0-9-]*[a-z0-9]$",
+      "description": "Kebab-case identifier. Must match the app-<id> repo name."
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 60,
+      "description": "Human-facing display name (drawer + store UI)."
+    },
+    "version": {
+      "type": "string",
+      "pattern": "^(0|[1-9]\\d*)\\.(0|[1-9]\\d*)\\.(0|[1-9]\\d*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$",
+      "description": "Semver. Patch = hot rebase, minor = backwards-compatible, major = breaking."
+    },
+    "description": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 280,
+      "description": "One-line user-facing summary."
+    },
+    "entry": {
+      "type": "string",
+      "pattern": "^[^/].*\\.jsx$",
+      "description": "Relative path to the JSX entry file (typically index.jsx)."
+    },
+    "author": {
+      "type": "string",
+      "description": "GitHub user or org."
+    },
+    "license": {
+      "type": "string",
+      "description": "SPDX license identifier (e.g. MIT, Apache-2.0)."
+    },
+    "homepage": {
+      "type": "string",
+      "format": "uri",
+      "description": "URL where users can learn more or file issues."
+    },
+    "icon": {
+      "type": "string",
+      "pattern": "^[^/].*\\.(png|jpg|jpeg)$",
+      "description": "Relative path to an icon image. Server resizes to 1024x1024."
+    },
+    "permissions": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "cross_app_access": {
+          "type": "string",
+          "enum": ["none", "read", "write"],
+          "default": "none",
+          "description": "What this app can do to OTHER apps' storage."
+        },
+        "share_with_apps": {
+          "type": "string",
+          "enum": ["none", "read", "write"],
+          "default": "none",
+          "description": "What OTHER apps can do to THIS app's storage."
+        }
+      }
+    },
+    "storage_seeds": {
+      "type": "object",
+      "description": "Map of storage paths to seed contents. String value = path to a file in the repo; object/array value = JSON-encoded literal.",
+      "additionalProperties": {
+        "oneOf": [
+          { "type": "string" },
+          { "type": "object" },
+          { "type": "array" },
+          { "type": "number" },
+          { "type": "boolean" },
+          { "type": "null" }
+        ]
+      }
+    },
+    "schedule": {
+      "type": "object",
+      "required": ["default", "job"],
+      "additionalProperties": false,
+      "properties": {
+        "default": {
+          "type": "string",
+          "description": "Cron expression for the initial schedule (e.g. '0 10 * * *')."
+        },
+        "user_configurable": {
+          "type": "boolean",
+          "default": false,
+          "description": "If true, seed schedule.json + arrange sync-cron.sh polling so the app UI can rewrite the schedule."
+        },
+        "job": {
+          "type": "string",
+          "pattern": "^[^/].*\\.(sh|js|py)$",
+          "description": "Relative path to the script run at each trigger."
+        }
+      }
+    },
+    "runtime": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "imports": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true,
+          "description": "Libraries already in the Möbius importmap (zero fetch cost). Allowed: react, react-dom, react/jsx-runtime, recharts, date-fns, three, lucide-react, framer-motion."
+        },
+        "esm_deps": {
+          "type": "array",
+          "items": { "type": "string" },
+          "uniqueItems": true,
+          "description": "Libraries loaded at runtime via import('https://esm.sh/<pkg>'). Surfaced to the user on install."
+        }
+      }
+    }
+  }
+}

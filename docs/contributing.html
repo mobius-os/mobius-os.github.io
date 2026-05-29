@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Contributing · Möbius OS</title>
+  <meta name="description" content="How to build and submit a Möbius app.">
+  <link rel="preconnect" href="https://rsms.me/">
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="inner">
+      <a class="brand" href="../">Möbius OS</a>
+      <nav>
+        <a href="../apps/">Apps</a>
+        <a href="../spec/">Spec</a>
+        <a href="./contributing.html">Contribute</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Build a Möbius app</h1>
+    <p class="muted">
+      The contract is small: a public repo with a valid <code>mobius.json</code>
+      and a single-file <code>index.jsx</code>. That's enough to be installable
+      by any Möbius user via paste-a-URL.
+    </p>
+
+    <h2>The contract</h2>
+    <ul>
+      <li>A public git repo (GitHub is easiest; raw.githubusercontent.com is the
+        fetch path).</li>
+      <li>A <code>mobius.json</code> at the repo root that validates against the
+        <a href="../spec/mobius.schema.json">JSON Schema</a>. See the
+        <a href="../spec/manifest.md">manifest spec</a> for field reference.</li>
+      <li>An <code>index.jsx</code> exporting a default React component. The
+        Möbius shell renders it inside <code>app-frame.html</code>; theme tokens
+        and storage helpers are available on <code>window</code>.</li>
+      <li>Optional: <code>icon.png</code> (any size; server resizes to 1024).</li>
+    </ul>
+
+    <h2>Submitting for curation</h2>
+    <p>
+      Two paths:
+    </p>
+    <ol>
+      <li>
+        <strong>Just share the URL.</strong> No PR required. Anyone can install
+        any public manifest via the App Store's paste-a-URL field. This is the
+        path for personal apps and experiments.
+      </li>
+      <li>
+        <strong>Get listed on the catalog.</strong> Open a PR against the curated
+        list inside <code>app-store/index.jsx</code>. Curated apps show up on
+        the front page of the App Store and on
+        <a href="../apps/">mobius-os.github.io/apps</a>. The bar: works as
+        advertised, no obvious abuse vectors, and a short description.
+      </li>
+    </ol>
+
+    <h2>Code style</h2>
+    <ul>
+      <li>
+        <strong>Single-file JSX.</strong> Everything in <code>index.jsx</code>.
+        Split helper functions, but no separate component files for v1 of the
+        spec.
+      </li>
+      <li>
+        <strong>Theme tokens.</strong> Read from CSS custom properties
+        (<code>--bg</code>, <code>--surface</code>, <code>--accent</code>,
+        <code>--text</code>, <code>--muted</code>, <code>--border</code>).
+        Don't hard-code colors — users can theme the shell.
+      </li>
+      <li>
+        <strong>Storage API.</strong> Read/write JSON at
+        <code>/api/storage/apps/&lt;slug&gt;/&lt;path&gt;</code>. Treat storage
+        as your source of truth; never assume in-memory state survives a
+        rebuild.
+      </li>
+      <li>
+        <strong>Cron jobs.</strong> If your app declares a <code>schedule</code>,
+        ship the script at the path declared by <code>job</code>. The runtime
+        copies it to <code>/data/apps/&lt;slug&gt;/</code> and runs it
+        non-interactively.
+      </li>
+      <li>
+        <strong>No build step.</strong> Möbius transpiles JSX in-browser. Ship
+        source, not bundles.
+      </li>
+    </ul>
+
+    <h2>Storage API patterns</h2>
+    <pre><code>// Read a JSON blob (returns the parsed value, or null on 404)
+const cfg = await fetch(`/api/storage/apps/${slug}/config.json`, {
+  headers: { Authorization: `Bearer ${token}` }
+}).then(r =&gt; r.ok ? r.json() : null);
+
+// Write a JSON blob
+await fetch(`/api/storage/apps/${slug}/config.json`, {
+  method: 'PUT',
+  headers: {
+    Authorization: `Bearer ${token}`,
+    'Content-Type': 'application/json'
+  },
+  body: JSON.stringify(cfg)
+});</code></pre>
+
+    <h2>Where to ask</h2>
+    <p>
+      Open an issue on the
+      <a href="https://github.com/hmzmrzx/mobius">main Möbius repo</a> for
+      runtime questions; on your own app repo for app-specific bugs. The spec
+      lives under <a href="../spec/">/spec</a>.
+    </p>
+  </main>
+
+  <footer class="site">
+    <div class="inner">
+      <span>Möbius OS · MIT</span>
+      <span><a href="https://github.com/mobius-os">github.com/mobius-os</a></span>
+    </div>
+  </footer>
+</body>
+</html>

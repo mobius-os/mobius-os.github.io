@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Spec · Möbius OS</title>
+  <meta name="description" content="The Möbius OS app specification.">
+  <link rel="preconnect" href="https://rsms.me/">
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="inner">
+      <a class="brand" href="../">Möbius OS</a>
+      <nav>
+        <a href="../apps/">Apps</a>
+        <a href="./">Spec</a>
+        <a href="../docs/contributing.html">Contribute</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <h1>Spec</h1>
+    <p class="muted">
+      The contract between a Möbius app and the Möbius runtime. Versioned;
+      currently v1.0.
+    </p>
+
+    <h2>Documents</h2>
+    <ul>
+      <li>
+        <a href="manifest.md">Manifest format</a> —
+        what goes in <code>mobius.json</code> (fields, permissions, schedule, runtime).
+      </li>
+      <li>
+        <a href="mobius.schema.json">JSON Schema</a> —
+        machine-readable draft-07 schema. Validate with
+        <code>ajv-cli</code> or any draft-07 validator.
+      </li>
+      <li>
+        <span class="muted">Permissions model (placeholder)</span> —
+        the cross-app capability matrix. Currently documented inline in the
+        manifest spec; will move here when there's enough surface area.
+      </li>
+      <li>
+        <span class="muted">Update lifecycle (placeholder)</span> —
+        semver semantics, patch hot-rebase, minor backward-compat, major
+        warn-and-confirm. Currently documented inline in the manifest spec.
+      </li>
+    </ul>
+
+    <h2>Validating your manifest</h2>
+    <pre><code>npx ajv-cli validate \
+  -s https://mobius-os.github.io/spec/mobius.schema.json \
+  -d mobius.json</code></pre>
+
+    <h2>Stability</h2>
+    <p>
+      v1 fields are stable. New optional fields land as minor bumps; breaking
+      changes get a major bump and a migration note in this spec hub. The
+      <code>future fields</code> section of the manifest doc lists what's
+      reserved but not yet implemented.
+    </p>
+  </main>
+
+  <footer class="site">
+    <div class="inner">
+      <span>Möbius OS · MIT</span>
+      <span><a href="https://github.com/mobius-os">github.com/mobius-os</a></span>
+    </div>
+  </footer>
+</body>
+</html>

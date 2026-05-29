@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Möbius OS</title>
+  <meta name="description" content="A self-hosted PWA where the agent is the kernel. Mini-apps you install, customize, and rebuild from a single chat surface.">
+  <link rel="preconnect" href="https://rsms.me/">
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="inner">
+      <a class="brand" href="/">Möbius OS</a>
+      <nav>
+        <a href="apps/">Apps</a>
+        <a href="spec/">Spec</a>
+        <a href="docs/contributing.html">Contribute</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <section class="hero">
+      <div class="logo" aria-hidden="true">M</div>
+      <h1>The agent is the kernel.</h1>
+      <p class="tagline">
+        <strong>Möbius OS</strong> is a self-hosted PWA where the agent is the kernel.
+        Mini-apps you can install, customize, and rebuild — all driven by a single
+        chat surface with a state-of-the-art coding agent.
+      </p>
+      <p>
+        <a class="btn" href="https://github.com/hmzmrzx/mobius">Install Möbius</a>
+        <a class="btn secondary" href="spec/">Read the spec</a>
+      </p>
+    </section>
+
+    <section>
+      <h2>What's an app?</h2>
+      <p>
+        A Möbius app is a git repo with a <code>mobius.json</code> manifest and a
+        single-file JSX entry point. The runtime handles install, storage, cron,
+        and updates. Apps run inside the shell with React + a curated importmap;
+        the agent edits them in place when you ask. See the
+        <a href="spec/manifest.md">manifest specification</a> for the full contract.
+      </p>
+    </section>
+
+    <section>
+      <h2>Curated apps</h2>
+      <div class="grid">
+        <a class="card" href="apps/news.html">
+          <div class="icon">N</div>
+          <h3>News</h3>
+          <p>Daily AI-curated news digest across categories you pick.</p>
+        </a>
+        <div class="card placeholder">
+          <div class="icon">·</div>
+          <h3>Coming soon</h3>
+          <p>More curated apps land here as the catalog grows.</p>
+        </div>
+        <div class="card placeholder">
+          <div class="icon">·</div>
+          <h3>Coming soon</h3>
+          <p>More curated apps land here as the catalog grows.</p>
+        </div>
+        <div class="card placeholder">
+          <div class="icon">·</div>
+          <h3>Coming soon</h3>
+          <p>More curated apps land here as the catalog grows.</p>
+        </div>
+      </div>
+      <p><a href="apps/">Browse the full catalog →</a></p>
+    </section>
+
+    <section>
+      <h2>Build your own</h2>
+      <p>
+        Any public repo with a valid <code>mobius.json</code> is installable via
+        paste-a-URL. Curation is a bonus, not a gate. The
+        <a href="docs/contributing.html">contributing guide</a> walks through the
+        manifest, the storage API, and the theme tokens.
+      </p>
+    </section>
+  </main>
+
+  <footer class="site">
+    <div class="inner">
+      <span>Möbius OS · MIT</span>
+      <span><a href="https://github.com/mobius-os">github.com/mobius-os</a></span>
+    </div>
+  </footer>
+</body>
+</html>
