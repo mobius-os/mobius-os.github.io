@@ -164,10 +164,12 @@ When the user installs an app:
    `storage_seeds` to `/api/storage/apps/<slug>/<path>`.
 6. **Icon upload** — if `icon` declared, PUT `icon.png` bytes to
    `/api/apps/{id}/icon`.
-7. **Schedule (if any)** — installer copies the job script to
-   `/data/apps/<slug>/<job>` and runs
-   `/app/scripts/init-cron-scaffold.sh <slug> "<schedule.default>"`
-   to register the cron entry.
+7. **Schedule (if any)** — the mini-app installer can't shell out to
+   `init-cron-scaffold.sh`, so it writes a `.cron-pending.json`
+   sentinel into the new app's storage scope and surfaces a
+   "registration pending" notice. The agent registers the actual
+   cron entry post-install (a dedicated backend install endpoint,
+   tracked under ticket 062, will close this gap).
 8. **Done** — app appears in drawer next time the user opens it
    (or immediately, via `chat_updated` SSE).
 
@@ -180,9 +182,12 @@ When the user installs an app:
 - Major bumps — store warns the user and shows a diff link
   before applying. User must explicitly accept.
 
-The on-disk `/data/apps/<slug>/version.txt` records the installed
-version. The store mini-app polls each installed app's `mobius.json`
-on its homepage URL to detect available updates.
+The store mini-app maintains its own per-installed-app version map
+at `/api/storage/apps/<store_id>/installed-versions.json` (keyed by
+catalog id, or `'custom'` for paste-a-URL installs). It polls each
+installed app's `mobius.json` on its `homepage` URL to detect
+available updates. Identity is matched by `manifest.id ↔ App.slug`
+(not display name — names can be edited).
 
 ## Future fields (reserved, not yet implemented)
 
