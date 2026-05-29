@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>News · Möbius OS</title>
-  <meta name="description" content="Daily AI-curated news digest mini-app for Möbius OS.">
+  <meta name="description" content="Daily AI-curated news digest across world, business, tech, science, sports, and culture. Customize the prompt and schedule from inside the app.">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
   <link rel="stylesheet" href="../style.css">
@@ -34,14 +34,12 @@
       <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
       <span>MIT</span>
       <span><a href="https://github.com/mobius-os/app-news">Source</a></span>
+      <span>★ 0</span>
+      <span>updated 2026-05-29</span>
     </div>
 
     <h2>What it does</h2>
-    <p>
-      Daily AI-curated news digest across world, business, tech, science, sports,
-      and culture. Customize the prompt and schedule from inside the app — the
-      same chat agent that built the app keeps it running on a cron.
-    </p>
+    <p>Daily AI-curated news digest across world, business, tech, science, sports, and culture. Customize the prompt and schedule from inside the app.</p>
 
     <h2>Install</h2>
     <p>
@@ -50,7 +48,6 @@
     <pre><code>https://raw.githubusercontent.com/mobius-os/app-news/main/mobius.json</code></pre>
     <p>
       Möbius shows the requested permissions and the cron schedule, then installs.
-      The first digest lands at 10:00 the next morning (configurable).
     </p>
 
     <h2>Manifest</h2>
@@ -74,7 +71,14 @@
     "schedule.json": {
       "hour": 10,
       "minute": 0,
-      "categories": ["world", "business", "tech", "science", "sports", "culture"]
+      "categories": [
+        "world",
+        "business",
+        "tech",
+        "science",
+        "sports",
+        "culture"
+      ]
     }
   },
   "schedule": {
@@ -83,8 +87,13 @@
     "job": "fetch.sh"
   },
   "runtime": {
-    "imports": ["react", "react-dom"],
-    "esm_deps": ["marked"]
+    "imports": [
+      "react",
+      "react-dom"
+    ],
+    "esm_deps": [
+      "marked"
+    ]
   }
 }</code></pre>
 
@@ -94,8 +103,7 @@
     <h2>Ratings</h2>
     <p class="muted">
       Ratings aren't wired up yet. For now: open an issue on
-      <a href="https://github.com/mobius-os/app-news/issues">the repo</a> if
-      something feels off.
+      <a href="https://github.com/mobius-os/app-news/issues">the repo</a> if something feels off.
     </p>
   </main>
 

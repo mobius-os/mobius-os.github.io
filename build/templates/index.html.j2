@@ -29,26 +29,20 @@
     </p>
 
     <div class="grid">
-      <a class="card" href="news.html">
-        <div class="icon">N</div>
-        <h3>News</h3>
-        <p>Daily AI-curated news digest across world, business, tech, science, sports, and culture. Customize the prompt and schedule from inside the app.</p>
+      {%- for app in apps %}
+      <a class="card" href="{{ app.id }}.html">
+        <div class="icon">{{ app.name[0] }}</div>
+        <h3>{{ app.name }}</h3>
+        <p>{{ app.description }}</p>
       </a>
+      {%- endfor %}
+      {%- for _ in range(coming_soon_count) %}
       <div class="card placeholder">
         <div class="icon">·</div>
         <h3>Coming soon</h3>
         <p>Reserved slot. Next curated app drops here.</p>
       </div>
-      <div class="card placeholder">
-        <div class="icon">·</div>
-        <h3>Coming soon</h3>
-        <p>Reserved slot. Next curated app drops here.</p>
-      </div>
-      <div class="card placeholder">
-        <div class="icon">·</div>
-        <h3>Coming soon</h3>
-        <p>Reserved slot. Next curated app drops here.</p>
-      </div>
+      {%- endfor %}
     </div>
 
     <h2>Submitting an app</h2>
