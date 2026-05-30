@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>News · Möbius OS</title>
-  <meta name="description" content="Daily AI-curated news digest across world, business, tech, science, sports, and culture. Customize the prompt and schedule from inside the app.">
+  <meta name="description" content="Daily AI-curated news digest. Customize what to search for and the delivery schedule from inside the app.">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
   <link rel="stylesheet" href="../style.css">
@@ -30,16 +30,16 @@
     </div>
 
     <div class="meta">
-      <span>v1.0.0</span>
+      <span>v1.4.0</span>
       <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
       <span>MIT</span>
       <span><a href="https://github.com/mobius-os/app-news">Source</a></span>
       <span>★ 0</span>
-      <span>updated 2026-05-29</span>
+      <span>updated 2026-05-30</span>
     </div>
 
     <h2>What it does</h2>
-    <p>Daily AI-curated news digest across world, business, tech, science, sports, and culture. Customize the prompt and schedule from inside the app.</p>
+    <p>Daily AI-curated news digest. Customize what to search for and the delivery schedule from inside the app.</p>
 
     <h2>Install</h2>
     <p>
@@ -55,8 +55,8 @@
     <pre><code>{
   "id": "news",
   "name": "News",
-  "version": "1.0.0",
-  "description": "Daily AI-curated news digest across world, business, tech, science, sports, and culture. Customize the prompt and schedule from inside the app.",
+  "version": "1.4.0",
+  "description": "Daily AI-curated news digest. Customize what to search for and the delivery schedule from inside the app.",
   "author": "mobius-os",
   "license": "MIT",
   "homepage": "https://github.com/mobius-os/app-news",
@@ -67,18 +67,11 @@
     "share_with_apps": "none"
   },
   "storage_seeds": {
-    "prompt.md": "prompt.md",
+    "system-prompt.md": "system-prompt.md",
+    "topics.txt": "topics.txt",
     "schedule.json": {
       "hour": 10,
-      "minute": 0,
-      "categories": [
-        "world",
-        "business",
-        "tech",
-        "science",
-        "sports",
-        "culture"
-      ]
+      "minute": 0
     }
   },
   "schedule": {
@@ -92,7 +85,7 @@
       "react-dom"
     ],
     "esm_deps": [
-      "marked"
+      "dompurify"
     ]
   }
 }</code></pre>
