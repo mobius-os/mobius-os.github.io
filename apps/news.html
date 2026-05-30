@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>News · Möbius OS</title>
   <meta name="description" content="Daily AI-curated news digest. Customize what to search for and the delivery schedule from inside the app.">
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mobius-os/app-news/main/icon.png">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
   <link rel="stylesheet" href="../style.css">
@@ -12,9 +13,12 @@
 <body>
   <header class="site">
     <div class="inner">
-      <a class="brand" href="../">Möbius OS</a>
+      <a class="brand" href="../">
+        <img src="../mobius-brand.png" alt="" class="brand-mark" width="28" height="28">
+        <span>Möbius OS</span>
+      </a>
       <nav>
-        <a href="./">Apps</a>
+        <a href="./" class="is-active">Apps</a>
         <a href="../spec/">Spec</a>
         <a href="../docs/contributing.html">Contribute</a>
       </nav>
@@ -24,22 +28,27 @@
   <main class="container">
     <p class="muted"><a href="./">← All apps</a></p>
 
-    <div style="display:flex; align-items:center; gap:16px;">
-      <div class="logo" aria-hidden="true" style="margin:0;">N</div>
-      <h1 style="margin:0;">News</h1>
+    <div class="app-hero">
+      <div class="app-hero-icon">
+        <img src="https://raw.githubusercontent.com/mobius-os/app-news/main/icon.png" alt="">
+      </div>
+      <div class="app-hero-text">
+        <h1>News</h1>
+        <p class="muted">Daily AI-curated news digest. Customize what to search for and the delivery schedule from inside the app.</p>
+      </div>
+    </div>
+    <div class="badges badges--lg">
+      <span class="badge">Runs daily at 10:00 UTC</span>
     </div>
 
     <div class="meta">
-      <span>v1.5.0</span>
+      <span>v1.5.1</span>
       <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
       <span>MIT</span>
-      <span><a href="https://github.com/mobius-os/app-news">Source</a></span>
+      <span><a href="https://github.com/mobius-os/app-news">Source ↗</a></span>
       <span>★ 0</span>
       <span>updated 2026-05-30</span>
     </div>
-
-    <h2>What it does</h2>
-    <p>Daily AI-curated news digest. Customize what to search for and the delivery schedule from inside the app.</p>
 
     <h2>Install</h2>
     <p>
@@ -49,13 +58,19 @@
     <p>
       Möbius shows the requested permissions and the cron schedule, then installs.
     </p>
+    <h2>Runtime libraries</h2>
+    <p>This app loads the following ES modules from <a href="https://esm.sh">esm.sh</a> on first open:</p>
+    <ul>
+      <li><code>dompurify</code></li>
+    </ul>
 
     <h2>Manifest</h2>
-    <p>The live <code>mobius.json</code>:</p>
-    <pre><code>{
+    <details>
+      <summary>Show <code>mobius.json</code></summary>
+      <pre><code>{
   "id": "news",
   "name": "News",
-  "version": "1.5.0",
+  "version": "1.5.1",
   "description": "Daily AI-curated news digest. Customize what to search for and the delivery schedule from inside the app.",
   "author": "mobius-os",
   "license": "MIT",
@@ -89,14 +104,13 @@
     ]
   }
 }</code></pre>
+    </details>
 
-    <h2>Screenshots</h2>
-    <p class="muted">Coming soon.</p>
-
-    <h2>Ratings</h2>
-    <p class="muted">
-      Ratings aren't wired up yet. For now: open an issue on
-      <a href="https://github.com/mobius-os/app-news/issues">the repo</a> if something feels off.
+    <h2>Feedback</h2>
+    <p>
+      Something feel off, or want to suggest an iteration? Open an issue at
+      <a href="https://github.com/mobius-os/app-news/issues">app-news/issues</a> — the
+      curator reads them.
     </p>
   </main>
 

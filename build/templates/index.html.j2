@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Apps · Möbius OS</title>
   <meta name="description" content="Curated mini-apps for Möbius OS.">
+  <link rel="icon" type="image/png" href="../mobius-brand.png">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
   <link rel="stylesheet" href="../style.css">
@@ -12,9 +13,12 @@
 <body>
   <header class="site">
     <div class="inner">
-      <a class="brand" href="../">Möbius OS</a>
+      <a class="brand" href="../">
+        <img src="../mobius-brand.png" alt="" class="brand-mark" width="28" height="28">
+        <span>Möbius OS</span>
+      </a>
       <nav>
-        <a href="./">Apps</a>
+        <a href="./" class="is-active">Apps</a>
         <a href="../spec/">Spec</a>
         <a href="../docs/contributing.html">Contribute</a>
       </nav>
@@ -25,21 +29,44 @@
     <h1>Curated apps</h1>
     <p class="muted">
       A small, hand-picked catalog. Anyone can install any of these via the App
-      Store mini-app, or by pasting the manifest URL.
+      Store mini-app inside Möbius, or by pasting the manifest URL.
     </p>
 
     <div class="grid">
       {%- for app in apps %}
       <a class="card" href="{{ app.id }}.html">
-        <div class="icon">{{ app.name[0] }}</div>
-        <h3>{{ app.name }}</h3>
+        <div class="card-head">
+          <div class="icon">
+            {%- if app.icon_url %}
+            <img src="{{ app.icon_url }}" alt="" loading="lazy">
+            {%- else %}
+            <span>{{ app.name[0] }}</span>
+            {%- endif %}
+          </div>
+          <div class="card-title">
+            <h3>{{ app.name }}</h3>
+            <span class="card-version">v{{ app.version }}</span>
+          </div>
+        </div>
         <p>{{ app.description }}</p>
+        {%- if app.badges %}
+        <div class="badges">
+          {%- for b in app.badges %}
+          <span class="badge">{{ b }}</span>
+          {%- endfor %}
+        </div>
+        {%- endif %}
       </a>
       {%- endfor %}
       {%- for _ in range(coming_soon_count) %}
       <div class="card placeholder">
-        <div class="icon">·</div>
-        <h3>Coming soon</h3>
+        <div class="card-head">
+          <div class="icon"><span>·</span></div>
+          <div class="card-title">
+            <h3>Coming soon</h3>
+            <span class="card-version">—</span>
+          </div>
+        </div>
         <p>Reserved slot. Next curated app drops here.</p>
       </div>
       {%- endfor %}
@@ -49,7 +76,7 @@
     <p>
       To get listed here, see the <a href="../docs/contributing.html">contributing
       guide</a>. The bar: a public repo with a valid <code>mobius.json</code>, a
-      single-file <code>index.jsx</code>, and a screenshot.
+      single-file <code>index.jsx</code>, and ideally a screenshot.
     </p>
   </main>
 

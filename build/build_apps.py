@@ -74,8 +74,51 @@ def fetch_app(client: httpx.Client, repo: str) -> dict:
         "stars": repo_meta.get("stargazers_count"),
         "last_commit": last_commit,
         "discussions_count": discussions_count,
+        "open_issues": repo_meta.get("open_issues_count"),
     }
+    # If the manifest declares an icon, expose a full raw URL so the
+    # template can render an <img> instead of a letter placeholder. We
+    # don't HEAD-check the URL here — a missing icon.png 404s in the
+    # browser and the template's letter fallback is just a Jinja `if`.
+    icon = manifest.get("icon")
+    app["icon_url"] = (
+        f"https://raw.githubusercontent.com/{ORG}/{repo}/main/{icon}"
+        if icon else None
+    )
+
+    # Surface a couple of capability badges directly so the template
+    # doesn't need to dig into manifest fields:
+    app["badges"] = []
+    if manifest.get("offline_capable"):
+        app["badges"].append("Works offline")
+    sched = manifest.get("schedule") or {}
+    if sched.get("default"):
+        # Cron expression → very-short human label. Best-effort; falls
+        # back to the raw cron expression if the shape is unfamiliar.
+        app["badges"].append(_human_cron(sched["default"]))
+    perms = manifest.get("permissions") or {}
+    if perms.get("cross_app_access") and perms["cross_app_access"] != "none":
+        app["badges"].append(
+            f"Reads other apps ({perms['cross_app_access']})"
+        )
     return app
+
+
+def _human_cron(expr: str) -> str:
+    """Cheap pretty-printer for the cron forms our curated apps use."""
+    parts = expr.split()
+    if len(parts) != 5:
+        return f"Runs `{expr}`"
+    minute, hour, dom, mon, dow = parts
+    # Daily-at-HH form: "M H * * *"
+    if dom == "*" and mon == "*" and dow == "*":
+        try:
+            h = int(hour); m = int(minute)
+            label = f"{h:02d}:{m:02d} UTC"
+            return f"Runs daily at {label}"
+        except ValueError:
+            pass
+    return f"Runs `{expr}`"
 
 
 def render(env: Environment, apps: list[dict]) -> list[Path]:

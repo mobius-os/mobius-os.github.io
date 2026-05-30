@@ -59,16 +59,48 @@ header.site a.brand {
   color: var(--text);
   font-weight: 600;
   letter-spacing: -0.01em;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+}
+
+header.site a.brand:hover {
+  text-decoration: none;
+  color: var(--text);
+}
+
+header.site .brand-mark {
+  width: 28px;
+  height: 28px;
+  display: block;
+  border-radius: 6px;
 }
 
 header.site nav a {
   margin-left: 18px;
   color: var(--muted);
+  position: relative;
+  padding-bottom: 2px;
 }
 
 header.site nav a:hover {
   color: var(--text);
   text-decoration: none;
+}
+
+header.site nav a.is-active {
+  color: var(--text);
+}
+
+header.site nav a.is-active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 2px;
+  background: var(--accent);
+  border-radius: 2px;
 }
 
 h1, h2, h3 {
@@ -101,6 +133,14 @@ p.muted, .muted { color: var(--muted); }
   font-size: 28px;
   color: #fff;
   margin-bottom: 20px;
+}
+
+.hero .hero-mark {
+  width: 96px;
+  height: 96px;
+  display: block;
+  margin-bottom: 20px;
+  filter: drop-shadow(0 4px 12px rgba(139, 108, 247, 0.18));
 }
 
 .tagline {
@@ -159,16 +199,50 @@ p.muted, .muted { color: var(--muted); }
 }
 
 .card .icon {
-  width: 36px;
-  height: 36px;
-  border-radius: 8px;
+  width: 56px;
+  height: 56px;
+  border-radius: 12px;
   background: var(--surface2);
   display: flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 10px;
+  flex-shrink: 0;
   font-weight: 600;
+  font-size: 24px;
   color: var(--accent);
+  overflow: hidden;
+}
+
+.card .icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.card-title {
+  min-width: 0;
+}
+
+.card-title h3 {
+  margin: 0;
+  font-size: 1.05rem;
+  line-height: 1.2;
+}
+
+.card-version {
+  display: inline-block;
+  margin-top: 2px;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
+  font-size: 0.78rem;
 }
 
 .card h3 {
@@ -180,6 +254,102 @@ p.muted, .muted { color: var(--muted); }
   margin: 0;
   color: var(--muted);
   font-size: 0.9rem;
+}
+
+.badges {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 12px;
+}
+
+.badges--lg {
+  margin: 14px 0 22px;
+}
+
+.badge {
+  display: inline-block;
+  padding: 3px 9px;
+  border-radius: 999px;
+  background: var(--surface2);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+.badges--lg .badge {
+  font-size: 0.85rem;
+  padding: 5px 12px;
+}
+
+.app-hero {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  margin: 12px 0 18px;
+}
+
+.app-hero-icon {
+  width: 88px;
+  height: 88px;
+  border-radius: 18px;
+  background: var(--surface2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  font-weight: 700;
+  font-size: 40px;
+  color: var(--accent);
+  overflow: hidden;
+}
+
+.app-hero-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.app-hero-text {
+  min-width: 0;
+}
+
+.app-hero-text h1 {
+  margin: 0 0 4px;
+}
+
+.app-hero-text p {
+  margin: 0;
+}
+
+@media (max-width: 520px) {
+  .app-hero {
+    gap: 14px;
+  }
+  .app-hero-icon {
+    width: 64px;
+    height: 64px;
+    font-size: 28px;
+    border-radius: 14px;
+  }
+}
+
+details summary {
+  cursor: pointer;
+  color: var(--muted);
+  padding: 6px 0;
+}
+
+details summary:hover {
+  color: var(--text);
+}
+
+details[open] summary {
+  color: var(--text);
+  margin-bottom: 10px;
 }
 
 code, pre {

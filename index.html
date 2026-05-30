@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Möbius OS</title>
   <meta name="description" content="A self-hosted PWA where the agent is the kernel. Mini-apps you install, customize, and rebuild from a single chat surface.">
+  <link rel="icon" type="image/png" href="mobius-brand.png">
+  <meta property="og:title" content="Möbius OS">
+  <meta property="og:description" content="A self-hosted PWA where the agent is the kernel.">
+  <meta property="og:image" content="mobius-brand.png">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
   <link rel="stylesheet" href="style.css">
@@ -12,7 +16,10 @@
 <body>
   <header class="site">
     <div class="inner">
-      <a class="brand" href="/">Möbius OS</a>
+      <a class="brand" href="/">
+        <img src="mobius-brand.png" alt="" class="brand-mark" width="28" height="28">
+        <span>Möbius OS</span>
+      </a>
       <nav>
         <a href="apps/">Apps</a>
         <a href="spec/">Spec</a>
@@ -23,7 +30,7 @@
 
   <main class="container">
     <section class="hero">
-      <div class="logo" aria-hidden="true">M</div>
+      <img src="mobius-brand.png" alt="" class="hero-mark" width="96" height="96">
       <h1>The agent is the kernel.</h1>
       <p class="tagline">
         <strong>Möbius OS</strong> is a self-hosted PWA where the agent is the kernel.
@@ -49,27 +56,46 @@
 
     <section>
       <h2>Curated apps</h2>
+      <p class="muted">
+        Five hand-picked apps to start from. Install any of them with one tap
+        from the App Store mini-app inside Möbius.
+      </p>
       <div class="grid">
         <a class="card" href="apps/news.html">
-          <div class="icon">N</div>
-          <h3>News</h3>
-          <p>Daily AI-curated news digest across categories you pick.</p>
+          <div class="card-head">
+            <div class="icon"><img src="https://raw.githubusercontent.com/mobius-os/app-news/main/icon.png" alt="" loading="lazy"></div>
+            <div class="card-title"><h3>News</h3><span class="card-version">daily digest</span></div>
+          </div>
+          <p>AI-curated morning news across the categories and sources you choose.</p>
         </a>
-        <div class="card placeholder">
-          <div class="icon">·</div>
-          <h3>Coming soon</h3>
-          <p>More curated apps land here as the catalog grows.</p>
-        </div>
-        <div class="card placeholder">
-          <div class="icon">·</div>
-          <h3>Coming soon</h3>
-          <p>More curated apps land here as the catalog grows.</p>
-        </div>
-        <div class="card placeholder">
-          <div class="icon">·</div>
-          <h3>Coming soon</h3>
-          <p>More curated apps land here as the catalog grows.</p>
-        </div>
+        <a class="card" href="apps/countries.html">
+          <div class="card-head">
+            <div class="icon"><img src="https://raw.githubusercontent.com/mobius-os/app-countries/main/icon.png" alt="" loading="lazy"></div>
+            <div class="card-title"><h3>Countries Been</h3><span class="card-version">travel log</span></div>
+          </div>
+          <p>Tap a draggable 3D globe to mark every country you've visited.</p>
+        </a>
+        <a class="card" href="apps/gym.html">
+          <div class="card-head">
+            <div class="icon"><img src="https://raw.githubusercontent.com/mobius-os/app-gym/main/icon.png" alt="" loading="lazy"></div>
+            <div class="card-title"><h3>Gym</h3><span class="card-version">training</span></div>
+          </div>
+          <p>Pick a program, log sessions set-by-set, watch your PRs climb.</p>
+        </a>
+        <a class="card" href="apps/latex.html">
+          <div class="card-head">
+            <div class="icon"><img src="https://raw.githubusercontent.com/mobius-os/app-latex/main/icon.png" alt="" loading="lazy"></div>
+            <div class="card-title"><h3>LaTeX</h3><span class="card-version">editor</span></div>
+          </div>
+          <p>Describe documents in prose; an agent writes the .tex while you preview.</p>
+        </a>
+        <a class="card" href="apps/dreaming.html">
+          <div class="card-head">
+            <div class="icon"><img src="https://raw.githubusercontent.com/mobius-os/app-dreaming/main/icon.png" alt="" loading="lazy"></div>
+            <div class="card-title"><h3>Dreaming</h3><span class="card-version">nightly</span></div>
+          </div>
+          <p>Every night an agent reviews your day and writes a morning briefing.</p>
+        </a>
       </div>
       <p><a href="apps/">Browse the full catalog →</a></p>
     </section>
