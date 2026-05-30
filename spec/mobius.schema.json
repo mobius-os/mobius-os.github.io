@@ -52,6 +52,10 @@
       "pattern": "^[^/].*\\.(png|jpg|jpeg)$",
       "description": "Relative path to an icon image. Server resizes to 1024x1024."
     },
+    "offline_capable": {
+      "type": "boolean",
+      "description": "When true, Möbius caches the app shell in the service worker and exposes window.mobius.storage's write outbox so the app keeps working offline. Apps that opt in must tolerate fetch failures gracefully and use window.mobius.storage (with a fallback to plain /api/storage fetch) for writes. See the offline-runtime feature for details."
+    },
     "permissions": {
       "type": "object",
       "additionalProperties": false,
