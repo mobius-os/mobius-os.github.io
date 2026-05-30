@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Dreaming · Möbius OS</title>
+  <meta name="description" content="A nightly agent reads what happened across your Möbius yesterday and writes a one-page morning report. Streak counter resets when you take a night off.">
+  <link rel="preconnect" href="https://rsms.me/">
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="inner">
+      <a class="brand" href="../">Möbius OS</a>
+      <nav>
+        <a href="./">Apps</a>
+        <a href="../spec/">Spec</a>
+        <a href="../docs/contributing.html">Contribute</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <p class="muted"><a href="./">← All apps</a></p>
+
+    <div style="display:flex; align-items:center; gap:16px;">
+      <div class="logo" aria-hidden="true" style="margin:0;">D</div>
+      <h1 style="margin:0;">Dreaming</h1>
+    </div>
+
+    <div class="meta">
+      <span>v1.0.0</span>
+      <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
+      <span>MIT</span>
+      <span><a href="https://github.com/mobius-os/app-dreaming">Source</a></span>
+      <span>★ 0</span>
+      <span>updated 2026-05-30</span>
+    </div>
+
+    <h2>What it does</h2>
+    <p>A nightly agent reads what happened across your Möbius yesterday and writes a one-page morning report. Streak counter resets when you take a night off.</p>
+
+    <h2>Install</h2>
+    <p>
+      Open the App Store mini-app in your Möbius shell and paste:
+    </p>
+    <pre><code>https://raw.githubusercontent.com/mobius-os/app-dreaming/main/mobius.json</code></pre>
+    <p>
+      Möbius shows the requested permissions and the cron schedule, then installs.
+    </p>
+
+    <h2>Manifest</h2>
+    <p>The live <code>mobius.json</code>:</p>
+    <pre><code>{
+  "id": "dreaming",
+  "name": "Dreaming",
+  "version": "1.0.0",
+  "description": "A nightly agent reads what happened across your Möbius yesterday and writes a one-page morning report. Streak counter resets when you take a night off.",
+  "author": "mobius-os",
+  "license": "MIT",
+  "homepage": "https://github.com/mobius-os/app-dreaming",
+  "entry": "index.jsx",
+  "offline_capable": true,
+  "permissions": {
+    "cross_app_access": "read",
+    "share_with_apps": "none"
+  },
+  "storage_seeds": {
+    "system-prompt.md": "system-prompt.md",
+    "topics.txt": "topics.txt",
+    "schedule.json": {
+      "hour": 6,
+      "minute": 0,
+      "timezone": null
+    },
+    "agent.json": {
+      "provider": "claude",
+      "model": "claude-opus-4-7"
+    }
+  },
+  "schedule": {
+    "default": "0 6 * * *",
+    "user_configurable": true,
+    "job": "fetch.sh"
+  },
+  "runtime": {
+    "imports": [
+      "react",
+      "react-dom"
+    ],
+    "esm_deps": [
+      "dompurify"
+    ]
+  }
+}</code></pre>
+
+    <h2>Screenshots</h2>
+    <p class="muted">Coming soon.</p>
+
+    <h2>Ratings</h2>
+    <p class="muted">
+      Ratings aren't wired up yet. For now: open an issue on
+      <a href="https://github.com/mobius-os/app-dreaming/issues">the repo</a> if something feels off.
+    </p>
+  </main>
+
+  <footer class="site">
+    <div class="inner">
+      <span>Möbius OS · MIT</span>
+      <span><a href="https://github.com/mobius-os">github.com/mobius-os</a></span>
+    </div>
+  </footer>
+</body>
+</html>

@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Gym · Möbius OS</title>
+  <meta name="description" content="Lightweight training-program tracker. Pick a program (PPL, full-body, upper/lower, or custom) and log sessions set-by-set with a sticky rest timer, PR table, and a year-at-a-glance heatmap.">
+  <link rel="preconnect" href="https://rsms.me/">
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="inner">
+      <a class="brand" href="../">Möbius OS</a>
+      <nav>
+        <a href="./">Apps</a>
+        <a href="../spec/">Spec</a>
+        <a href="../docs/contributing.html">Contribute</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <p class="muted"><a href="./">← All apps</a></p>
+
+    <div style="display:flex; align-items:center; gap:16px;">
+      <div class="logo" aria-hidden="true" style="margin:0;">G</div>
+      <h1 style="margin:0;">Gym</h1>
+    </div>
+
+    <div class="meta">
+      <span>v1.0.0</span>
+      <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
+      <span>MIT</span>
+      <span><a href="https://github.com/mobius-os/app-gym">Source</a></span>
+      <span>★ 0</span>
+      <span>updated 2026-05-30</span>
+    </div>
+
+    <h2>What it does</h2>
+    <p>Lightweight training-program tracker. Pick a program (PPL, full-body, upper/lower, or custom) and log sessions set-by-set with a sticky rest timer, PR table, and a year-at-a-glance heatmap.</p>
+
+    <h2>Install</h2>
+    <p>
+      Open the App Store mini-app in your Möbius shell and paste:
+    </p>
+    <pre><code>https://raw.githubusercontent.com/mobius-os/app-gym/main/mobius.json</code></pre>
+    <p>
+      Möbius shows the requested permissions, then installs.
+    </p>
+
+    <h2>Manifest</h2>
+    <p>The live <code>mobius.json</code>:</p>
+    <pre><code>{
+  "id": "gym",
+  "name": "Gym",
+  "version": "1.0.0",
+  "description": "Lightweight training-program tracker. Pick a program (PPL, full-body, upper/lower, or custom) and log sessions set-by-set with a sticky rest timer, PR table, and a year-at-a-glance heatmap.",
+  "author": "mobius-os",
+  "license": "MIT",
+  "homepage": "https://github.com/mobius-os/app-gym",
+  "entry": "index.jsx",
+  "offline_capable": true,
+  "permissions": {
+    "cross_app_access": "none",
+    "share_with_apps": "none"
+  },
+  "runtime": {
+    "imports": [
+      "react",
+      "react-dom"
+    ],
+    "esm_deps": []
+  },
+  "storage_seeds": {
+    "state.json": {
+      "active_program_id": "ppl6",
+      "starter_pack_installed": true,
+      "history": [],
+      "programs": {
+        "ppl6": {
+          "name": "Push / Pull / Legs (6-day)",
+          "sessions": [
+            {
+              "day": "Mon",
+              "name": "Push A",
+              "exercises": [
+                {
+                  "name": "Barbell Bench Press",
+                  "sets": 4,
+                  "reps": 6,
+                  "default_weight": 60
+                },
+                {
+                  "name": "Overhead Press",
+                  "sets": 3,
+                  "reps": 8,
+                  "default_weight": 40
+                },
+                {
+                  "name": "Incline Dumbbell Press",
+                  "sets": 3,
+                  "reps": 10,
+                  "default_weight": 22
+                },
+                {
+                  "name": "Lateral Raise",
+                  "sets": 3,
+                  "reps": 12,
+                  "default_weight": 10
+                },
+                {
+                  "name": "Triceps Pushdown",
+                  "sets": 3,
+                  "reps": 12,
+                  "default_weight": 25
+                }
+              ]
+            },
+            {
+              "day": "Tue",
+              "name": "Pull A",
+              "exercises": [
+                {
+                  "name": "Deadlift",
+                  "sets": 3,
+                  "reps": 5,
+                  "default_weight": 100
+                },
+                {
+                  "name": "Pull-up",
+                  "sets": 4,
+                  "reps": 8,
+                  "default_weight": 0
+                },
+                {
+                  "name": "Barbell Row",
+                  "sets": 3,
+                  "reps": 8,
+                  "default_weight": 60
+                },
+                {
+                  "name": "Face Pull",
+                  "sets": 3,
+                  "reps": 15,
+                  "default_weight": 20
+                },
+                {
+                  "name": "Barbell Curl",
+                  "sets": 3,
+                  "reps": 10,
+                  "default_weight": 25
+                }
+              ]
+            },
+            {
+              "day": "Wed",
+              "name": "Legs A",
+              "exercises": [
+                {
+                  "name": "Back Squat",
+                  "sets": 4,
+                  "reps": 6,
+                  "default_weight": 80
+                },
+                {
+                  "name": "Romanian Deadlift",
+                  "sets": 3,
+                  "reps": 8,
+                  "default_weight": 70
+                },
+                {
+                  "name": "Leg Press",
+                  "sets": 3,
+                  "reps": 12,
+                  "default_weight": 120
+                },
+                {
+                  "name": "Leg Curl",
+                  "sets": 3,
+                  "reps": 12,
+                  "default_weight": 35
+                },
+                {
+                  "name": "Standing Calf Raise",
+                  "sets": 4,
+                  "reps": 12,
+                  "default_weight": 40
+                }
+              ]
+            },
+            {
+              "day": "Thu",
+              "name": "Push B",
+              "exercises": [
+                {
+                  "name": "Overhead Press",
+                  "sets": 4,
+                  "reps": 6,
+                  "default_weight": 42
+                },
+                {
+                  "name": "Incline Bench Press",
+                  "sets": 3,
+                  "reps": 8,
+                  "default_weight": 50
+                },
+                {
+                  "name": "Dumbbell Press",
+                  "sets": 3,
+                  "reps": 10,
+                  "default_weight": 24
+                },
+                {
+                  "name": "Cable Lateral Raise",
+                  "sets": 3,
+                  "reps": 15,
+                  "default_weight": 8
+                },
+                {
+                  "name": "Overhead Triceps Extension",
+                  "sets": 3,
+                  "reps": 12,
+                  "default_weight": 20
+                }
+              ]
+            },
+            {
+              "day": "Fri",
+              "name": "Pull B",
+              "exercises": [
+                {
+                  "name": "Pendlay Row",
+                  "sets": 4,
+                  "reps": 6,
+                  "default_weight": 65
+                },
+                {
+                  "name": "Chest-Supported Row",
+                  "sets": 3,
+                  "reps": 10,
+                  "default_weight": 30
+                },
+                {
+                  "name": "Lat Pulldown",
+                  "sets": 3,
+                  "reps": 10,
+                  "default_weight": 55
+                },
+                {
+                  "name": "Rear Delt Fly",
+                  "sets": 3,
+                  "reps": 15,
+                  "default_weight": 10
+                },
+                {
+                  "name": "Hammer Curl",
+                  "sets": 3,
+                  "reps": 10,
+                  "default_weight": 14
+                }
+              ]
+            },
+            {
+              "day": "Sat",
+              "name": "Legs B",
+              "exercises": [
+                {
+                  "name": "Front Squat",
+                  "sets": 4,
+                  "reps": 6,
+                  "default_weight": 60
+                },
+                {
+                  "name": "Hip Thrust",
+                  "sets": 3,
+                  "reps": 10,
+                  "default_weight": 80
+                },
+                {
+                  "name": "Walking Lunge",
+                  "sets": 3,
+                  "reps": 12,
+                  "default_weight": 16
+                },
+                {
+                  "name": "Leg Extension",
+                  "sets": 3,
+                  "reps": 12,
+                  "default_weight": 40
+                },
+                {
+                  "name": "Seated Calf Raise",
+                  "sets": 4,
+                  "reps": 15,
+                  "default_weight": 30
+                }
+              ]
+            }
+          ]
+        },
+        "fb3": {
+          "name": "Full-Body (3-day)",
+          "sessions": [
+            {
+              "day": "Mon",
+              "name": "Full Body A",
+              "exercises": [
+                {
+                  "name": "Back Squat",
+                  "sets": 3,
+                  "reps": 5,
+                  "default_weight": 80
+                },
+                {
+                  "name": "Bench Press",
+                  "sets": 3,
+                  "reps": 5,
+                  "default_weight": 60
+                },
+                {
+                  "name": "Barbell Row",
+                  "sets": 3,
+                  "reps": 8,
+                  "default_weight": 60
+                },
+                {
+                  "name": "Overhead Press",
+                  "sets": 3,
+                  "reps": 8,
+                  "default_weight": 40
+                },
+                {
+                  "name": "Plank",
+                  "sets": 3,
+                  "reps": 60,
+                  "default_weight": 0
+                }
+              ]
+            },
+            {
+              "day": "Wed",
+              "name": "Full Body B",
+              "exercises": [
+                {
+                  "name": "Deadlift",
+                  "sets": 3,
+                  "reps": 5,
+                  "default_weight": 100
+                },
+                {
+                  "name": "Incline Dumbbell Press",
+                  "sets": 3,
+                  "reps": 10,
+                  "default_weight": 22
+                },
+                {
+                  "name": "Pull-up",
+                  "sets": 3,
+                  "reps": 8,
+                  "default_weight": 0
+                },
+                {
+                  "name": "Romanian Deadlift",
+                  "sets": 3,
+                  "reps": 8,
+                  "default_weight": 70
+                },
+                {
+                  "name": "Hanging Leg Raise",
+                  "sets": 3,
+                  "reps": 10,
+                  "default_weight": 0
+                }
+              ]
+            },
+            {
+              "day": "Fri",
+              "name": "Full Body C",
+              "exercises": [
+                {
+                  "name": "Front Squat",
+                  "sets": 3,
+                  "reps": 6,
+                  "default_weight": 60
+                },
+                {
+                  "name": "Overhead Press",
+                  "sets": 3,
+                  "reps": 6,
+                  "default_weight": 42
+                },
+                {
+                  "name": "Lat Pulldown",
+                  "sets": 3,
+                  "reps": 10,
+                  "default_weight": 55
+                },
+                {
+                  "name": "Dumbbell Bench Press",
+                  "sets": 3,
+                  "reps": 10,
+                  "default_weight": 24
+                },
+                {
+                  "name": "Standing Calf Raise",
+                  "sets": 3,
+                  "reps": 12,
+                  "default_weight": 40
+                }
+              ]
+            }
+          ]
+        },
+        "ul4": {
+          "name": "Upper / Lower (4-day)",
+          "sessions": [
+            {
+              "day": "Mon",
+              "name": "Upper A",
+              "exercises": [
+                {
+                  "name": "Bench Press",
+                  "sets": 4,
+                  "reps": 6,
+                  "default_weight": 60
+                },
+                {
+                  "name": "Barbell Row",
+                  "sets": 4,
+                  "reps": 6,
+                  "default_weight": 60
+                },
+                {
+                  "name": "Overhead Press",
+                  "sets": 3,
+                  "reps": 8,
+                  "default_weight": 40
+                },
+                {
+                  "name": "Lat Pulldown",
+                  "sets": 3,
+                  "reps": 10,
+                  "default_weight": 55
+                },
+                {
+                  "name": "Triceps Pushdown",
+                  "sets": 3,
+                  "reps": 12,
+                  "default_weight": 25
+                },
+                {
+                  "name": "Barbell Curl",
+                  "sets": 3,
+                  "reps": 10,
+                  "default_weight": 25
+                }
+              ]
+            },
+            {
+              "day": "Tue",
+              "name": "Lower A",
+              "exercises": [
+                {
+                  "name": "Back Squat",
+                  "sets": 4,
+                  "reps": 6,
+                  "default_weight": 80
+                },
+                {
+                  "name": "Romanian Deadlift",
+                  "sets": 3,
+                  "reps": 8,
+                  "default_weight": 70
+                },
+                {
+                  "name": "Leg Press",
+                  "sets": 3,
+                  "reps": 12,
+                  "default_weight": 120
+                },
+                {
+                  "name": "Leg Curl",
+                  "sets": 3,
+                  "reps": 12,
+                  "default_weight": 35
+                },
+                {
+                  "name": "Standing Calf Raise",
+                  "sets": 4,
+                  "reps": 12,
+                  "default_weight": 40
+                }
+              ]
+            },
+            {
+              "day": "Thu",
+              "name": "Upper B",
+              "exercises": [
+                {
+                  "name": "Overhead Press",
+                  "sets": 4,
+                  "reps": 6,
+                  "default_weight": 42
+                },
+                {
+                  "name": "Pull-up",
+                  "sets": 4,
+                  "reps": 8,
+                  "default_weight": 0
+                },
+                {
+                  "name": "Incline Dumbbell Press",
+                  "sets": 3,
+                  "reps": 10,
+                  "default_weight": 22
+                },
+                {
+                  "name": "Chest-Supported Row",
+                  "sets": 3,
+                  "reps": 10,
+                  "default_weight": 30
+                },
+                {
+                  "name": "Lateral Raise",
+                  "sets": 3,
+                  "reps": 12,
+                  "default_weight": 10
+                },
+                {
+                  "name": "Hammer Curl",
+                  "sets": 3,
+                  "reps": 10,
+                  "default_weight": 14
+                }
+              ]
+            },
+            {
+              "day": "Fri",
+              "name": "Lower B",
+              "exercises": [
+                {
+                  "name": "Deadlift",
+                  "sets": 3,
+                  "reps": 5,
+                  "default_weight": 100
+                },
+                {
+                  "name": "Front Squat",
+                  "sets": 3,
+                  "reps": 6,
+                  "default_weight": 60
+                },
+                {
+                  "name": "Hip Thrust",
+                  "sets": 3,
+                  "reps": 10,
+                  "default_weight": 80
+                },
+                {
+                  "name": "Walking Lunge",
+                  "sets": 3,
+                  "reps": 12,
+                  "default_weight": 16
+                },
+                {
+                  "name": "Seated Calf Raise",
+                  "sets": 4,
+                  "reps": 15,
+                  "default_weight": 30
+                }
+              ]
+            }
+          ]
+        }
+      }
+    }
+  }
+}</code></pre>
+
+    <h2>Screenshots</h2>
+    <p class="muted">Coming soon.</p>
+
+    <h2>Ratings</h2>
+    <p class="muted">
+      Ratings aren't wired up yet. For now: open an issue on
+      <a href="https://github.com/mobius-os/app-gym/issues">the repo</a> if something feels off.
+    </p>
+  </main>
+
+  <footer class="site">
+    <div class="inner">
+      <span>Möbius OS · MIT</span>
+      <span><a href="https://github.com/mobius-os">github.com/mobius-os</a></span>
+    </div>
+  </footer>
+</body>
+</html>

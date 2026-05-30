@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>LaTeX · Möbius OS</title>
+  <meta name="description" content="Math-first LaTeX editor. Describe what you want in prose; an AI sub-agent writes and edits the .tex files for you while you preview the math live.">
+  <link rel="preconnect" href="https://rsms.me/">
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="inner">
+      <a class="brand" href="../">Möbius OS</a>
+      <nav>
+        <a href="./">Apps</a>
+        <a href="../spec/">Spec</a>
+        <a href="../docs/contributing.html">Contribute</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <p class="muted"><a href="./">← All apps</a></p>
+
+    <div style="display:flex; align-items:center; gap:16px;">
+      <div class="logo" aria-hidden="true" style="margin:0;">L</div>
+      <h1 style="margin:0;">LaTeX</h1>
+    </div>
+
+    <div class="meta">
+      <span>v1.0.0</span>
+      <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
+      <span>MIT</span>
+      <span><a href="https://github.com/mobius-os/app-latex">Source</a></span>
+      <span>★ 0</span>
+      <span>updated 2026-05-30</span>
+    </div>
+
+    <h2>What it does</h2>
+    <p>Math-first LaTeX editor. Describe what you want in prose; an AI sub-agent writes and edits the .tex files for you while you preview the math live.</p>
+
+    <h2>Install</h2>
+    <p>
+      Open the App Store mini-app in your Möbius shell and paste:
+    </p>
+    <pre><code>https://raw.githubusercontent.com/mobius-os/app-latex/main/mobius.json</code></pre>
+    <p>
+      Möbius shows the requested permissions, then installs.
+    </p>
+
+    <h2>Manifest</h2>
+    <p>The live <code>mobius.json</code>:</p>
+    <pre><code>{
+  "id": "latex",
+  "name": "LaTeX",
+  "version": "1.0.0",
+  "description": "Math-first LaTeX editor. Describe what you want in prose; an AI sub-agent writes and edits the .tex files for you while you preview the math live.",
+  "author": "mobius-os",
+  "license": "MIT",
+  "homepage": "https://github.com/mobius-os/app-latex",
+  "entry": "index.jsx",
+  "offline_capable": true,
+  "permissions": {
+    "cross_app_access": "none",
+    "share_with_apps": "none"
+  },
+  "storage_seeds": {
+    "files/welcome.tex": "files/welcome.tex",
+    "chat_id.json": null,
+    "files-index.json": [
+      "files/welcome.tex"
+    ]
+  },
+  "runtime": {
+    "imports": [
+      "react",
+      "react-dom"
+    ],
+    "esm_deps": [
+      "katex",
+      "dompurify"
+    ]
+  }
+}</code></pre>
+
+    <h2>Screenshots</h2>
+    <p class="muted">Coming soon.</p>
+
+    <h2>Ratings</h2>
+    <p class="muted">
+      Ratings aren't wired up yet. For now: open an issue on
+      <a href="https://github.com/mobius-os/app-latex/issues">the repo</a> if something feels off.
+    </p>
+  </main>
+
+  <footer class="site">
+    <div class="inner">
+      <span>Möbius OS · MIT</span>
+      <span><a href="https://github.com/mobius-os">github.com/mobius-os</a></span>
+    </div>
+  </footer>
+</body>
+</html>
