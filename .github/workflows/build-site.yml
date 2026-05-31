@@ -6,6 +6,8 @@ on:
   schedule:
     - cron: "0 4 * * *"  # nightly 04:00 UTC — refreshes stars + last-commit dates
   repository_dispatch:
+    # Opt-in instant refresh — an app repo POSTs this on manifest push.
+    # Snippet + the cross-repo PAT it needs: see README "Instant refresh".
     types: [manifest-changed]
   workflow_dispatch: {}
 

@@ -137,11 +137,13 @@ If present, the installer registers a cron entry that invokes
 }
 ```
 
-- **`imports`** — libraries the app uses that are already in
-  Möbius's `app-frame.html` importmap (no fetch cost). Currently:
-  `react`, `react-dom`, `react/jsx-runtime`, `recharts`,
-  `date-fns`, `three`, plus `lucide-react`, `framer-motion`
-  if present.
+- **`imports`** — bare specifiers the app uses that are already in
+  Möbius's `app-frame.html` importmap (no fetch cost). The canonical
+  set is the `imports` enum in
+  [`mobius.schema.json`](mobius.schema.json); as of v1.0 that is
+  `react`, `react-dom`, `react-dom/client`, `react/jsx-runtime`,
+  `recharts`, `date-fns`, `three`, `three/addons/`. Anything not on
+  that list isn't bundled — declare it under `esm_deps` instead.
 - **`esm_deps`** — libraries the app loads via
   `import('https://esm.sh/<pkg>')`. The store UI surfaces these so
   users know the app pulls from a third-party CDN on first load.

@@ -122,7 +122,7 @@
           "type": "array",
           "items": { "type": "string" },
           "uniqueItems": true,
-          "description": "Libraries already in the Möbius importmap (zero fetch cost). Allowed: react, react-dom, react/jsx-runtime, recharts, date-fns, three, lucide-react, framer-motion."
+          "description": "Bare specifiers already in the Möbius app-frame importmap (zero fetch cost). This list is the canonical set; manifest.md prose mirrors it. Allowed: react, react-dom, react-dom/client, react/jsx-runtime, recharts, date-fns, three, three/addons/. Anything else must go in esm_deps."
         },
         "esm_deps": {
           "type": "array",
