@@ -20,7 +20,7 @@
       <nav>
         <a href="./" class="is-active">Apps</a>
         <a href="../spec/">Spec</a>
-        <a href="../docs/contributing.html">Contribute</a>
+        <a href="../docs/contributing.html">Build</a>
       </nav>
     </div>
   </header>
@@ -45,7 +45,7 @@
         </div>
         <p>Daily AI-curated news digest. Customize what to search for and the delivery schedule from inside the app.</p>
         <div class="badges">
-          <span class="badge">Works offline</span>
+          <span class="badge">Reads offline</span>
           <span class="badge">Runs daily at 10:00 UTC</span>
         </div>
       </a>
@@ -91,7 +91,7 @@
         </div>
         <p>Math-first LaTeX editor. Describe what you want in prose; an AI sub-agent writes and edits the .tex files for you while you preview the math live.</p>
         <div class="badges">
-          <span class="badge">Works offline</span>
+          <span class="badge">Edits offline</span>
         </div>
       </a>
       <a class="card" href="dreaming.html">
@@ -106,18 +106,21 @@
         </div>
         <p>A nightly agent reads what happened across your Möbius yesterday and writes a one-page morning report. Streak counter resets when you take a night off.</p>
         <div class="badges">
-          <span class="badge">Works offline</span>
+          <span class="badge">Reads offline</span>
           <span class="badge">Runs daily at 06:00 UTC</span>
           <span class="badge">Reads other apps (read)</span>
         </div>
       </a>
     </div>
 
-    <h2>Submitting an app</h2>
+    <h2>Build your own</h2>
     <p>
-      To get listed here, see the <a href="../docs/contributing.html">contributing
-      guide</a>. The bar: a public repo with a valid <code>mobius.json</code>, a
-      single-file <code>index.jsx</code>, and ideally a screenshot.
+      Any public repo with a valid <code>mobius.json</code> is installable
+      via paste-a-URL in the App Store mini-app. Apps don't need to be on
+      this curated list to be shared — host the manifest anywhere
+      (GitHub, Codeberg, GitLab, a personal site) and the URL is the
+      install link. See <a href="../docs/contributing.html">Build a Möbius app</a>
+      for the manifest schema and the storage / cron contracts.
     </p>
   </main>
 
