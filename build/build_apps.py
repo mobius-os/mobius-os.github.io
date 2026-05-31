@@ -133,19 +133,18 @@ OFFLINE_BADGE_OVERRIDES = {
 
 
 def _human_cron(expr: str) -> str:
-    """Cheap pretty-printer for the cron forms our curated apps use."""
+    """Cheap pretty-printer for the cron forms our curated apps use.
+
+    Intentionally omits the time — every Möbius user picks the
+    hour/minute per-install in the app's own Settings tab, so the
+    catalog badge would lie about the schedule being fixed.
+    """
     parts = expr.split()
     if len(parts) != 5:
         return f"Runs `{expr}`"
-    minute, hour, dom, mon, dow = parts
-    # Daily-at-HH form: "M H * * *"
+    _minute, _hour, dom, mon, dow = parts
     if dom == "*" and mon == "*" and dow == "*":
-        try:
-            h = int(hour); m = int(minute)
-            label = f"{h:02d}:{m:02d} UTC"
-            return f"Runs daily at {label}"
-        except ValueError:
-            pass
+        return "Runs daily"
     return f"Runs `{expr}`"
 
 
