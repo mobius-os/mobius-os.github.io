@@ -86,11 +86,16 @@ def fetch_app(client: httpx.Client, repo: str) -> dict:
         if icon else None
     )
 
-    # Surface a couple of capability badges directly so the template
-    # doesn't need to dig into manifest fields:
+    # Surface a small set of capability badges directly so the template
+    # doesn't need to dig into manifest fields. The offline badge is
+    # nuanced — `offline_capable: true` on the App row only means the
+    # SW caches the frame + module + storage outbox queues writes; it
+    # does NOT mean every interactive surface works offline. Per-app
+    # accuracy comes from OFFLINE_BADGE_OVERRIDES below.
     app["badges"] = []
     if manifest.get("offline_capable"):
-        app["badges"].append("Works offline")
+        override = OFFLINE_BADGE_OVERRIDES.get(manifest.get("id"))
+        app["badges"].append(override or "Works offline")
     sched = manifest.get("schedule") or {}
     if sched.get("default"):
         # Cron expression → very-short human label. Best-effort; falls
@@ -102,6 +107,29 @@ def fetch_app(client: httpx.Client, repo: str) -> dict:
             f"Reads other apps ({perms['cross_app_access']})"
         )
     return app
+
+
+# Per-app override for the offline badge so each card sets honest
+# expectations. "Works offline" is reserved for apps where ALL
+# interactive surfaces function without the network. Apps that need
+# the network for their headline action ship a narrower badge.
+OFFLINE_BADGE_OVERRIDES = {
+    # news: cached reports survive offline reloads, but new reports
+    # come from a server-side cron. The viewer reads offline; new
+    # content needs network.
+    "news": "Reads offline",
+    # latex: editor + math preview + file tree work offline, the
+    # persistent agent chat is the only online-required surface. The
+    # headline interaction (chatting with the agent to edit .tex)
+    # requires network.
+    "latex": "Edits offline",
+    # dreaming: report viewer reads offline; the nightly cron that
+    # generates new dreams is server-side.
+    "dreaming": "Reads offline",
+    # countries / gym have no server-side dependency for their
+    # headline interaction; "Works offline" is accurate. Leave them
+    # to fall back to the default.
+}
 
 
 def _human_cron(expr: str) -> str:
