@@ -64,7 +64,7 @@
           "type": "string",
           "enum": ["none", "read", "write"],
           "default": "none",
-          "description": "What this app can do to OTHER apps' storage."
+          "description": "What this app can do to OTHER apps. 'read' and 'write' both apply to other apps' storage. 'write' additionally authorises the app to install and uninstall apps on the owner's behalf (POST /api/apps/install + DELETE /api/apps/{id}) — the App Store mini-app is the canonical caller. Grant 'write' only to apps the owner trusts to manage the install set."
         },
         "share_with_apps": {
           "type": "string",
