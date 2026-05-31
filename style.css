@@ -352,6 +352,61 @@ details[open] summary {
   margin-bottom: 10px;
 }
 
+/* Reference tables on docs pages (Build spec, future spec docs). The
+ * dark-theme default is to render <table> with no styling, which makes
+ * Required-files / Theme-tokens tables on /docs/contributing.html look
+ * broken. Same dark-surface treatment as <pre>. */
+table {
+  border-collapse: collapse;
+  width: 100%;
+  margin: 12px 0 22px;
+  font-size: 0.92rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+th, td {
+  text-align: left;
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  vertical-align: top;
+}
+
+tr:last-child th, tr:last-child td {
+  border-bottom: none;
+}
+
+th {
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  background: var(--surface2);
+}
+
+td code {
+  white-space: nowrap;
+}
+
+/* Focus rings — keyboard users see a clear, on-brand outline. The
+ * default browser ring on the very dark --bg is inconsistent across
+ * Chromium / Firefox / Safari and easy to miss. */
+a:focus-visible,
+.card:focus-visible,
+.btn:focus-visible,
+button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+  border-radius: var(--radius);
+}
+
+header.site nav a:focus-visible {
+  outline-offset: 4px;
+}
+
 code, pre {
   font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, monospace;
   font-size: 0.88rem;
@@ -416,4 +471,9 @@ footer.site .inner {
   h1 { font-size: 1.8rem; }
   .container { padding: 24px 16px 60px; }
   header.site nav a { margin-left: 12px; }
+  /* Hero mark shrinks so it stays proportional to the smaller h1. */
+  .hero .hero-mark { width: 72px; height: 72px; margin-bottom: 14px; }
+  /* Catalog cards' icon proportionally smaller too — keeps the
+   * head row's icon : title ratio steady on narrow widths. */
+  .card .icon { width: 48px; height: 48px; border-radius: 10px; }
 }

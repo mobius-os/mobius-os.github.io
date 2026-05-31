@@ -1,10 +1,10 @@
 # mobius-os.github.io
 
-Public site for the [Möbius OS](https://github.com/hmzmrzx/mobius)
+Public site for the [Möbius OS](https://github.com/hamzamerzic/mobius)
 organization. Built as a static site; deployed via GitHub Pages.
 
 - Landing page: [https://mobius-os.github.io/](https://mobius-os.github.io/)
-- Manifest spec: [https://mobius-os.github.io/spec/manifest](https://mobius-os.github.io/spec/manifest)
+- Manifest spec: [https://mobius-os.github.io/spec/](https://mobius-os.github.io/spec/)
 - Curated apps: [https://mobius-os.github.io/apps/](https://mobius-os.github.io/apps/)
 
 ## Updating
@@ -19,6 +19,8 @@ to `CURATED_REPOS` in `build/build_apps.py`. Run
 `python build/build_apps.py` locally to preview; the Action will
 commit fresh output on the next trigger.
 
-## Contributing
+## Build a Möbius app
 
-See `docs/contributing.html`.
+See `docs/contributing.html` for the manifest schema, storage API,
+theme tokens, sandbox constraints, and the nav-back protocol — all
+the contracts an agent (or human) needs to ship a Möbius app.
