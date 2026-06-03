@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Activity · Möbius OS</title>
-  <meta name="description" content="Natural-language activity logger. Type what you did — "3×5 deadlift at 100kg", "ran 5k in 24 min", "hiked 8h in Hawaii" — and it parses, lets you confirm, auto-categorizes, and groups it into sessions. Strength PRs (e1RM), cardio bests, a category donut, volume trends, and a year-at-a-glance streak heatmap. Works for the gym and far beyond it.">
+  <meta name="description" content="Natural-language activity logger. Type what you did — "3×5 deadlift at 100kg", "ran 5k in 24 min", "hiked 8h in Hawaii" — and it parses, lets you confirm, auto-categorizes, and groups it into sessions. Strength PRs (e1RM), cardio bests, weekly category volume, per-category stats, and a year-at-a-glance streak heatmap. Works for the gym and far beyond it.">
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mobius-os/app-gym/main/icon.png">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -34,7 +34,7 @@
       </div>
       <div class="app-hero-text">
         <h1>Activity</h1>
-        <p class="muted">Natural-language activity logger. Type what you did — "3×5 deadlift at 100kg", "ran 5k in 24 min", "hiked 8h in Hawaii" — and it parses, lets you confirm, auto-categorizes, and groups it into sessions. Strength PRs (e1RM), cardio bests, a category donut, volume trends, and a year-at-a-glance streak heatmap. Works for the gym and far beyond it.</p>
+        <p class="muted">Natural-language activity logger. Type what you did — "3×5 deadlift at 100kg", "ran 5k in 24 min", "hiked 8h in Hawaii" — and it parses, lets you confirm, auto-categorizes, and groups it into sessions. Strength PRs (e1RM), cardio bests, weekly category volume, per-category stats, and a year-at-a-glance streak heatmap. Works for the gym and far beyond it.</p>
       </div>
     </div>
     <div class="badges badges--lg">
@@ -42,12 +42,12 @@
     </div>
 
     <div class="meta">
-      <span>v2.1.0</span>
+      <span>v2.2.0</span>
       <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
       <span>MIT</span>
       <span><a href="https://github.com/mobius-os/app-gym">Source ↗</a></span>
       <span>★ 0</span>
-      <span>updated 2026-06-02</span>
+      <span>updated 2026-06-03</span>
     </div>
 
     <h2>Install</h2>
@@ -65,8 +65,8 @@
       <pre><code>{
   "id": "gym",
   "name": "Activity",
-  "version": "2.1.0",
-  "description": "Natural-language activity logger. Type what you did — \"3×5 deadlift at 100kg\", \"ran 5k in 24 min\", \"hiked 8h in Hawaii\" — and it parses, lets you confirm, auto-categorizes, and groups it into sessions. Strength PRs (e1RM), cardio bests, a category donut, volume trends, and a year-at-a-glance streak heatmap. Works for the gym and far beyond it.",
+  "version": "2.2.0",
+  "description": "Natural-language activity logger. Type what you did — \"3×5 deadlift at 100kg\", \"ran 5k in 24 min\", \"hiked 8h in Hawaii\" — and it parses, lets you confirm, auto-categorizes, and groups it into sessions. Strength PRs (e1RM), cardio bests, weekly category volume, per-category stats, and a year-at-a-glance streak heatmap. Works for the gym and far beyond it.",
   "author": "mobius-os",
   "license": "MIT",
   "homepage": "https://github.com/mobius-os/app-gym",
@@ -80,8 +80,7 @@
   "runtime": {
     "imports": [
       "react",
-      "react-dom",
-      "recharts"
+      "react-dom"
     ],
     "esm_deps": []
   },
