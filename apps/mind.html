@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Mind · Möbius OS</title>
+  <meta name="description" content="What Möbius knows about you — an Obsidian-style graph of the agent's memory. Nodes are the notes and maps-of-content it grows and links as you use it; tap any node to read the markdown behind it. The graph fills in over time as Möbius learns.">
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mobius-os/app-mind/main/icon.png">
+  <link rel="preconnect" href="https://rsms.me/">
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="inner">
+      <a class="brand" href="../">
+        <img src="../mobius-brand.png" alt="" class="brand-mark" width="28" height="28">
+        <span>Möbius OS</span>
+      </a>
+      <nav>
+        <a href="./" class="is-active">Apps</a>
+        <a href="../spec/">Spec</a>
+        <a href="../docs/contributing.html">Build</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <p class="muted"><a href="./">← All apps</a></p>
+
+    <div class="app-hero">
+      <div class="app-hero-icon">
+        <img src="https://raw.githubusercontent.com/mobius-os/app-mind/main/icon.png" alt="">
+      </div>
+      <div class="app-hero-text">
+        <h1>Mind</h1>
+        <p class="muted">What Möbius knows about you — an Obsidian-style graph of the agent's memory. Nodes are the notes and maps-of-content it grows and links as you use it; tap any node to read the markdown behind it. The graph fills in over time as Möbius learns.</p>
+      </div>
+    </div>
+
+    <div class="meta">
+      <span>v1.0.0</span>
+      <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
+      <span>MIT</span>
+      <span><a href="https://github.com/mobius-os/app-mind">Source ↗</a></span>
+      <span>★ 0</span>
+      <span>updated 2026-06-03</span>
+    </div>
+
+    <h2>Install</h2>
+    <p>
+      Open the App Store mini-app in your Möbius shell and paste:
+    </p>
+    <pre><code>https://raw.githubusercontent.com/mobius-os/app-mind/main/mobius.json</code></pre>
+    <p>
+      Möbius shows the requested permissions, then installs.
+    </p>
+    <h2>Runtime libraries</h2>
+    <p>This app loads the following ES modules from <a href="https://esm.sh">esm.sh</a> on first open:</p>
+    <ul>
+      <li><code>react-force-graph-2d</code></li>
+      <li><code>marked</code></li>
+      <li><code>dompurify</code></li>
+    </ul>
+
+    <h2>Manifest</h2>
+    <details>
+      <summary>Show <code>mobius.json</code></summary>
+      <pre><code>{
+  "id": "mind",
+  "name": "Mind",
+  "version": "1.0.0",
+  "description": "What Möbius knows about you — an Obsidian-style graph of the agent's memory. Nodes are the notes and maps-of-content it grows and links as you use it; tap any node to read the markdown behind it. The graph fills in over time as Möbius learns.",
+  "author": "mobius-os",
+  "license": "MIT",
+  "homepage": "https://github.com/mobius-os/app-mind",
+  "entry": "index.jsx",
+  "icon": "icon.png",
+  "offline_capable": false,
+  "permissions": {
+    "cross_app_access": "none",
+    "share_with_apps": "none"
+  },
+  "runtime": {
+    "imports": [
+      "react",
+      "react-dom"
+    ],
+    "esm_deps": [
+      "react-force-graph-2d",
+      "marked",
+      "dompurify"
+    ]
+  }
+}</code></pre>
+    </details>
+
+    <h2>Feedback</h2>
+    <p>
+      Something feel off, or want to suggest an iteration? Open an issue at
+      <a href="https://github.com/mobius-os/app-mind/issues">app-mind/issues</a> — the
+      app's maintainer reads them.
+    </p>
+  </main>
+
+  <footer class="site">
+    <div class="inner">
+      <span>Möbius OS · MIT</span>
+      <span><a href="https://github.com/mobius-os">github.com/mobius-os</a></span>
+    </div>
+  </footer>
+</body>
+</html>

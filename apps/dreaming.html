@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dreaming · Möbius OS</title>
-  <meta name="description" content="A nightly agent reads what happened across your Möbius yesterday and writes a one-page morning report. Streak counter resets when you take a night off.">
+  <meta name="description" content="While you sleep, Möbius dreams: it interviews the agents that worked during the day, sharpens its own skills and memory, hardens your apps, and leaves you a one-page morning brief with a few tap-to-answer questions. Quiet nights are skipped — your streak resets when you take a night off.">
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mobius-os/app-dreaming/main/icon.png">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -34,7 +34,7 @@
       </div>
       <div class="app-hero-text">
         <h1>Dreaming</h1>
-        <p class="muted">A nightly agent reads what happened across your Möbius yesterday and writes a one-page morning report. Streak counter resets when you take a night off.</p>
+        <p class="muted">While you sleep, Möbius dreams: it interviews the agents that worked during the day, sharpens its own skills and memory, hardens your apps, and leaves you a one-page morning brief with a few tap-to-answer questions. Quiet nights are skipped — your streak resets when you take a night off.</p>
       </div>
     </div>
     <div class="badges badges--lg">
@@ -44,12 +44,12 @@
     </div>
 
     <div class="meta">
-      <span>v1.1.0</span>
+      <span>v2.0.0</span>
       <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
       <span>MIT</span>
       <span><a href="https://github.com/mobius-os/app-dreaming">Source ↗</a></span>
       <span>★ 0</span>
-      <span>updated 2026-06-02</span>
+      <span>updated 2026-06-03</span>
     </div>
 
     <h2>Install</h2>
@@ -60,11 +60,6 @@
     <p>
       Möbius shows the requested permissions and the cron schedule, then installs.
     </p>
-    <h2>Runtime libraries</h2>
-    <p>This app loads the following ES modules from <a href="https://esm.sh">esm.sh</a> on first open:</p>
-    <ul>
-      <li><code>dompurify</code></li>
-    </ul>
 
     <h2>Manifest</h2>
     <details>
@@ -72,8 +67,8 @@
       <pre><code>{
   "id": "dreaming",
   "name": "Dreaming",
-  "version": "1.1.0",
-  "description": "A nightly agent reads what happened across your Möbius yesterday and writes a one-page morning report. Streak counter resets when you take a night off.",
+  "version": "2.0.0",
+  "description": "While you sleep, Möbius dreams: it interviews the agents that worked during the day, sharpens its own skills and memory, hardens your apps, and leaves you a one-page morning brief with a few tap-to-answer questions. Quiet nights are skipped — your streak resets when you take a night off.",
   "author": "mobius-os",
   "license": "MIT",
   "homepage": "https://github.com/mobius-os/app-dreaming",
@@ -85,16 +80,13 @@
     "share_with_apps": "none"
   },
   "storage_seeds": {
-    "system-prompt.md": "system-prompt.md",
-    "topics.txt": "topics.txt",
-    "schedule.json": {
+    "settings.json": {
       "hour": 6,
       "minute": 0,
-      "timezone": null
-    },
-    "agent.json": {
+      "timezone": null,
+      "verbosity": "standard",
       "provider": "claude",
-      "model": "claude-opus-4-7"
+      "model": null
     }
   },
   "schedule": {
@@ -107,9 +99,7 @@
       "react",
       "react-dom"
     ],
-    "esm_deps": [
-      "dompurify"
-    ]
+    "esm_deps": []
   }
 }</code></pre>
     </details>
