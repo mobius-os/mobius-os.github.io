@@ -21,7 +21,7 @@ import httpx
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 ORG = "mobius-os"
-CURATED_REPOS = ["app-news", "app-countries", "app-gym", "app-latex", "app-dreaming", "app-mind"]  # add new curated app repos here
+CURATED_REPOS = ["app-news", "app-countries", "app-gym", "app-latex", "app-dreaming", "app-mind", "app-notes"]  # add new curated app repos here
 GRID_SLOTS = 4  # total cards shown on apps/index.html (rest are "Coming soon")
 
 ROOT = Path(__file__).resolve().parent.parent
