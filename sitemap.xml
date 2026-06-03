@@ -5,7 +5,7 @@
   <url><loc>https://mobius-os.github.io/spec/</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://mobius-os.github.io/docs/contributing.html</loc><changefreq>monthly</changefreq><priority>0.7</priority></url>
   <url><loc>https://mobius-os.github.io/apps/news.html</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
-  <url><loc>https://mobius-os.github.io/apps/countries.html</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
+  <url><loc>https://mobius-os.github.io/apps/atlas.html</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://mobius-os.github.io/apps/gym.html</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://mobius-os.github.io/apps/latex.html</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
   <url><loc>https://mobius-os.github.io/apps/dreaming.html</loc><changefreq>weekly</changefreq><priority>0.6</priority></url>
