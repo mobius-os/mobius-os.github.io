@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>LaTeX · Möbius OS</title>
-  <meta name="description" content="Math-first LaTeX editor. Describe what you want in prose; an AI sub-agent writes and edits the .tex files for you while you preview the math live.">
+  <meta name="description" content="Overleaf-style LaTeX editor: a VSCode-like file drawer, a real tectonic PDF build, and an embedded agent that writes your .tex for you.">
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mobius-os/app-latex/main/icon.png">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -34,7 +34,7 @@
       </div>
       <div class="app-hero-text">
         <h1>LaTeX</h1>
-        <p class="muted">Math-first LaTeX editor. Describe what you want in prose; an AI sub-agent writes and edits the .tex files for you while you preview the math live.</p>
+        <p class="muted">Overleaf-style LaTeX editor: a VSCode-like file drawer, a real tectonic PDF build, and an embedded agent that writes your .tex for you.</p>
       </div>
     </div>
     <div class="badges badges--lg">
@@ -42,7 +42,7 @@
     </div>
 
     <div class="meta">
-      <span>v1.2.0</span>
+      <span>v2.0.0</span>
       <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
       <span>MIT</span>
       <span><a href="https://github.com/mobius-os/app-latex">Source ↗</a></span>
@@ -56,7 +56,7 @@
     </p>
     <pre><code>https://raw.githubusercontent.com/mobius-os/app-latex/main/mobius.json</code></pre>
     <p>
-      Möbius shows the requested permissions, then installs.
+      Möbius shows the requested permissions and the cron schedule, then installs.
     </p>
     <h2>Runtime libraries</h2>
     <p>This app loads the following ES modules from <a href="https://esm.sh">esm.sh</a> on first open:</p>
@@ -71,8 +71,8 @@
       <pre><code>{
   "id": "latex",
   "name": "LaTeX",
-  "version": "1.2.0",
-  "description": "Math-first LaTeX editor. Describe what you want in prose; an AI sub-agent writes and edits the .tex files for you while you preview the math live.",
+  "version": "2.0.0",
+  "description": "Overleaf-style LaTeX editor: a VSCode-like file drawer, a real tectonic PDF build, and an embedded agent that writes your .tex for you.",
   "author": "mobius-os",
   "license": "MIT",
   "homepage": "https://github.com/mobius-os/app-latex",
@@ -99,6 +99,9 @@
       "katex",
       "dompurify"
     ]
+  },
+  "schedule": {
+    "job": "build.sh"
   }
 }</code></pre>
     </details>
