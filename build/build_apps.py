@@ -42,7 +42,7 @@ if GH_TOKEN:
 
 def _get_json(client: httpx.Client, url: str) -> Any:
     """GET + JSON-decode. Returns None on 404 so callers can treat absence as a soft miss."""
-    r = client.get(url, headers=HEADERS, timeout=20.0)
+    r = client.get(url, headers=HEADERS, timeout=20.0, follow_redirects=True)
     if r.status_code == 404:
         return None
     r.raise_for_status()
@@ -51,11 +51,15 @@ def _get_json(client: httpx.Client, url: str) -> Any:
 
 def fetch_app(client: httpx.Client, repo: str) -> dict:
     """Fetch manifest + GitHub metadata for one repo, returning a render-ready dict."""
-    manifest = _get_json(
-        client, f"https://raw.githubusercontent.com/{ORG}/{repo}/main/mobius.json"
-    )
-    if manifest is None:
-        raise RuntimeError(f"{repo}: mobius.json missing on main")
+    local_manifest = ROOT.parent / repo / "mobius.json"
+    if local_manifest.exists():
+        manifest = json.loads(local_manifest.read_text(encoding="utf-8"))
+    else:
+        manifest = _get_json(
+            client, f"https://raw.githubusercontent.com/{ORG}/{repo}/main/mobius.json"
+        )
+        if manifest is None:
+            raise RuntimeError(f"{repo}: mobius.json missing on main")
 
     repo_meta = _get_json(client, f"https://api.github.com/repos/{ORG}/{repo}") or {}
 
@@ -132,7 +136,7 @@ OFFLINE_BADGE_OVERRIDES = {
     # dreaming: report viewer reads offline; the nightly cron that
     # generates new dreams is server-side.
     "dreaming": "Reads offline",
-    # countries / gym have no server-side dependency for their
+    # atlas / gym have no server-side dependency for their
     # headline interaction; "Works offline" is accurate. Leave them
     # to fall back to the default.
 }

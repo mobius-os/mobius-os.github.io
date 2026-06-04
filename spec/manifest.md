@@ -119,7 +119,8 @@ launch (default prompts, default schedules, sample data).
 If present, the installer registers a cron entry that invokes
 `/data/apps/<slug>/<job>` at the cron-expression's cadence.
 
-- **`default`** — initial cron expression.
+- **`default`** — optional initial cron expression. Omit it for an
+  on-demand-only job such as a Build button that runs `build.sh`.
 - **`user_configurable`** — if `true`, the installer also seeds
   `schedule.json` in storage (with `{hour, minute}` parsed from
   `default`) and arranges a `sync-cron.sh` polling script so the
@@ -142,8 +143,9 @@ If present, the installer registers a cron entry that invokes
   set is the `imports` enum in
   [`mobius.schema.json`](mobius.schema.json); as of v1.0 that is
   `react`, `react-dom`, `react-dom/client`, `react/jsx-runtime`,
-  `recharts`, `date-fns`, `three`, `three/addons/`. Anything not on
-  that list isn't bundled — declare it under `esm_deps` instead.
+  `recharts`, `date-fns`, `three`, `three/addons/`, `pdfjs-dist`,
+  `codemirror`, and `katex`. Anything not on that list isn't bundled
+  — declare it under `esm_deps` instead.
 - **`esm_deps`** — libraries the app loads via
   `import('https://esm.sh/<pkg>')`. The store UI surfaces these so
   users know the app pulls from a third-party CDN on first load.
@@ -159,20 +161,15 @@ When the user installs an app:
 3. **Pre-install confirm** — Möbius shows the user: name, version,
    icon, requested permissions, optional cron preview ("runs daily
    at 10:00 UTC"), declared `esm_deps`. User taps Install.
-4. **POST to /api/apps/** — creates the DB row with `jsx_source`
-   from `entry`, `cross_app_access`, `share_with_apps`. Server
-   assigns numeric id + slug.
-5. **Storage seeds** — installer PUTs each entry in
-   `storage_seeds` to `/api/storage/apps/<slug>/<path>`.
-6. **Icon upload** — if `icon` declared, PUT `icon.png` bytes to
-   `/api/apps/{id}/icon`.
-7. **Schedule (if any)** — the mini-app installer can't shell out to
-   `init-cron-scaffold.sh`, so it writes a `.cron-pending.json`
-   sentinel into the new app's storage scope and surfaces a
-   "registration pending" notice. The agent registers the actual
-   cron entry post-install (a dedicated backend install endpoint,
-   tracked under ticket 062, will close this gap).
-8. **Done** — app appears in drawer next time the user opens it
+4. **POST to /api/apps/install** — the backend fetches `entry`,
+   compiles it, creates or updates the App row, writes the editable
+   source tree, seeds storage, uploads the icon, and registers cron
+   inside one transaction with filesystem rollback.
+5. **Schedule (if any)** — if `schedule.default` is present, the
+   installer registers the recurring cron entry for `schedule.job`.
+   If only `schedule.job` is present, the job is bundled for explicit
+   in-app `run-job` actions but no recurring cron is installed.
+6. **Done** — app appears in drawer next time the user opens it
    (or immediately, via `chat_updated` SSE).
 
 ## Versioning + updates
@@ -186,10 +183,11 @@ When the user installs an app:
 
 The store mini-app maintains its own per-installed-app version map
 at `/api/storage/apps/<store_id>/installed-versions.json` (keyed by
-catalog id, or `'custom'` for paste-a-URL installs). It polls each
-installed app's `mobius.json` on its `homepage` URL to detect
-available updates. Identity is matched by `manifest.id ↔ App.slug`
-(not display name — names can be edited).
+catalog id, or by manifest id for paste-a-URL installs). Installed
+identity is the backend's canonical manifest URL key:
+`<manifest-base>#manifest-id=<manifest.id>`. Slug is routing only,
+so user-built apps and store-installed apps can coexist even when
+their names collide.
 
 ## Future fields (reserved, not yet implemented)
 
