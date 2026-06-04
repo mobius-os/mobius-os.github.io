@@ -23,6 +23,11 @@ from jinja2 import Environment, FileSystemLoader, select_autoescape
 ORG = "mobius-os"
 CURATED_REPOS = ["app-news", "app-atlas", "app-workout", "app-latex", "app-dreaming", "app-mind", "app-notes"]  # add new curated app repos here
 GRID_SLOTS = 4  # total cards shown on apps/index.html (rest are "Coming soon")
+PAGE_SLUG_OVERRIDES = {
+    # The manifest id is still `gym` for install/storage compatibility,
+    # but the public app page should use the product name.
+    "gym": "workout",
+}
 
 ROOT = Path(__file__).resolve().parent.parent
 TEMPLATES_DIR = Path(__file__).resolve().parent / "templates"
@@ -69,6 +74,7 @@ def fetch_app(client: httpx.Client, repo: str) -> dict:
 
     app = dict(manifest)
     app["repo"] = repo
+    app["page_slug"] = PAGE_SLUG_OVERRIDES.get(app["id"], app["id"])
     app["manifest_json"] = json.dumps(manifest, indent=2, ensure_ascii=False)
     app["github"] = {
         "stars": repo_meta.get("stargazers_count"),
@@ -155,7 +161,7 @@ def render(env: Environment, apps: list[dict]) -> list[Path]:
 
     app_tpl = env.get_template("app.html.j2")
     for app in apps:
-        out = APPS_DIR / f"{app['id']}.html"
+        out = APPS_DIR / f"{app['page_slug']}.html"
         out.write_text(app_tpl.render(app=app), encoding="utf-8")
         written.append(out)
 
