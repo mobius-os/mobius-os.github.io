@@ -21,7 +21,7 @@ import httpx
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 ORG = "mobius-os"
-CURATED_REPOS = ["app-news", "app-atlas", "app-workout", "app-latex", "app-dreaming", "app-mind", "app-notes"]  # add new curated app repos here
+CURATED_REPOS = ["app-news", "app-atlas", "app-workout", "app-cuberun", "app-latex", "app-dreaming", "app-mind", "app-notes"]  # add new curated app repos here
 GRID_SLOTS = 4  # total cards shown on apps/index.html (rest are "Coming soon")
 PAGE_SLUG_OVERRIDES = {
     # The manifest id is still `gym` for install/storage compatibility,

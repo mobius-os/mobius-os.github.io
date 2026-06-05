@@ -25,6 +25,10 @@ Apps that follow this format can be installed:
   "homepage": "https://github.com/mobius-os/app-news",
   "icon": "icon.png",
   "entry": "index.jsx",
+  "static_assets": {
+    "index.html": "build/index.html",
+    "static/js/main.js": "build/static/js/main.js"
+  },
   "permissions": {
     "cross_app_access": "none",
     "share_with_apps": "none"
@@ -69,6 +73,36 @@ Apps that follow this format can be installed:
 - **`icon`** — relative path to a PNG. Server resizes to 1024×1024,
   center-square-crops if not square. Skip this field and the
   Möbius default letter-icon is used.
+
+### Static assets
+
+```json
+"static_assets": {
+  "index.html": "build/index.html",
+  "static/js/main.js": "build/static/js/main.js",
+  "static/media/logo.png": "build/static/media/logo.png"
+}
+```
+
+Prebuilt apps can declare files to copy into
+`/data/apps/<slug>/static`. They are served at both
+`/app-assets/<slug>/...` and `/app-assets/by-id/<id>/...`.
+
+- Use an **object** when source and served paths differ:
+  destination path → repo source path.
+- Use an **array** when the repo source path and served destination
+  path are identical.
+- Paths must be repo-relative, must not start with `/`, and must not
+  escape with `..`.
+- Updates are declarative: files previously owned by
+  `static_assets` but no longer declared are removed. Unrelated files
+  under `static/` are preserved.
+
+For bundled React/Vite/Webpack apps, include every HTML, CSS, JS,
+font, media, and source-map file referenced by the build output.
+CSS `url(...)` references stay relative to the served CSS file, so
+declare the destination paths exactly as the browser will request
+them.
 
 ### Permissions
 

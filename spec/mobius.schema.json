@@ -52,6 +52,29 @@
       "pattern": "^[^/].*\\.(png|jpg|jpeg)$",
       "description": "Relative path to an icon image. Server resizes to 1024x1024."
     },
+    "static_assets": {
+      "description": "Prebuilt files copied into /data/apps/<slug>/static and served from /app-assets/<slug>/... and /app-assets/by-id/<id>/.... Use an array when source and destination paths are identical, or an object mapping served destination path to repo source path.",
+      "oneOf": [
+        {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^(?!.*(?:^|/)\\.\\.(?:/|$))[^/].*$"
+          },
+          "uniqueItems": true
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string",
+            "pattern": "^(?!.*(?:^|/)\\.\\.(?:/|$))[^/].*$"
+          },
+          "propertyNames": {
+            "pattern": "^(?!.*(?:^|/)\\.\\.(?:/|$))[^/].*$"
+          }
+        }
+      ]
+    },
     "offline_capable": {
       "type": "boolean",
       "description": "When true, Möbius caches the app shell in the service worker and exposes window.mobius.storage's write outbox so the app keeps working offline. Apps that opt in must tolerate fetch failures gracefully and use window.mobius.storage (with a fallback to plain /api/storage fetch) for writes. See the offline-runtime feature for details."
