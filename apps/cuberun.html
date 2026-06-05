@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>CubeRun · Möbius OS</title>
+  <meta name="description" content="Neon 3D runner game packaged for Mobius as a durable static app.">
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mobius-os/app-cuberun/main/public/logo512.png">
+  <link rel="preconnect" href="https://rsms.me/">
+  <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
+  <link rel="stylesheet" href="../style.css">
+</head>
+<body>
+  <header class="site">
+    <div class="inner">
+      <a class="brand" href="../">
+        <img src="../mobius-brand.png" alt="" class="brand-mark" width="28" height="28">
+        <span>Möbius OS</span>
+      </a>
+      <nav>
+        <a href="./" class="is-active">Apps</a>
+        <a href="../spec/">Spec</a>
+        <a href="../docs/contributing.html">Build</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container">
+    <p class="muted"><a href="./">← All apps</a></p>
+
+    <div class="app-hero">
+      <div class="app-hero-icon">
+        <img src="https://raw.githubusercontent.com/mobius-os/app-cuberun/main/public/logo512.png" alt="">
+      </div>
+      <div class="app-hero-text">
+        <h1>CubeRun</h1>
+        <p class="muted">Neon 3D runner game packaged for Mobius as a durable static app.</p>
+      </div>
+    </div>
+
+    <div class="meta">
+      <span>v1.0.0-mobius.4</span>
+      <span>by <a href="https://github.com/Adam Karlsten, Mobius packaging by Hamza Merzic">Adam Karlsten, Mobius packaging by Hamza Merzic</a></span>
+      <span>MIT</span>
+      <span><a href="https://github.com/mobius-os/app-cuberun">Source ↗</a></span>
+      <span>★ 0</span>
+      <span>updated 2026-06-05</span>
+    </div>
+
+    <h2>Install</h2>
+    <p>
+      Open the App Store mini-app in your Möbius shell and paste:
+    </p>
+    <pre><code>https://raw.githubusercontent.com/mobius-os/app-cuberun/main/mobius.json</code></pre>
+    <p>
+      Möbius shows the requested permissions, then installs.
+    </p>
+
+    <h2>Manifest</h2>
+    <details>
+      <summary>Show <code>mobius.json</code></summary>
+      <pre><code>{
+  "id": "cuberun",
+  "name": "CubeRun",
+  "version": "1.0.0-mobius.4",
+  "description": "Neon 3D runner game packaged for Mobius as a durable static app.",
+  "author": "Adam Karlsten, Mobius packaging by Hamza Merzic",
+  "license": "MIT",
+  "homepage": "https://github.com/mobius-os/app-cuberun",
+  "entry": "index.jsx",
+  "icon": "public/logo512.png",
+  "offline_capable": false,
+  "permissions": {
+    "cross_app_access": "none",
+    "share_with_apps": "none"
+  },
+  "static_assets": {
+    "asset-manifest.json": "build/asset-manifest.json",
+    "cuberun-logo.png": "build/cuberun-logo.png",
+    "favicon.png": "build/favicon.png",
+    "fonts.css": "build/fonts.css",
+    "fonts/Road_Rage.otf": "build/fonts/Road_Rage.otf",
+    "fonts/commando.ttf": "build/fonts/commando.ttf",
+    "index.html": "build/index.html",
+    "logo192.png": "build/logo192.png",
+    "logo512.png": "build/logo512.png",
+    "manifest.json": "build/manifest.json",
+    "regular.PNG": "build/regular.PNG",
+    "robots.txt": "build/robots.txt",
+    "static/css/main.b4ff25b5.chunk.css": "build/static/css/main.b4ff25b5.chunk.css",
+    "static/css/main.b4ff25b5.chunk.css.map": "build/static/css/main.b4ff25b5.chunk.css.map",
+    "static/js/2.cc4f581e.chunk.js": "build/static/js/2.cc4f581e.chunk.js",
+    "static/js/2.cc4f581e.chunk.js.LICENSE.txt": "build/static/js/2.cc4f581e.chunk.js.LICENSE.txt",
+    "static/js/2.cc4f581e.chunk.js.map": "build/static/js/2.cc4f581e.chunk.js.map",
+    "static/js/main.018ef146.chunk.js": "build/static/js/main.018ef146.chunk.js",
+    "static/js/main.018ef146.chunk.js.map": "build/static/js/main.018ef146.chunk.js.map",
+    "static/js/runtime-main.24816b42.js": "build/static/js/runtime-main.24816b42.js",
+    "static/js/runtime-main.24816b42.js.map": "build/static/js/runtime-main.24816b42.js.map",
+    "static/media/Road_Rage.03e8327b.otf": "build/static/media/Road_Rage.03e8327b.otf",
+    "static/media/commando.68717231.ttf": "build/static/media/commando.68717231.ttf",
+    "static/media/cuberun-logo.2a67aff7.png": "build/static/media/cuberun-logo.2a67aff7.png",
+    "static/media/enginetextureflip.d0f77b17.png": "build/static/media/enginetextureflip.d0f77b17.png",
+    "static/media/galaxy.ef4e164b.jpg": "build/static/media/galaxy.ef4e164b.jpg",
+    "static/media/galaxyTextureBW.3bf07a9f.png": "build/static/media/galaxyTextureBW.3bf07a9f.png",
+    "static/media/grid-rainbow.1dc05ea5.png": "build/static/media/grid-rainbow.1dc05ea5.png",
+    "static/media/intro-loop.85c70e50.mp3": "build/static/media/intro-loop.85c70e50.mp3",
+    "static/media/main-nodrums.b36a5309.mp3": "build/static/media/main-nodrums.b36a5309.mp3",
+    "static/media/main-onlydrums.f5b7b0b0.mp3": "build/static/media/main-onlydrums.f5b7b0b0.mp3",
+    "static/media/noise.2793ebd0.png": "build/static/media/noise.2793ebd0.png",
+    "static/media/spaceship.e86972b1.gltf": "build/static/media/spaceship.e86972b1.gltf",
+    "static/media/speedup.d71ead93.mp3": "build/static/media/speedup.d71ead93.mp3",
+    "tunnelred.PNG": "build/tunnelred.PNG"
+  },
+  "runtime": {
+    "imports": [
+      "react"
+    ],
+    "esm_deps": []
+  }
+}</code></pre>
+    </details>
+
+    <h2>Feedback</h2>
+    <p>
+      Something feel off, or want to suggest an iteration? Open an issue at
+      <a href="https://github.com/mobius-os/app-cuberun/issues">app-cuberun/issues</a> — the
+      app's maintainer reads them.
+    </p>
+  </main>
+
+  <footer class="site">
+    <div class="inner">
+      <span>Möbius OS · MIT</span>
+      <span><a href="https://github.com/mobius-os">github.com/mobius-os</a></span>
+    </div>
+  </footer>
+</body>
+</html>
