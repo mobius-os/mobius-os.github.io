@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>News · Möbius OS</title>
-  <meta name="description" content="Daily AI-curated news digest. Edit the editorial brief and model from inside the app; runs each morning at 10:00 UTC.">
+  <meta name="description" content="Daily AI-curated news digest with configurable schedule, model, editorial brief, and full-page HTML reports.">
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mobius-os/app-news/main/icon.png">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -34,7 +34,7 @@
       </div>
       <div class="app-hero-text">
         <h1>News</h1>
-        <p class="muted">Daily AI-curated news digest. Edit the editorial brief and model from inside the app; runs each morning at 10:00 UTC.</p>
+        <p class="muted">Daily AI-curated news digest with configurable schedule, model, editorial brief, and full-page HTML reports.</p>
       </div>
     </div>
     <div class="badges badges--lg">
@@ -43,12 +43,12 @@
     </div>
 
     <div class="meta">
-      <span>v1.9.0</span>
+      <span>v1.10.1</span>
       <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
       <span>MIT</span>
       <span><a href="https://github.com/mobius-os/app-news">Source ↗</a></span>
       <span>★ 0</span>
-      <span>updated 2026-06-04</span>
+      <span>updated 2026-06-06</span>
     </div>
 
     <h2>Install</h2>
@@ -66,8 +66,8 @@
       <pre><code>{
   "id": "news",
   "name": "News",
-  "version": "1.9.0",
-  "description": "Daily AI-curated news digest. Edit the editorial brief and model from inside the app; runs each morning at 10:00 UTC.",
+  "version": "1.10.1",
+  "description": "Daily AI-curated news digest with configurable schedule, model, editorial brief, and full-page HTML reports.",
   "offline_capable": true,
   "author": "mobius-os",
   "license": "MIT",
@@ -90,7 +90,7 @@
   },
   "schedule": {
     "default": "0 10 * * *",
-    "user_configurable": false,
+    "user_configurable": true,
     "job": "fetch.sh"
   },
   "runtime": {

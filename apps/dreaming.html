@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Dreaming · Möbius OS</title>
-  <meta name="description" content="While you sleep, Möbius dreams: it interviews the agents that worked during the day, sharpens its own skills and memory, hardens your apps, and leaves you a one-page morning brief with a few tap-to-answer questions. Quiet nights are skipped — your streak resets when you take a night off.">
+  <meta name="description" content="While you sleep, Möbius dreams: it interviews the agents that worked during the day, sharpens its own skills and memory, hardens your apps, and leaves you a one-page morning brief with a feedback path into chat. Quiet nights are skipped — your streak resets when you take a night off.">
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mobius-os/app-dreaming/main/icon.png">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -34,7 +34,7 @@
       </div>
       <div class="app-hero-text">
         <h1>Dreaming</h1>
-        <p class="muted">While you sleep, Möbius dreams: it interviews the agents that worked during the day, sharpens its own skills and memory, hardens your apps, and leaves you a one-page morning brief with a few tap-to-answer questions. Quiet nights are skipped — your streak resets when you take a night off.</p>
+        <p class="muted">While you sleep, Möbius dreams: it interviews the agents that worked during the day, sharpens its own skills and memory, hardens your apps, and leaves you a one-page morning brief with a feedback path into chat. Quiet nights are skipped — your streak resets when you take a night off.</p>
       </div>
     </div>
     <div class="badges badges--lg">
@@ -44,12 +44,12 @@
     </div>
 
     <div class="meta">
-      <span>v2.0.1</span>
+      <span>v2.0.5</span>
       <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
       <span>MIT</span>
       <span><a href="https://github.com/mobius-os/app-dreaming">Source ↗</a></span>
       <span>★ 0</span>
-      <span>updated 2026-06-04</span>
+      <span>updated 2026-06-06</span>
     </div>
 
     <h2>Install</h2>
@@ -67,8 +67,8 @@
       <pre><code>{
   "id": "dreaming",
   "name": "Dreaming",
-  "version": "2.0.1",
-  "description": "While you sleep, Möbius dreams: it interviews the agents that worked during the day, sharpens its own skills and memory, hardens your apps, and leaves you a one-page morning brief with a few tap-to-answer questions. Quiet nights are skipped — your streak resets when you take a night off.",
+  "version": "2.0.5",
+  "description": "While you sleep, Möbius dreams: it interviews the agents that worked during the day, sharpens its own skills and memory, hardens your apps, and leaves you a one-page morning brief with a feedback path into chat. Quiet nights are skipped — your streak resets when you take a night off.",
   "author": "mobius-os",
   "license": "MIT",
   "homepage": "https://github.com/mobius-os/app-dreaming",
@@ -77,7 +77,8 @@
   "offline_capable": true,
   "permissions": {
     "cross_app_access": "read",
-    "share_with_apps": "none"
+    "share_with_apps": "none",
+    "chat_log_access": "summary"
   },
   "storage_seeds": {
     "settings.json": {
@@ -85,8 +86,8 @@
       "minute": 0,
       "timezone": null,
       "cron": "0 6 * * *",
-      "verbosity": "standard",
       "exclude_apps": [],
+      "agent_id": "builder",
       "provider": "claude",
       "model": null
     }
