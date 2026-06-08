@@ -42,12 +42,12 @@
     </div>
 
     <div class="meta">
-      <span>v2.1.5</span>
+      <span>v2.3.0</span>
       <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
       <span>MIT</span>
       <span><a href="https://github.com/mobius-os/app-latex">Source ↗</a></span>
       <span>★ 0</span>
-      <span>updated 2026-06-06</span>
+      <span>updated 2026-06-08</span>
     </div>
 
     <h2>Install</h2>
@@ -65,7 +65,7 @@
       <pre><code>{
   "id": "latex",
   "name": "LaTeX",
-  "version": "2.1.5",
+  "version": "2.3.0",
   "description": "Overleaf-style LaTeX editor: a VSCode-like side file drawer, a real in-app PDF viewer (pdf.js), a Source/PDF toggle, a settable main document, and an embedded agent that writes your .tex for you.",
   "author": "mobius-os",
   "license": "MIT",
@@ -88,13 +88,18 @@
     "imports": [
       "react",
       "react-dom",
-      "pdfjs-dist"
+      "pdfjs-dist",
+      "@codemirror/state",
+      "@codemirror/view",
+      "@codemirror/commands",
+      "@codemirror/language"
     ],
     "esm_deps": []
   },
   "schedule": {
     "job": "build.sh"
-  }
+  },
+  "embeds_agent": true
 }</code></pre>
     </details>
 
