@@ -53,9 +53,12 @@ Apps that follow this format can be installed:
 
 ### Required
 
-- **`id`** — kebab-case identifier, must match the repo name's
-  `app-<id>` portion (e.g. `news` for `app-news`). Becomes the
-  app's slug in Möbius.
+- **`id`** — the app's slug in Möbius. Charset `a-z 0-9 - _`; it
+  must not start with `-` or `_`, and must not be purely numeric
+  (bare integers are reserved for the `/data/apps/<id>` storage
+  path). A single character is allowed. The id is the app's own
+  choice and need not equal the `app-<repo>` name — for example
+  `app-workout` ships id `gym`.
 - **`name`** — human-facing display name (used in drawer + store UI).
 - **`version`** — semver. Patch = code-only (hot rebase), minor =
   backwards-compatible new schema fields, major = breaking changes
@@ -73,6 +76,18 @@ Apps that follow this format can be installed:
 - **`icon`** — relative path to a PNG. Server resizes to 1024×1024,
   center-square-crops if not square. Skip this field and the
   Möbius default letter-icon is used.
+
+### Optional appearance + capability flags
+
+- **`theme_color`** — `#RRGGBB` hex hinting the app's preferred
+  theme/accent colour to the shell. Anything outside `#RRGGBB` is
+  ignored by the installer.
+- **`background_color`** — `#RRGGBB` hex hinting the app's preferred
+  background colour to the shell. Same `#RRGGBB` rule.
+- **`embeds_agent`** — `true` when the app embeds the Möbius chat
+  surface (via the embedded-agent component). The store badges such
+  apps as agent-powered. Apps that set this typically also request
+  `permissions.chat_log_access`.
 
 ### Static assets
 
@@ -109,7 +124,8 @@ them.
 ```json
 "permissions": {
   "cross_app_access": "none" | "read" | "write",
-  "share_with_apps":  "none" | "read" | "write"
+  "share_with_apps":  "none" | "read" | "write",
+  "chat_log_access":  "none" | "summary" | "full"
 }
 ```
 
@@ -118,6 +134,11 @@ them.
 - **`share_with_apps`** — what OTHER apps can do to THIS app's
   storage. Same set. Effective right between apps =
   `min(caller.cross_app_access, target.share_with_apps)`.
+- **`chat_log_access`** — how much of the owner's chat history the
+  app may read. `none` (default), `summary`, or `full`. This is a
+  separate value space from the storage read/write/none ladder.
+  `full` is accepted in the manifest so the column round-trips, but
+  the read API rejects it until a concrete consumer ships.
 
 The store UI shows requested permissions on the install confirm
 screen. Owner tokens bypass both checks.
@@ -190,8 +211,11 @@ When the user installs an app:
 
 1. **Fetch manifest** — installer GETs `mobius.json` from the
    declared URL (raw.githubusercontent.com for the curated case).
-2. **Validate** — manifest is JSON-Schema-checked against
-   `mobius.schema.json` (TBD; ticket 057).
+2. **Validate** — the backend validates the manifest before
+   installing (`install._validate_manifest`): required fields,
+   `id`/path charsets, permission and cron-expression value spaces.
+   This page's `mobius.schema.json` mirrors those rules so you can
+   check a manifest before you publish.
 3. **Pre-install confirm** — Möbius shows the user: name, version,
    icon, requested permissions, optional cron preview ("runs daily
    at 10:00 UTC"), declared `esm_deps`. User taps Install.
@@ -239,4 +263,6 @@ their names collide.
 npx ajv-cli validate -s mobius.schema.json -d mobius.json
 ```
 
-(JSON Schema publication is tracked under ticket 057.)
+The schema mirrors the backend's `install._validate_manifest` rules,
+so a manifest that passes here is the one Möbius accepts at install
+time.

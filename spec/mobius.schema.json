@@ -9,8 +9,8 @@
   "properties": {
     "id": {
       "type": "string",
-      "pattern": "^[a-z][a-z0-9-]*[a-z0-9]$",
-      "description": "Kebab-case identifier. Must match the app-<id> repo name."
+      "pattern": "^(?!-)(?!_)(?![0-9]+$)[a-z0-9][a-z0-9_-]*$",
+      "description": "App slug. Charset a-z 0-9 - _; must not start with - or _, must not be purely numeric (bare integers are reserved for the /data/apps/<id> storage path). A single character is allowed. The id is the app's own choice and need not equal the app-<repo> name (e.g. app-workout ships id 'gym')."
     },
     "name": {
       "type": "string",
@@ -26,8 +26,7 @@
     "description": {
       "type": "string",
       "minLength": 1,
-      "maxLength": 280,
-      "description": "One-line user-facing summary."
+      "description": "One-line user-facing summary. The installer imposes no length cap, and curated apps run a few hundred characters; keep it short for the store UI but there is no hard limit."
     },
     "entry": {
       "type": "string",
@@ -79,6 +78,20 @@
       "type": "boolean",
       "description": "When true, Möbius caches the app shell in the service worker and exposes window.mobius.storage's write outbox so the app keeps working offline. Apps that opt in must tolerate fetch failures gracefully and use window.mobius.storage (with a fallback to plain /api/storage fetch) for writes. See the offline-runtime feature for details."
     },
+    "theme_color": {
+      "type": "string",
+      "pattern": "^#[0-9a-fA-F]{6}$",
+      "description": "Optional #RRGGBB hex. Hints the app's preferred theme/accent colour to the shell. Anything outside #RRGGBB is ignored by the installer."
+    },
+    "background_color": {
+      "type": "string",
+      "pattern": "^#[0-9a-fA-F]{6}$",
+      "description": "Optional #RRGGBB hex. Hints the app's preferred background colour to the shell. Anything outside #RRGGBB is ignored by the installer."
+    },
+    "embeds_agent": {
+      "type": "boolean",
+      "description": "When true, the app embeds the Möbius chat surface (e.g. via the embedded-agent component) and the store badges it as agent-powered. Apps that set this typically also request permissions.chat_log_access."
+    },
     "permissions": {
       "type": "object",
       "additionalProperties": false,
@@ -94,6 +107,12 @@
           "enum": ["none", "read", "write"],
           "default": "none",
           "description": "What OTHER apps can do to THIS app's storage."
+        },
+        "chat_log_access": {
+          "type": "string",
+          "enum": ["none", "summary", "full"],
+          "default": "none",
+          "description": "How much of the owner's chat history this app may read. 'none' (default), 'summary', or 'full'. Distinct from the storage read/write/none ladder. 'full' is accepted in the manifest so the column round-trips, but the read API rejects it until a concrete consumer ships."
         },
         "manage_apps": {
           "type": "boolean",

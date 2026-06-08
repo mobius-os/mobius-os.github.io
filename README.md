@@ -1,6 +1,6 @@
 # mobius-os.github.io
 
-Public site for the [Möbius OS](https://github.com/hamzamerzic/mobius)
+Public site for the [Möbius OS](https://github.com/mobius-os/mobius)
 organization. Built as a static site; deployed via GitHub Pages.
 
 - Landing page: [https://mobius-os.github.io/](https://mobius-os.github.io/)
