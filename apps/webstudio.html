@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mind · Möbius OS</title>
-  <meta name="description" content="A browsable graph of what Möbius has learned over time, the agent’s own memory.">
-  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mobius-os/app-mind/main/icon.png">
+  <title>Web Studio · Möbius OS</title>
+  <meta name="description" content="Build a website with the agent and preview it live in an in-app browser.">
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mobius-os/app-webstudio/main/icon.png">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
   <link rel="stylesheet" href="../style.css">
@@ -30,19 +30,19 @@
 
     <div class="app-hero">
       <div class="app-hero-icon">
-        <img src="https://raw.githubusercontent.com/mobius-os/app-mind/main/icon.png" alt="">
+        <img src="https://raw.githubusercontent.com/mobius-os/app-webstudio/main/icon.png" alt="">
       </div>
       <div class="app-hero-text">
-        <h1>Mind</h1>
-        <p class="muted">A browsable graph of what Möbius has learned over time, the agent’s own memory.</p>
+        <h1>Web Studio</h1>
+        <p class="muted">Build a website with the agent and preview it live in an in-app browser.</p>
       </div>
     </div>
 
     <div class="meta">
-      <span>v1.3.2</span>
+      <span>v0.2.3</span>
       <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
       <span>MIT</span>
-      <span><a href="https://github.com/mobius-os/app-mind">Source ↗</a></span>
+      <span><a href="https://github.com/mobius-os/app-webstudio">Source ↗</a></span>
       <span>★ 0</span>
       <span>updated 2026-06-09</span>
     </div>
@@ -51,46 +51,56 @@
     <p>
       Open the App Store mini-app in your Möbius shell and paste:
     </p>
-    <pre><code>https://raw.githubusercontent.com/mobius-os/app-mind/main/mobius.json</code></pre>
+    <pre><code>https://raw.githubusercontent.com/mobius-os/app-webstudio/main/mobius.json</code></pre>
     <p>
-      Möbius shows the requested permissions, then installs.
+      Möbius shows the requested permissions and the cron schedule, then installs.
     </p>
-    <h2>Runtime libraries</h2>
-    <p>This app loads the following ES modules from <a href="https://esm.sh">esm.sh</a> on first open:</p>
-    <ul>
-      <li><code>react-force-graph-2d</code></li>
-      <li><code>marked</code></li>
-      <li><code>dompurify</code></li>
-    </ul>
 
     <h2>Manifest</h2>
     <details>
       <summary>Show <code>mobius.json</code></summary>
       <pre><code>{
-  "id": "mind",
-  "name": "Mind",
-  "version": "1.3.2",
-  "description": "A browsable graph of what Möbius has learned over time, the agent’s own memory.",
+  "id": "webstudio",
+  "name": "Web Studio",
+  "version": "0.2.3",
+  "description": "Build a website with the agent and preview it live in an in-app browser.",
   "author": "mobius-os",
   "license": "MIT",
-  "homepage": "https://github.com/mobius-os/app-mind",
+  "homepage": "https://github.com/mobius-os/app-webstudio",
   "entry": "index.jsx",
   "icon": "icon.png",
   "offline_capable": false,
+  "embeds_agent": true,
   "permissions": {
     "cross_app_access": "none",
     "share_with_apps": "none"
   },
+  "storage_seeds": {
+    "files/index.html": "seeds/files/index.html",
+    "files/style.css": "seeds/files/style.css",
+    "files/app.js": "seeds/files/app.js",
+    "files-index.json": [
+      "files/app.js",
+      "files/index.html",
+      "files/style.css"
+    ],
+    "main.json": {
+      "path": "files/index.html"
+    }
+  },
   "runtime": {
     "imports": [
       "react",
-      "react-dom"
+      "react-dom",
+      "@codemirror/state",
+      "@codemirror/view",
+      "@codemirror/commands",
+      "@codemirror/language"
     ],
-    "esm_deps": [
-      "react-force-graph-2d",
-      "marked",
-      "dompurify"
-    ]
+    "esm_deps": []
+  },
+  "schedule": {
+    "job": "build.sh"
   }
 }</code></pre>
     </details>
@@ -98,7 +108,7 @@
     <h2>Feedback</h2>
     <p>
       Something feel off, or want to suggest an iteration? Open an issue at
-      <a href="https://github.com/mobius-os/app-mind/issues">app-mind/issues</a> — the
+      <a href="https://github.com/mobius-os/app-webstudio/issues">app-webstudio/issues</a> — the
       app's maintainer reads them.
     </p>
   </main>

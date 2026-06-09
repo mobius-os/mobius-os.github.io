@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Mind · Möbius OS</title>
-  <meta name="description" content="A browsable graph of what Möbius has learned over time, the agent’s own memory.">
-  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mobius-os/app-mind/main/icon.png">
+  <title>Editor · Möbius OS</title>
+  <meta name="description" content="Browse and edit any file on your Möbius, with an agent that can edit for you.">
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mobius-os/app-editor/main/icon.png">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
   <link rel="stylesheet" href="../style.css">
@@ -30,19 +30,19 @@
 
     <div class="app-hero">
       <div class="app-hero-icon">
-        <img src="https://raw.githubusercontent.com/mobius-os/app-mind/main/icon.png" alt="">
+        <img src="https://raw.githubusercontent.com/mobius-os/app-editor/main/icon.png" alt="">
       </div>
       <div class="app-hero-text">
-        <h1>Mind</h1>
-        <p class="muted">A browsable graph of what Möbius has learned over time, the agent’s own memory.</p>
+        <h1>Editor</h1>
+        <p class="muted">Browse and edit any file on your Möbius, with an agent that can edit for you.</p>
       </div>
     </div>
 
     <div class="meta">
-      <span>v1.3.2</span>
+      <span>v0.2.6</span>
       <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
       <span>MIT</span>
-      <span><a href="https://github.com/mobius-os/app-mind">Source ↗</a></span>
+      <span><a href="https://github.com/mobius-os/app-editor">Source ↗</a></span>
       <span>★ 0</span>
       <span>updated 2026-06-09</span>
     </div>
@@ -51,46 +51,46 @@
     <p>
       Open the App Store mini-app in your Möbius shell and paste:
     </p>
-    <pre><code>https://raw.githubusercontent.com/mobius-os/app-mind/main/mobius.json</code></pre>
+    <pre><code>https://raw.githubusercontent.com/mobius-os/app-editor/main/mobius.json</code></pre>
     <p>
       Möbius shows the requested permissions, then installs.
     </p>
-    <h2>Runtime libraries</h2>
-    <p>This app loads the following ES modules from <a href="https://esm.sh">esm.sh</a> on first open:</p>
-    <ul>
-      <li><code>react-force-graph-2d</code></li>
-      <li><code>marked</code></li>
-      <li><code>dompurify</code></li>
-    </ul>
 
     <h2>Manifest</h2>
     <details>
       <summary>Show <code>mobius.json</code></summary>
       <pre><code>{
-  "id": "mind",
-  "name": "Mind",
-  "version": "1.3.2",
-  "description": "A browsable graph of what Möbius has learned over time, the agent’s own memory.",
+  "id": "editor",
+  "name": "Editor",
+  "version": "0.2.6",
+  "description": "Browse and edit any file on your Möbius, with an agent that can edit for you.",
   "author": "mobius-os",
   "license": "MIT",
-  "homepage": "https://github.com/mobius-os/app-mind",
+  "homepage": "https://github.com/mobius-os/app-editor",
   "entry": "index.jsx",
   "icon": "icon.png",
   "offline_capable": false,
+  "embeds_agent": true,
   "permissions": {
     "cross_app_access": "none",
     "share_with_apps": "none"
   },
+  "storage_seeds": {
+    "chat_id.json": null
+  },
   "runtime": {
     "imports": [
       "react",
-      "react-dom"
+      "react-dom",
+      "@codemirror/state",
+      "@codemirror/view",
+      "@codemirror/commands",
+      "@codemirror/language",
+      "@codemirror/lang-markdown",
+      "@lezer/highlight",
+      "katex"
     ],
-    "esm_deps": [
-      "react-force-graph-2d",
-      "marked",
-      "dompurify"
-    ]
+    "esm_deps": []
   }
 }</code></pre>
     </details>
@@ -98,7 +98,7 @@
     <h2>Feedback</h2>
     <p>
       Something feel off, or want to suggest an iteration? Open an issue at
-      <a href="https://github.com/mobius-os/app-mind/issues">app-mind/issues</a> — the
+      <a href="https://github.com/mobius-os/app-editor/issues">app-editor/issues</a> — the
       app's maintainer reads them.
     </p>
   </main>
