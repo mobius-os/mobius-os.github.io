@@ -3,19 +3,19 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Möbius OS — Self-hosted AI agent that builds apps</title>
-  <meta name="description" content="Möbius OS is a self-hosted, open-source AI operating system: one chat surface backed by a coding agent (Claude Code or Codex) that builds, installs, and rebuilds mini-apps on a server you own.">
+  <title>Möbius OS: a personal AI agent that builds your apps</title>
+  <meta name="description" content="Möbius OS is a self-hosted, open-source personal AI agent. It learns what matters to you and builds the apps you ask for, in your browser or on your phone, on your own ChatGPT or Claude plan.">
   <link rel="canonical" href="https://mobius-os.github.io/">
   <link rel="icon" type="image/png" href="mobius-brand.png">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Möbius OS">
   <meta property="og:url" content="https://mobius-os.github.io/">
-  <meta property="og:title" content="Möbius OS — Self-hosted AI agent that builds apps">
-  <meta property="og:description" content="A self-hosted, open-source AI operating system: one chat surface, a coding agent that builds and rebuilds mini-apps on a server you own.">
+  <meta property="og:title" content="Möbius OS: a personal AI agent that builds your apps">
+  <meta property="og:description" content="A self-hosted, open-source personal AI agent that builds the apps you ask for, in your browser or on your phone.">
   <meta property="og:image" content="https://mobius-os.github.io/mobius-brand.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Möbius OS — Self-hosted AI agent that builds apps">
-  <meta name="twitter:description" content="A self-hosted, open-source AI operating system: one chat surface, a coding agent that builds and rebuilds mini-apps on a server you own.">
+  <meta name="twitter:title" content="Möbius OS: a personal AI agent that builds your apps">
+  <meta name="twitter:description" content="A self-hosted, open-source personal AI agent that builds the apps you ask for, in your browser or on your phone.">
   <meta name="twitter:image" content="https://mobius-os.github.io/mobius-brand.png">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -27,7 +27,7 @@
     "name": "Möbius OS",
     "applicationCategory": "DeveloperApplication",
     "operatingSystem": "Docker, Linux, PWA (Android/iOS)",
-    "description": "A self-hosted, open-source AI operating system: a chat surface backed by a coding agent (Claude Code or Codex) that builds and rebuilds mini-apps on a server you own.",
+    "description": "A self-hosted, open-source personal AI agent that learns what matters to you and builds the apps you ask for, on your own ChatGPT or Claude plan.",
     "url": "https://mobius-os.github.io/",
     "license": "https://opensource.org/licenses/MIT",
     "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
@@ -53,11 +53,13 @@
   <main class="container">
     <section class="hero">
       <img src="mobius-brand.png" alt="" class="hero-mark" width="96" height="96">
-      <h1>The agent is the kernel.</h1>
+      <h1>A personal AI agent that adapts to you and builds your apps.</h1>
       <p class="tagline">
-        <strong>Möbius OS</strong> is a self-hosted PWA where the agent is the kernel.
-        Mini-apps you can install, customize, and rebuild — all driven by a single
-        chat surface with a state-of-the-art coding agent.
+        <strong>Möbius</strong> is a personal AI agent you run yourself. It learns what
+        matters to you and gets more helpful the more you use it, and it builds and
+        hosts the apps you ask for. Use it in your browser or install it on your phone
+        (PWA). It runs on your existing ChatGPT or Claude plan, and your data stays on
+        your own server.
       </p>
       <p>
         <a class="btn" href="https://github.com/mobius-os/mobius">Install Möbius</a>
@@ -66,13 +68,24 @@
     </section>
 
     <section>
-      <h2>What's an app?</h2>
+      <h2>You ask, it builds.</h2>
       <p>
-        A Möbius app is a git repo with a <code>mobius.json</code> manifest and a
-        single-file JSX entry point. The runtime handles install, storage, cron,
-        and updates. Apps run inside the shell with React + a curated importmap;
-        the agent edits them in place when you ask. See the
-        <a href="spec/manifest.md">manifest specification</a> for the full contract.
+        You do not need to write any code. Describe what you want and Möbius builds the
+        app for you, runs it right next to the chat, and keeps it there. A budget
+        tracker, a workout log, a trip planner, whatever fits your day. You can ask it
+        to change Möbius itself too, its look or how it works, and it updates on the
+        spot. It even builds the thing it runs in, then uses that to build the next one.
+        That loop is the <a href="https://en.wikipedia.org/wiki/M%C3%B6bius_strip">Möbius strip</a> it is named after.
+      </p>
+    </section>
+
+    <section>
+      <h2>It learns and improves.</h2>
+      <p>
+        Möbius remembers what matters to you and gets more useful the more you use it.
+        Every night, while you sleep, it reviews the day, tidies what it has learned,
+        and looks for things worth building next. Over time it shapes itself around how
+        you actually live and work.
       </p>
     </section>
 
@@ -160,12 +173,13 @@
     <section>
       <h2>Build your own</h2>
       <p>
-        Any public repo with a valid <code>mobius.json</code> is installable via
-        paste-a-URL — apps don't have to live in this catalog to be shared
-        with other Möbius owners. The manifest URL <em>is</em> the install
-        link. The <a href="docs/contributing.html">build spec</a> covers the
-        manifest schema, the storage API, the cron contract, and the theme
-        tokens.
+        An app is a public git repo with a <code>mobius.json</code> manifest and a
+        single JSX file. The runtime handles install, storage, scheduled jobs, and
+        updates, so the app is mostly its own UI. Any repo with a valid manifest
+        installs by pasting its URL, so an app doesn't have to live in this catalog to
+        be shared. The manifest URL <em>is</em> the install link. The
+        <a href="docs/contributing.html">build spec</a> covers the manifest schema, the
+        storage API, the cron contract, and the theme tokens.
       </p>
     </section>
   </main>
