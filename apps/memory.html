@@ -37,9 +37,12 @@
         <p class="muted">A browsable graph of what Möbius has learned over time, the agent’s own memory.</p>
       </div>
     </div>
+    <div class="badges badges--lg">
+      <span class="badge">Works offline</span>
+    </div>
 
     <div class="meta">
-      <span>v1.5.0</span>
+      <span>v1.6.0</span>
       <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
       <span>MIT</span>
       <span><a href="https://github.com/mobius-os/app-memory">Source ↗</a></span>
@@ -70,16 +73,16 @@
       <pre><code>{
   "id": "memory",
   "name": "Memory",
-  "version": "1.5.0",
+  "version": "1.6.0",
   "description": "A browsable graph of what Möbius has learned over time, the agent’s own memory.",
   "author": "mobius-os",
   "license": "MIT",
   "homepage": "https://github.com/mobius-os/app-memory",
   "entry": "index.jsx",
   "icon": "icon.png",
-  "offline_capable": false,
+  "offline_capable": true,
   "offline": {
-    "reads": false,
+    "reads": true,
     "writes": "none",
     "execution": "none"
   },
