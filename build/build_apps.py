@@ -21,7 +21,7 @@ import httpx
 from jinja2 import Environment, FileSystemLoader, select_autoescape
 
 ORG = "mobius-os"
-CURATED_REPOS = ["app-news", "app-atlas", "app-workout", "app-cuberun", "app-latex", "app-dreaming", "app-mind", "app-notes", "app-editor", "app-webstudio"]  # add new curated app repos here
+CURATED_REPOS = ["app-news", "app-atlas", "app-workout", "app-cuberun", "app-latex", "app-reflection", "app-memory", "app-notes", "app-editor", "app-webstudio"]  # add new curated app repos here
 GRID_SLOTS = 4  # total cards shown on apps/index.html (rest are "Coming soon")
 PAGE_SLUG_OVERRIDES = {
     # The manifest id is still `gym` for install/storage compatibility,
@@ -133,9 +133,9 @@ OFFLINE_BADGE_OVERRIDES = {
     # headline interaction (chatting with the agent to edit .tex)
     # requires network.
     "latex": "Edits offline",
-    # dreaming: report viewer reads offline; the nightly cron that
+    # reflection: report viewer reads offline; the nightly cron that
     # generates new dreams is server-side.
-    "dreaming": "Reads offline",
+    "reflection": "Reads offline",
     # atlas / gym have no server-side dependency for their
     # headline interaction; "Works offline" is accurate. Leave them
     # to fall back to the default.
