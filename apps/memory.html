@@ -42,7 +42,7 @@
     </div>
 
     <div class="meta">
-      <span>v1.6.0</span>
+      <span>v1.6.1</span>
       <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
       <span>MIT</span>
       <span><a href="https://github.com/mobius-os/app-memory">Source ↗</a></span>
@@ -63,8 +63,6 @@
     <ul>
       <li><code>d3</code></li>
       <li><code>pixi.js</code></li>
-      <li><code>marked</code></li>
-      <li><code>dompurify</code></li>
     </ul>
 
     <h2>Manifest</h2>
@@ -73,7 +71,7 @@
       <pre><code>{
   "id": "memory",
   "name": "Memory",
-  "version": "1.6.0",
+  "version": "1.6.1",
   "description": "A browsable graph of what Möbius has learned over time, the agent’s own memory.",
   "author": "mobius-os",
   "license": "MIT",
@@ -93,13 +91,13 @@
   "runtime": {
     "imports": [
       "react",
-      "react-dom"
+      "react-dom",
+      "marked",
+      "dompurify"
     ],
     "esm_deps": [
       "d3",
-      "pixi.js",
-      "marked",
-      "dompurify"
+      "pixi.js"
     ]
   }
 }</code></pre>
