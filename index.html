@@ -3,19 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Möbius OS: a personal AI agent that builds your apps</title>
-  <meta name="description" content="Möbius OS is a self-hosted, open-source personal AI agent. It learns what matters to you and builds the apps you ask for, in your browser or on your phone, on your own ChatGPT or Claude plan.">
-  <link rel="canonical" href="https://mobius-os.github.io/">
+  <title>Möbius OS: community AI that improves with you</title>
+  <meta name="description" content="Möbius OS is an open-source, self-hosted human-agent improvement system with memory, reflection, an app store, and agents that can build and publish changes through GitHub.">
+  <meta name="keywords" content="Möbius OS, personal AI, open source AI, self-hosted AI, AI agents, app store, memory, reflection, GitHub agents">
+  <link rel="canonical" href="https://mobius.you/">
   <link rel="icon" type="image/png" href="mobius-brand.png">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Möbius OS">
-  <meta property="og:url" content="https://mobius-os.github.io/">
-  <meta property="og:title" content="Möbius OS: a personal AI agent that builds your apps">
-  <meta property="og:description" content="A self-hosted, open-source personal AI agent that builds the apps you ask for, in your browser or on your phone.">
+  <meta property="og:url" content="https://mobius.you/">
+  <meta property="og:title" content="Möbius OS: community AI that improves with you">
+  <meta property="og:description" content="Open-source personal AI with memory, reflection, a community app store, and agents that can improve the system itself.">
   <meta property="og:image" content="https://mobius-os.github.io/mobius-brand.png">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Möbius OS: a personal AI agent that builds your apps">
-  <meta name="twitter:description" content="A self-hosted, open-source personal AI agent that builds the apps you ask for, in your browser or on your phone.">
+  <meta name="twitter:title" content="Möbius OS: community AI that improves with you">
+  <meta name="twitter:description" content="Open-source personal AI with memory, reflection, a community app store, and agents that can improve the system itself.">
   <meta name="twitter:image" content="https://mobius-os.github.io/mobius-brand.png">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -25,13 +26,20 @@
     "@context": "https://schema.org",
     "@type": "SoftwareApplication",
     "name": "Möbius OS",
+    "alternateName": "Mobius OS",
     "applicationCategory": "DeveloperApplication",
-    "operatingSystem": "Docker, Linux, PWA (Android/iOS)",
-    "description": "A self-hosted, open-source personal AI agent that learns what matters to you and builds the apps you ask for, on your own ChatGPT or Claude plan.",
-    "url": "https://mobius-os.github.io/",
+    "operatingSystem": "Docker, Linux, PWA",
+    "description": "An open-source, self-hosted human-agent improvement system with memory, reflection, an app store, and agents that can build and publish changes through GitHub.",
+    "url": "https://mobius.you/",
+    "image": "https://mobius-os.github.io/mobius-brand.png",
+    "codeRepository": "https://github.com/mobius-os/mobius",
     "license": "https://opensource.org/licenses/MIT",
-    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
-    "isAccessibleForFree": true
+    "isAccessibleForFree": true,
+    "sameAs": [
+      "https://github.com/mobius-os",
+      "https://mobius-os.github.io/"
+    ],
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
   }
   </script>
 </head>
@@ -43,6 +51,7 @@
         <span>Möbius OS</span>
       </a>
       <nav>
+        <a href="https://mobius.you/">Launch</a>
         <a href="apps/">Apps</a>
         <a href="spec/">Spec</a>
         <a href="docs/contributing.html">Build</a>
@@ -50,51 +59,92 @@
     </div>
   </header>
 
-  <main class="container">
-    <section class="hero">
-      <img src="mobius-brand.png" alt="" class="hero-mark" width="96" height="96">
-      <h1>A personal AI agent that adapts to you and builds your apps.</h1>
-      <p class="tagline">
-        <strong>Möbius</strong> is a personal AI agent you run yourself. It learns what
-        matters to you and gets more helpful the more you use it, and it builds and
-        hosts the apps you ask for. Use it in your browser or install it on your phone
-        (PWA). It runs on your existing ChatGPT or Claude plan, and your data stays on
-        your own server.
-      </p>
+  <main>
+    <section class="hero hero--brand">
+      <div class="hero-copy">
+        <p class="intro">Open-source personal AI</p>
+        <h1>Community intelligence you can run, inspect, and improve.</h1>
+        <p class="tagline">
+          Möbius is a self-hosted human-agent improvement system. It remembers what matters,
+          reflects across your work, builds apps with you, and can publish changes back to
+          GitHub so the platform and its community apps keep getting better.
+        </p>
+        <div class="hero-actions">
+          <a class="btn" href="https://mobius.you/">Launch Möbius</a>
+          <a class="btn secondary" href="https://github.com/mobius-os/mobius">View source</a>
+        </div>
+      </div>
+      <div class="hero-orbit" aria-hidden="true">
+        <img src="mobius-brand.png" alt="" class="hero-mark" width="260" height="260">
+        <span class="orbit-pill orbit-pill--one">memory</span>
+        <span class="orbit-pill orbit-pill--two">apps</span>
+        <span class="orbit-pill orbit-pill--three">github</span>
+      </div>
+    </section>
+
+    <section class="statement">
       <p>
-        <a class="btn" href="https://github.com/mobius-os/mobius">Install Möbius</a>
-        <a class="btn secondary" href="spec/">Read the spec</a>
+        The internet made software communal. AI can make it recursive: people improve agents,
+        agents improve tools, and the tools make the next improvement easier. Möbius keeps
+        that loop open, private, and hackable.
       </p>
     </section>
 
-    <section>
-      <h2>You ask, it builds.</h2>
-      <p>
-        You do not need to write any code. Describe what you want and Möbius builds the
-        app for you, runs it right next to the chat, and keeps it there. A budget
-        tracker, a workout log, a trip planner, whatever fits your day. You can ask it
-        to change Möbius itself too, its look or how it works, and it updates on the
-        spot. It even builds the thing it runs in, then uses that to build the next one.
-        That loop is the <a href="https://en.wikipedia.org/wiki/M%C3%B6bius_strip">Möbius strip</a> it is named after.
-      </p>
+    <section class="feature-band">
+      <div>
+        <h2>Bring your own agents.</h2>
+        <p>
+          Use your existing ChatGPT or Claude plan. Möbius gives the agents a place to work:
+          memory, files, apps, schedules, and a browser-native interface that can also feel
+          like a phone app.
+        </p>
+      </div>
+      <div>
+        <h2>Own the harness.</h2>
+        <p>
+          The platform is open source. You can change the chat, the runtime, the app store,
+          or any app inside it. Agents can help implement those changes and push them through
+          GitHub.
+        </p>
+      </div>
+      <div>
+        <h2>Spend fewer tokens.</h2>
+        <p>
+          Reflection and advanced memory help Möbius reuse what it has already learned instead
+          of rediscovering your context every time. The system gets more useful as it gets to
+          know your work.
+        </p>
+      </div>
     </section>
 
-    <section>
-      <h2>It learns and improves.</h2>
-      <p>
-        Möbius remembers what matters to you and gets more useful the more you use it.
-        Every night, while you sleep, it reviews the day, tidies what it has learned,
-        and looks for things worth building next. Over time it shapes itself around how
-        you actually live and work.
-      </p>
+    <section class="loop-section">
+      <div class="loop-copy">
+        <h2>The recursive loop</h2>
+        <p>
+          Ask for a workflow, get an app. Use it, reflect on it, and let agents improve the
+          app or the harness itself. When the change is useful, publish it. Möbius is designed
+          for private self-hosting and for community evolution at the same time.
+        </p>
+      </div>
+      <ol class="loop-list">
+        <li><strong>Talk</strong><span>Describe what you want, from a note workflow to a new app.</span></li>
+        <li><strong>Build</strong><span>Agents edit code, wire storage, and run the experience in Möbius.</span></li>
+        <li><strong>Remember</strong><span>Reflection turns usage into durable context and better defaults.</span></li>
+        <li><strong>Share</strong><span>Push changes to GitHub or install apps from the community catalog.</span></li>
+      </ol>
     </section>
 
-    <section>
-      <h2>Curated apps</h2>
-      <p class="muted">
-        A few hand-picked apps to start from. Install any of them with one tap
-        from the App Store mini-app inside Möbius.
-      </p>
+    <section class="catalog-section">
+      <div class="section-head">
+        <div>
+          <h2>Apps are the operating surface.</h2>
+          <p class="muted">
+            A curated starting set is available today. The App Store inside Möbius can install
+            community repos directly from their manifests.
+          </p>
+        </div>
+        <a href="apps/">Browse catalog</a>
+      </div>
       <div class="grid">
         <a class="card" href="apps/news.html">
           <div class="card-head">
@@ -103,33 +153,12 @@
           </div>
           <p>AI-curated morning news across the categories and sources you choose.</p>
         </a>
-        <a class="card" href="apps/atlas.html">
-          <div class="card-head">
-            <div class="icon"><img src="https://raw.githubusercontent.com/mobius-os/app-atlas/main/icon.png" alt="" loading="lazy"></div>
-            <div class="card-title"><h3>Atlas</h3><span class="card-version">travel log</span></div>
-          </div>
-          <p>Tap a draggable 3D globe to mark every country you've visited.</p>
-        </a>
-        <a class="card" href="apps/workout.html">
-          <div class="card-head">
-            <div class="icon"><img src="https://raw.githubusercontent.com/mobius-os/app-workout/main/icon.png" alt="" loading="lazy"></div>
-            <div class="card-title"><h3>Workout</h3><span class="card-version">activity log</span></div>
-          </div>
-          <p>Type what you did in plain language; it parses, categorizes, and charts your PRs and trends.</p>
-        </a>
-        <a class="card" href="apps/latex.html">
-          <div class="card-head">
-            <div class="icon"><img src="https://raw.githubusercontent.com/mobius-os/app-latex/main/icon.png" alt="" loading="lazy"></div>
-            <div class="card-title"><h3>LaTeX</h3><span class="card-version">editor</span></div>
-          </div>
-          <p>Describe documents in prose; an agent writes the .tex while you preview.</p>
-        </a>
         <a class="card" href="apps/reflection.html">
           <div class="card-head">
             <div class="icon"><img src="https://raw.githubusercontent.com/mobius-os/app-reflection/main/icon.png" alt="" loading="lazy"></div>
             <div class="card-title"><h3>Reflection</h3><span class="card-version">nightly</span></div>
           </div>
-          <p>Every night an agent reviews your day and writes a morning briefing.</p>
+          <p>Nightly review that turns your day into a briefing and durable memory.</p>
         </a>
         <a class="card" href="apps/memory.html">
           <div class="card-head">
@@ -138,56 +167,36 @@
           </div>
           <p>A browsable graph of what Möbius has learned, grown over time.</p>
         </a>
-        <a class="card" href="apps/notes.html">
-          <div class="card-head">
-            <div class="icon"><img src="https://raw.githubusercontent.com/mobius-os/app-notes/main/icon.png" alt="" loading="lazy"></div>
-            <div class="card-title"><h3>Notes</h3><span class="card-version">markdown</span></div>
-          </div>
-          <p>Markdown notes that render as you type, with pin, color, search, and inline images.</p>
-        </a>
-        <a class="card" href="apps/cuberun.html">
-          <div class="card-head">
-            <div class="icon"><img src="https://raw.githubusercontent.com/mobius-os/app-cuberun/main/icon.png" alt="" loading="lazy"></div>
-            <div class="card-title"><h3>CubeRun</h3><span class="card-version">arcade</span></div>
-          </div>
-          <p>A fast neon 3D runner. Dodge obstacles and chase your high score.</p>
-        </a>
-        <a class="card" href="apps/editor.html">
-          <div class="card-head">
-            <div class="icon"><img src="https://raw.githubusercontent.com/mobius-os/app-editor/main/icon.png" alt="" loading="lazy"></div>
-            <div class="card-title"><h3>Editor</h3><span class="card-version">files</span></div>
-          </div>
-          <p>Browse and edit any file on your Möbius, with an agent that can edit for you.</p>
-        </a>
         <a class="card" href="apps/webstudio.html">
           <div class="card-head">
             <div class="icon"><img src="https://raw.githubusercontent.com/mobius-os/app-webstudio/main/icon.png" alt="" loading="lazy"></div>
             <div class="card-title"><h3>Web Studio</h3><span class="card-version">site builder</span></div>
           </div>
-          <p>Build a website with the agent and preview it live in an in-app browser.</p>
+          <p>Build a website with an agent and preview it live in an in-app browser.</p>
         </a>
       </div>
-      <p><a href="apps/">Browse the full catalog →</a></p>
     </section>
 
-    <section>
-      <h2>Build your own</h2>
-      <p>
-        An app is a public git repo with a <code>mobius.json</code> manifest and a
-        single JSX file. The runtime handles install, storage, scheduled jobs, and
-        updates, so the app is mostly its own UI. Any repo with a valid manifest
-        installs by pasting its URL, so an app doesn't have to live in this catalog to
-        be shared. The manifest URL <em>is</em> the install link. The
-        <a href="docs/contributing.html">build spec</a> covers the manifest schema, the
-        storage API, the cron contract, and the theme tokens.
-      </p>
+    <section class="developer-section">
+      <div>
+        <h2>Everything is part of the system.</h2>
+        <p>
+          Apps are public repos with a <code>mobius.json</code> manifest. The runtime handles
+          install, storage, scheduled jobs, theme tokens, and app navigation, so an agent or a
+          human can focus on the actual interface.
+        </p>
+      </div>
+      <div class="developer-actions">
+        <a class="btn secondary" href="docs/contributing.html">Read the app contract</a>
+        <a class="btn secondary" href="spec/">Manifest spec</a>
+      </div>
     </section>
   </main>
 
   <footer class="site">
     <div class="inner">
       <span>Möbius OS · MIT</span>
-      <span><a href="https://github.com/mobius-os">github.com/mobius-os</a></span>
+      <span><a href="https://mobius.you/">mobius.you</a> · <a href="https://github.com/mobius-os">github.com/mobius-os</a></span>
     </div>
   </footer>
 </body>

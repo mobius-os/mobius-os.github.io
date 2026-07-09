@@ -1,9 +1,12 @@
 # mobius-os.github.io
 
-Public site for the [Möbius OS](https://github.com/mobius-os/mobius)
-organization. Built as a static site; deployed via GitHub Pages.
+Public docs, app catalog, and brand page for the
+[Möbius OS](https://github.com/mobius-os/mobius) organization. The canonical
+launch page is [https://mobius.you/](https://mobius.you/); this GitHub Pages
+site keeps the open-source catalog, specs, and contribution docs discoverable.
 
 - Landing page: [https://mobius-os.github.io/](https://mobius-os.github.io/)
+- Launch: [https://mobius.you/](https://mobius.you/)
 - Manifest spec: [https://mobius-os.github.io/spec/](https://mobius-os.github.io/spec/)
 - Curated apps: [https://mobius-os.github.io/apps/](https://mobius-os.github.io/apps/)
 
