@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Notes · Möbius OS</title>
-  <meta name="description" content="Markdown notes that render as you type, with checklists, pins, colors, search, and images.">
-  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mobius-os/app-notes/main/icon.png">
+  <title>Contribute · Möbius OS</title>
+  <meta name="description" content="See what your agent has proposed upstream — pull requests, issues, and comments across the Möbius ecosystem, from prepared to merged.">
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mobius-os/app-contribute/main/icon.png">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
   <link rel="stylesheet" href="../style.css">
@@ -30,22 +30,23 @@
 
     <div class="app-hero">
       <div class="app-hero-icon">
-        <img src="https://raw.githubusercontent.com/mobius-os/app-notes/main/icon.png" alt="">
+        <img src="https://raw.githubusercontent.com/mobius-os/app-contribute/main/icon.png" alt="">
       </div>
       <div class="app-hero-text">
-        <h1>Notes</h1>
-        <p class="muted">Markdown notes that render as you type, with checklists, pins, colors, search, and images.</p>
+        <h1>Contribute</h1>
+        <p class="muted">See what your agent has proposed upstream — pull requests, issues, and comments across the Möbius ecosystem, from prepared to merged.</p>
       </div>
     </div>
     <div class="badges badges--lg">
       <span class="badge">Works offline</span>
+      <span class="badge">Runs daily</span>
     </div>
 
     <div class="meta">
-      <span>v1.2.25</span>
+      <span>v0.2.3</span>
       <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
       <span>MIT</span>
-      <span><a href="https://github.com/mobius-os/app-notes">Source ↗</a></span>
+      <span><a href="https://github.com/mobius-os/app-contribute">Source ↗</a></span>
       <span>★ 0</span>
       <span>updated 2026-07-09</span>
     </div>
@@ -54,79 +55,67 @@
     <p>
       Open the App Store mini-app in your Möbius shell and paste:
     </p>
-    <pre><code>https://raw.githubusercontent.com/mobius-os/app-notes/main/mobius.json</code></pre>
+    <pre><code>https://raw.githubusercontent.com/mobius-os/app-contribute/main/mobius.json</code></pre>
     <p>
       Möbius shows the requested permissions and the cron schedule, then installs.
     </p>
-    <h2>Runtime libraries</h2>
-    <p>This app loads the following ES modules from <a href="https://esm.sh">esm.sh</a> on first open:</p>
-    <ul>
-      <li><code>marked</code></li>
-      <li><code>dompurify</code></li>
-    </ul>
 
     <h2>Manifest</h2>
     <details>
       <summary>Show <code>mobius.json</code></summary>
       <pre><code>{
-  "id": "notes",
-  "name": "Notes",
-  "version": "1.2.25",
-  "description": "Markdown notes that render as you type, with checklists, pins, colors, search, and images.",
+  "id": "contribute",
+  "name": "Contribute",
+  "version": "0.2.3",
+  "description": "See what your agent has proposed upstream — pull requests, issues, and comments across the Möbius ecosystem, from prepared to merged.",
   "author": "mobius-os",
   "license": "MIT",
-  "homepage": "https://github.com/mobius-os/app-notes",
-  "entry": "index.jsx",
+  "homepage": "https://github.com/mobius-os/app-contribute",
   "icon": "icon.png",
+  "entry": "index.jsx",
   "offline_capable": true,
+  "offline": {
+    "reads": true,
+    "writes": "none",
+    "execution": "none"
+  },
   "permissions": {
     "cross_app_access": "none",
-    "share_with_apps": "none"
+    "share_with_apps": "none",
+    "github_access": true
   },
   "runtime": {
     "imports": [
       "react",
-      "react-dom",
-      "codemirror",
-      "@codemirror/state",
-      "@codemirror/view",
-      "@codemirror/commands",
-      "@codemirror/lang-markdown",
-      "@codemirror/language",
-      "@lezer/highlight",
-      "katex"
+      "react-dom"
     ],
-    "esm_deps": [
-      "marked",
-      "dompurify"
-    ]
-  },
-  "storage_seeds": {
-    "notes-meta.json": {
-      "app": "notes",
-      "data_type": "notes",
-      "format": "json",
-      "note_shape": "{ meta: {frontmatter fields}, body: markdown-string }",
-      "dir": "notes/",
-      "index": "index.json",
-      "attachments": "attachments/"
-    }
-  },
-  "offline": {
-    "reads": true,
-    "writes": "queued",
-    "execution": "full"
+    "esm_deps": []
   },
   "schedule": {
+    "default": "0 7 * * *",
     "job": "job.sh"
-  }
+  },
+  "skills": [
+    "contributing.md"
+  ],
+  "source_files": [
+    "theme.js",
+    "domain.js",
+    "api.js",
+    "storage.js",
+    "contributing.md",
+    "ui/StatTiles.jsx",
+    "ui/ConnectionCard.jsx",
+    "ui/ContributionCard.jsx",
+    "ui/Feed.jsx"
+  ]
 }</code></pre>
     </details>
 
     <h2>Feedback</h2>
     <p>
       Something feel off, or want to suggest an iteration? Open an issue at
-      <a href="https://github.com/mobius-os/app-notes/issues">app-notes/issues</a> — the
+      <a href="https://github.com/mobius-os/app-contribute/issues">app-contribute/issues</a> — the
       app's maintainer reads them.
     </p>
   </main>

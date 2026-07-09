@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Memory · Möbius OS</title>
-  <meta name="description" content="A browsable graph of what Möbius has learned over time, the agent’s own memory.">
-  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mobius-os/app-memory/main/icon.png">
+  <title>Tasks · Möbius OS</title>
+  <meta name="description" content="See your agent's scheduled check-ins at a glance — status, due times, and what needs attention. Reschedule or cancel through the agent.">
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mobius-os/app-tasks/main/icon.png">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
   <link rel="stylesheet" href="../style.css">
@@ -30,22 +30,19 @@
 
     <div class="app-hero">
       <div class="app-hero-icon">
-        <img src="https://raw.githubusercontent.com/mobius-os/app-memory/main/icon.png" alt="">
+        <img src="https://raw.githubusercontent.com/mobius-os/app-tasks/main/icon.png" alt="">
       </div>
       <div class="app-hero-text">
-        <h1>Memory</h1>
-        <p class="muted">A browsable graph of what Möbius has learned over time, the agent’s own memory.</p>
+        <h1>Tasks</h1>
+        <p class="muted">See your agent's scheduled check-ins at a glance — status, due times, and what needs attention. Reschedule or cancel through the agent.</p>
       </div>
-    </div>
-    <div class="badges badges--lg">
-      <span class="badge">Works offline</span>
     </div>
 
     <div class="meta">
-      <span>v1.6.3</span>
+      <span>v1.0.7</span>
       <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
       <span>MIT</span>
-      <span><a href="https://github.com/mobius-os/app-memory">Source ↗</a></span>
+      <span><a href="https://github.com/mobius-os/app-tasks">Source ↗</a></span>
       <span>★ 0</span>
       <span>updated 2026-07-09</span>
     </div>
@@ -54,36 +51,28 @@
     <p>
       Open the App Store mini-app in your Möbius shell and paste:
     </p>
-    <pre><code>https://raw.githubusercontent.com/mobius-os/app-memory/main/mobius.json</code></pre>
+    <pre><code>https://raw.githubusercontent.com/mobius-os/app-tasks/main/mobius.json</code></pre>
     <p>
       Möbius shows the requested permissions, then installs.
     </p>
-    <h2>Runtime libraries</h2>
-    <p>This app loads the following ES modules from <a href="https://esm.sh">esm.sh</a> on first open:</p>
-    <ul>
-      <li><code>d3</code></li>
-      <li><code>pixi.js</code></li>
-    </ul>
 
     <h2>Manifest</h2>
     <details>
       <summary>Show <code>mobius.json</code></summary>
       <pre><code>{
-  "id": "memory",
-  "name": "Memory",
-  "version": "1.6.3",
-  "description": "A browsable graph of what Möbius has learned over time, the agent’s own memory.",
+  "id": "tasks",
+  "name": "Tasks",
+  "version": "1.0.7",
+  "description": "See your agent's scheduled check-ins at a glance — status, due times, and what needs attention. Reschedule or cancel through the agent.",
   "author": "mobius-os",
   "license": "MIT",
-  "homepage": "https://github.com/mobius-os/app-memory",
+  "homepage": "https://github.com/mobius-os/app-tasks",
   "entry": "index.jsx",
+  "source_files": [
+    "domain.js"
+  ],
   "icon": "icon.png",
-  "offline_capable": true,
-  "offline": {
-    "reads": true,
-    "writes": "none",
-    "execution": "none"
-  },
+  "offline_capable": false,
   "permissions": {
     "cross_app_access": "none",
     "share_with_apps": "none"
@@ -92,36 +81,22 @@
     "imports": [
       "react",
       "react-dom",
-      "marked",
-      "dompurify"
+      "date-fns"
     ],
-    "esm_deps": [
-      "d3",
-      "pixi.js"
-    ]
+    "esm_deps": []
   },
-  "source_files": [
-    "constants.js",
-    "theme.js",
-    "domain.js",
-    "storage.js",
-    "graph/render.jsx",
-    "ui/Th.jsx",
-    "ui/ImportanceDots.jsx",
-    "ui/EmptyConstellation.jsx",
-    "ui/GraphGlyph.jsx",
-    "ui/ListGlyph.jsx",
-    "ui/ChatGlyph.jsx",
-    "ui/TextGlyph.jsx",
-    "ui/NetworkGlyph.jsx"
-  ]
+  "offline": {
+    "reads": false,
+    "writes": "none",
+    "execution": "none"
+  }
 }</code></pre>
     </details>
 
     <h2>Feedback</h2>
     <p>
       Something feel off, or want to suggest an iteration? Open an issue at
-      <a href="https://github.com/mobius-os/app-memory/issues">app-memory/issues</a> — the
+      <a href="https://github.com/mobius-os/app-tasks/issues">app-tasks/issues</a> — the
       app's maintainer reads them.
     </p>
   </main>

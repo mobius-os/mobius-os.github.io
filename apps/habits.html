@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Notes · Möbius OS</title>
-  <meta name="description" content="Markdown notes that render as you type, with checklists, pins, colors, search, and images.">
-  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mobius-os/app-notes/main/icon.png">
+  <title>Habits · Möbius OS</title>
+  <meta name="description" content="Track daily habits with streaks, a strength score, a calendar heatmap, and per-habit reminders.">
+  <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mobius-os/app-habits/main/icon.png">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
   <link rel="stylesheet" href="../style.css">
@@ -30,53 +30,61 @@
 
     <div class="app-hero">
       <div class="app-hero-icon">
-        <img src="https://raw.githubusercontent.com/mobius-os/app-notes/main/icon.png" alt="">
+        <img src="https://raw.githubusercontent.com/mobius-os/app-habits/main/icon.png" alt="">
       </div>
       <div class="app-hero-text">
-        <h1>Notes</h1>
-        <p class="muted">Markdown notes that render as you type, with checklists, pins, colors, search, and images.</p>
+        <h1>Habits</h1>
+        <p class="muted">Track daily habits with streaks, a strength score, a calendar heatmap, and per-habit reminders.</p>
       </div>
     </div>
     <div class="badges badges--lg">
       <span class="badge">Works offline</span>
+      <span class="badge">Runs daily</span>
     </div>
 
     <div class="meta">
-      <span>v1.2.25</span>
+      <span>v1.0.3</span>
       <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
       <span>MIT</span>
-      <span><a href="https://github.com/mobius-os/app-notes">Source ↗</a></span>
+      <span><a href="https://github.com/mobius-os/app-habits">Source ↗</a></span>
       <span>★ 0</span>
-      <span>updated 2026-07-09</span>
+      <span>updated 2026-07-08</span>
     </div>
 
     <h2>Install</h2>
     <p>
       Open the App Store mini-app in your Möbius shell and paste:
     </p>
-    <pre><code>https://raw.githubusercontent.com/mobius-os/app-notes/main/mobius.json</code></pre>
+    <pre><code>https://raw.githubusercontent.com/mobius-os/app-habits/main/mobius.json</code></pre>
     <p>
       Möbius shows the requested permissions and the cron schedule, then installs.
     </p>
-    <h2>Runtime libraries</h2>
-    <p>This app loads the following ES modules from <a href="https://esm.sh">esm.sh</a> on first open:</p>
-    <ul>
-      <li><code>marked</code></li>
-      <li><code>dompurify</code></li>
-    </ul>
 
     <h2>Manifest</h2>
     <details>
       <summary>Show <code>mobius.json</code></summary>
       <pre><code>{
-  "id": "notes",
-  "name": "Notes",
-  "version": "1.2.25",
-  "description": "Markdown notes that render as you type, with checklists, pins, colors, search, and images.",
+  "id": "habits",
+  "name": "Habits",
+  "version": "1.0.3",
+  "description": "Track daily habits with streaks, a strength score, a calendar heatmap, and per-habit reminders.",
   "author": "mobius-os",
   "license": "MIT",
-  "homepage": "https://github.com/mobius-os/app-notes",
+  "homepage": "https://github.com/mobius-os/app-habits",
   "entry": "index.jsx",
+  "source_files": [
+    "domain.js",
+    "storage.js",
+    "theme.js",
+    "constants.js",
+    "ui/Chrome.jsx",
+    "ui/Today.jsx",
+    "ui/AllHabits.jsx",
+    "ui/Detail.jsx",
+    "ui/HabitForm.jsx",
+    "ui/Charts.jsx",
+    "ui/Heatmap.jsx"
+  ],
   "icon": "icon.png",
   "offline_capable": true,
   "permissions": {
@@ -86,31 +94,9 @@
   "runtime": {
     "imports": [
       "react",
-      "react-dom",
-      "codemirror",
-      "@codemirror/state",
-      "@codemirror/view",
-      "@codemirror/commands",
-      "@codemirror/lang-markdown",
-      "@codemirror/language",
-      "@lezer/highlight",
-      "katex"
+      "recharts"
     ],
-    "esm_deps": [
-      "marked",
-      "dompurify"
-    ]
-  },
-  "storage_seeds": {
-    "notes-meta.json": {
-      "app": "notes",
-      "data_type": "notes",
-      "format": "json",
-      "note_shape": "{ meta: {frontmatter fields}, body: markdown-string }",
-      "dir": "notes/",
-      "index": "index.json",
-      "attachments": "attachments/"
-    }
+    "esm_deps": []
   },
   "offline": {
     "reads": true,
@@ -118,15 +104,17 @@
     "execution": "full"
   },
   "schedule": {
-    "job": "job.sh"
-  }
+    "default": "* * * * *",
+    "job": "remind.sh"
+  },
+  "embeds_agent": false
 }</code></pre>
     </details>
 
     <h2>Feedback</h2>
     <p>
       Something feel off, or want to suggest an iteration? Open an issue at
-      <a href="https://github.com/mobius-os/app-notes/issues">app-notes/issues</a> — the
+      <a href="https://github.com/mobius-os/app-habits/issues">app-habits/issues</a> — the
       app's maintainer reads them.
     </p>
   </main>
