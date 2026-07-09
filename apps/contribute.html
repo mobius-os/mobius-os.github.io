@@ -43,7 +43,7 @@
     </div>
 
     <div class="meta">
-      <span>v0.2.3</span>
+      <span>v0.2.4</span>
       <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
       <span>MIT</span>
       <span><a href="https://github.com/mobius-os/app-contribute">Source ↗</a></span>
@@ -66,7 +66,7 @@
       <pre><code>{
   "id": "contribute",
   "name": "Contribute",
-  "version": "0.2.3",
+  "version": "0.2.4",
   "description": "See what your agent has proposed upstream — pull requests, issues, and comments across the Möbius ecosystem, from prepared to merged.",
   "author": "mobius-os",
   "license": "MIT",
@@ -87,7 +87,9 @@
   "runtime": {
     "imports": [
       "react",
-      "react-dom"
+      "react-dom",
+      "marked",
+      "dompurify"
     ],
     "esm_deps": []
   },
@@ -101,11 +103,14 @@
   "source_files": [
     "theme.js",
     "domain.js",
+    "diff.js",
     "api.js",
     "storage.js",
     "contributing.md",
     "ui/StatTiles.jsx",
     "ui/ConnectionCard.jsx",
+    "ui/MarkdownView.jsx",
+    "ui/DiffView.jsx",
     "ui/ContributionCard.jsx",
     "ui/Feed.jsx"
   ]
