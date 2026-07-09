@@ -4,11 +4,23 @@ Public docs, app catalog, and brand page for the
 [Möbius OS](https://github.com/mobius-os/mobius) organization. The canonical
 launch page is [https://mobius.you/](https://mobius.you/); this GitHub Pages
 site keeps the open-source catalog, specs, and contribution docs discoverable.
+The dynamic launcher behind `mobius.you` and `mobius.page` is also owned here
+under `services/`, so the public service no longer depends on a personal
+website repo.
 
 - Landing page: [https://mobius-os.github.io/](https://mobius-os.github.io/)
 - Launch: [https://mobius.you/](https://mobius.you/)
 - Manifest spec: [https://mobius-os.github.io/spec/](https://mobius-os.github.io/spec/)
 - Curated apps: [https://mobius-os.github.io/apps/](https://mobius-os.github.io/apps/)
+
+## Launch Service
+
+`services/mobius_launch` contains the Flask launcher that provisions user-owned
+Möbius instances on Railway. `services/deploy` contains the Caddy and Docker
+Compose stack for serving it at `https://mobius.you` and `https://mobius.page`.
+
+See `services/deploy/README.md` for DNS, OAuth callback, data-volume migration,
+and update steps.
 
 ## Updating
 

@@ -1,0 +1,50 @@
+services:
+  caddy:
+    build:
+      context: .
+      dockerfile: Dockerfile.caddy
+    restart: unless-stopped
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+    depends_on:
+      - mobius-launch
+    environment:
+      - ACME_EMAIL=${ACME_EMAIL:-ops@mobius.you}
+
+  mobius-launch:
+    build:
+      context: ../mobius_launch
+    restart: unless-stopped
+    expose:
+      - "8080"
+    environment:
+      - APP_BASE_PATH=
+      - PUBLIC_BASE_URL=${PUBLIC_BASE_URL:-https://mobius.you}
+      - PUBLIC_CANONICAL_URL=${PUBLIC_CANONICAL_URL:-https://mobius.you}
+      - PUBLIC_HOSTS=${PUBLIC_HOSTS:-mobius.page,mobius.you}
+      - DATA_DIR=/data
+      - RAILWAY_CLIENT_ID=${RAILWAY_CLIENT_ID:-}
+      - RAILWAY_CLIENT_SECRET=${RAILWAY_CLIENT_SECRET:-}
+      - RAILWAY_OAUTH_SCOPES=${RAILWAY_OAUTH_SCOPES:-openid email profile offline_access workspace:member}
+      - RAILWAY_TEMPLATE_URL=${RAILWAY_TEMPLATE_URL:-https://railway.com/deploy/xVMuX9?referralCode=cERpKq&utm_medium=integration&utm_source=template&utm_campaign=generic}
+      - RAILWAY_TEMPLATE_CODE=${RAILWAY_TEMPLATE_CODE:-xVMuX9}
+      - RAILWAY_REFERRAL_CODE=${RAILWAY_REFERRAL_CODE:-cERpKq}
+      - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
+      - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
+      - ALLOW_PROTOTYPE_EMAIL_LOGIN=${ALLOW_PROTOTYPE_EMAIL_LOGIN:-false}
+      - MOBIUS_DEFAULT_VOLUME_SIZE_GB=${MOBIUS_DEFAULT_VOLUME_SIZE_GB:-2}
+      - MOBIUS_VOLUME_SIZE_OPTIONS_GB=${MOBIUS_VOLUME_SIZE_OPTIONS_GB:-2,5,10,20}
+      - PROVISIONING_STALE_SECONDS=${PROVISIONING_STALE_SECONDS:-900}
+    volumes:
+      - mobius_launch_data:/data
+
+volumes:
+  caddy_data:
+  caddy_config:
+  mobius_launch_data:
