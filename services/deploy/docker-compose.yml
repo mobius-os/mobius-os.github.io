@@ -25,7 +25,7 @@ services:
         MOBIUS_LAUNCH_SOURCE_REPO: ${MOBIUS_LAUNCH_SOURCE_REPO:-mobius-os/mobius-os.github.io}
         MOBIUS_LAUNCH_SOURCE_PATH: ${MOBIUS_LAUNCH_SOURCE_PATH:-services/mobius_launch}
         MOBIUS_LAUNCH_GIT_SHA: ${MOBIUS_LAUNCH_GIT_SHA:-unknown}
-        MOBIUS_LAUNCH_IMAGE_REF: ${MOBIUS_LAUNCH_IMAGE_REF:-}
+        MOBIUS_LAUNCH_IMAGE_REF: ${MOBIUS_LAUNCH_IMAGE_REF:-deploy-mobius-launch:latest}
     restart: unless-stopped
     expose:
       - "8080"
