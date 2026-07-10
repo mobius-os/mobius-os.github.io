@@ -1561,6 +1561,12 @@ def service_instance_missing_error(exc):
     return "serviceinstance not found" in compact_api_error(exc).lower()
 
 
+def user_facing_railway_error(exc):
+    if service_instance_missing_error(exc):
+        return "Railway is still preparing usage data. Check again in a minute."
+    return compact_api_error(exc)
+
+
 def create_service_domain_with_retry(access_token, service_id, environment_id, timeout_seconds=180, on_wait=None):
     start = time.time()
     last_error = None
@@ -3441,10 +3447,11 @@ def render(body):
 ICONS = {
     "copy": """<rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>""",
     "external": """<path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>""",
-    "key": """<circle cx="7.5" cy="14.5" r="4.5"></circle><path d="m11 11 10-10"></path><path d="m17 5 2 2"></path>""",
+    "lifebuoy": """<circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 14.83 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path><path d="m4.93 19.07 4.24-4.24"></path>""",
     "plus": """<path d="M12 5v14"></path><path d="M5 12h14"></path>""",
     "refresh": """<path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path><path d="M3 21v-5h5"></path><path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path><path d="M16 8h5V3"></path>""",
     "trash": """<path d="M3 6h18"></path><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6"></path><path d="M10 11v6"></path><path d="M14 11v6"></path>""",
+    "train": """<path d="M6 15h12"></path><path d="M6 19h12"></path><path d="m8 19-2 3"></path><path d="m16 19 2 3"></path><path d="M8 3h8"></path><path d="M8 7h8"></path><rect x="5" y="3" width="14" height="16" rx="2"></rect><circle cx="9" cy="12" r="1"></circle><circle cx="15" cy="12" r="1"></circle>""",
 }
 
 
@@ -3549,12 +3556,10 @@ def index():
         connection_action = """<button class="primary large railway-connect" type="button" disabled><span class="button-main">Connect Railway</span><span class="button-sub">Choose email on Railway</span></button>"""
         if oauth_ready:
             connection_action = f"""
-              <form method="post" action="{path('/railway/connect')}">
-                <button class="primary large railway-connect" type="submit">
+              <a class="button primary large railway-connect" href="{path('/railway/connect')}">
                   <span class="button-main">Connect Railway</span>
                   <span class="button-sub">Choose email on Railway</span>
-                </button>
-              </form>
+              </a>
             """
         body = f"""
         <main class="shell">
@@ -3633,7 +3638,7 @@ def index():
             else ""
         )
         railway_project_action = (
-            f"""<a class="button subtle railway-link" href="{h(railway_url)}" target="_blank" rel="noreferrer" title="Open Railway project">{icon('external')}<span>Railway</span></a>"""
+            f"""<a class="button subtle railway-link" href="{h(railway_url)}" target="_blank" rel="noreferrer" title="Open Railway project">{icon('train')}<span>Railway</span></a>"""
             if railway_url
             else ""
         )
@@ -3641,7 +3646,7 @@ def index():
             f"{inst['public_url'].rstrip('/')}/recover" if inst["public_url"] else ""
         )
         recovery_action = (
-            f"""<a class="button subtle recovery-link" href="{h(recovery_url)}" target="_blank" rel="noreferrer" title="Open Möbius recovery">{icon('key')}<span>Recovery</span></a>"""
+            f"""<a class="button subtle recovery-link" href="{h(recovery_url)}" target="_blank" rel="noreferrer" title="Open Möbius recovery">{icon('lifebuoy')}<span>Recovery</span></a>"""
             if recovery_url and status not in {"deleted"}
             else ""
         )
@@ -4189,7 +4194,7 @@ def logout():
     return clear_session(resp)
 
 
-@app.post("/railway/connect")
+@app.route("/railway/connect", methods=["GET", "POST"])
 def connect_railway():
     user = require_user()
     if user is None:
@@ -4486,16 +4491,20 @@ def instance_metrics(instance_id):
         inst = reconcile_deployment_status(db(), inst)
         return railway_metrics_snapshot(access_token, connection, inst)
     except RailwayAPIError as exc:
+        message = user_facing_railway_error(exc)
+        status = 202 if service_instance_missing_error(exc) else 502
         return {
             "updated_at": now_iso(),
             "deployment_status": inst["status"],
-            "error": compact_api_error(exc),
+            "error": message,
             "cost": {
                 "available": False,
-                "label": "Railway",
-                "note": "Open Railway for detailed usage and cost.",
+                "label": "Pending" if status == 202 else "Railway",
+                "allowance_label": "$5",
+                "percent": "0%",
+                "note": message if status == 202 else "Open Railway for detailed usage and cost.",
             },
-        }, 502
+        }, status
 
 
 @app.post("/instances/<instance_id>/retry")

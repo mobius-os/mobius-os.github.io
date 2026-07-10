@@ -5,7 +5,10 @@
 		X-Frame-Options "DENY"
 		Referrer-Policy "strict-origin-when-cross-origin"
 		Permissions-Policy "camera=(), microphone=(), geolocation=(), payment=()"
-		Content-Security-Policy "default-src 'self'; base-uri 'self'; connect-src 'self'; form-action 'self'; frame-ancestors 'none'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+		# OAuth starts can redirect top-level navigations through provider hosts.
+		# Keep form submissions tight, but allow the public launcher hosts and
+		# known provider targets so auth buttons do not appear inert.
+		Content-Security-Policy "default-src 'self'; base-uri 'self'; connect-src 'self'; form-action 'self' https://mobius.page https://mobius.you https://accounts.google.com https://backboard.railway.com https://railway.com; frame-ancestors 'none'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
 		-Server
 	}
 }
