@@ -26,6 +26,12 @@ Use the org-owned stack in `../deploy`. The launcher defaults to root-mounted
 URLs and `https://mobius.you`, so local or legacy prefixed deployments must set
 `APP_BASE_PATH` and `PUBLIC_BASE_URL` explicitly.
 
+The public runtime exposes:
+
+- `/health` for liveness.
+- `/version` for source repository, source path, deployed commit, deploy mode,
+  and public host configuration.
+
 ## Railway Billing Notes
 
 Railway's docs currently describe:

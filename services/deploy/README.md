@@ -16,27 +16,59 @@ continuing to serve unrelated hosts from their own repos.
 - Optional `www` records for both domains pointing to the same host.
 - Google and Railway OAuth apps with both callback hosts registered.
 
-This Compose stack binds ports 80 and 443. If the target machine already runs a
-different Caddy container on those ports, either move the Möbius DNS records to
-a dedicated host or fold these site blocks into the existing edge proxy during
-the cutover.
+There are two supported deployment modes:
+
+- **Dedicated host:** this repo owns Caddy and binds ports 80 and 443.
+- **Shared VPS:** another edge Caddy already owns ports 80 and 443, and imports
+  this repo's `mobius.Caddyfile` while the launcher runs as its own Compose
+  project on the `mobius_edge` Docker network.
 
 ## Deploy
+
+### Dedicated Host
 
 ```bash
 git clone https://github.com/mobius-os/mobius-os.github.io.git
 cd mobius-os.github.io/services/deploy
 cp .env.example .env
 # Edit .env with production ACME and OAuth values.
-docker compose up -d --build
+MOBIUS_LAUNCH_GIT_SHA="$(git -C ../.. rev-parse --short=12 HEAD)" docker compose up -d --build
 docker compose logs -f caddy mobius-launch
 ```
+
+### Shared VPS
+
+Use this mode when a host-level Caddy container from another stack already owns
+ports 80 and 443. The launcher runs in the `mobius-launch` Compose project, and
+the edge Caddy reaches it through the external `mobius_edge` network.
+
+```bash
+git clone https://github.com/mobius-os/mobius-os.github.io.git
+cd mobius-os.github.io/services/deploy
+cp .env.example .env
+# Edit .env with production OAuth values. Keep MOBIUS_LAUNCH_VOLUME pointed at
+# the existing production volume if migrating from another Compose project.
+./deploy-shared-vps.sh
+```
+
+The importing Caddy stack must:
+
+- mount this repo's `services/deploy/mobius.Caddyfile` at
+  `/etc/caddy/mobius.Caddyfile`;
+- attach its Caddy container to the external `mobius_edge` network;
+- import `/etc/caddy/mobius.Caddyfile` from its root Caddyfile.
+
+When migrating the current shared VPS from the older `deploy` Compose project,
+keep `MOBIUS_LAUNCH_VOLUME=deploy_mobius_launch_data`, move traffic to the new
+`mobius-launch` project, and only remove the stopped legacy launcher container.
+Do not remove the `deploy_mobius_launch_data` volume.
 
 Operational checks:
 
 ```bash
 curl https://mobius.you/health
 curl https://mobius.page/health
+curl https://mobius.you/version
 ```
 
 ## OAuth Callbacks
@@ -78,14 +110,21 @@ Then start the stack and move the `mobius.you` / `mobius.page` DNS records.
 
 ## Updating
 
+Dedicated host:
+
 ```bash
 cd mobius-os.github.io/services/deploy
 git pull
-docker compose up -d --build
+MOBIUS_LAUNCH_GIT_SHA="$(git -C ../.. rev-parse --short=12 HEAD)" docker compose up -d --build
 ```
 
-For a launcher-only change:
+Shared VPS:
 
 ```bash
-docker compose up -d --build mobius-launch caddy
+cd mobius-os.github.io/services/deploy
+git pull
+./deploy-shared-vps.sh
 ```
+
+After shared-VPS updates, reload or recreate the importing Caddy container if
+`mobius.Caddyfile` changed.

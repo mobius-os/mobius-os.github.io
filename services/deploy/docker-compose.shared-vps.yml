@@ -1,23 +1,6 @@
-services:
-  caddy:
-    build:
-      context: .
-      dockerfile: Dockerfile.caddy
-    restart: unless-stopped
-    ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
-    volumes:
-      - ./Caddyfile:/etc/caddy/Caddyfile:ro
-      - ./mobius.Caddyfile:/etc/caddy/mobius.Caddyfile:ro
-      - caddy_data:/data
-      - caddy_config:/config
-    depends_on:
-      - mobius-launch
-    environment:
-      - ACME_EMAIL=${ACME_EMAIL:-ops@mobius.you}
+name: mobius-launch
 
+services:
   mobius-launch:
     build:
       context: ../mobius_launch
@@ -30,7 +13,7 @@ services:
     expose:
       - "8080"
     environment:
-      - MOBIUS_LAUNCH_DEPLOY_MODE=${MOBIUS_LAUNCH_DEPLOY_MODE:-dedicated}
+      - MOBIUS_LAUNCH_DEPLOY_MODE=${MOBIUS_LAUNCH_DEPLOY_MODE:-shared-vps}
       - APP_BASE_PATH=
       - PUBLIC_BASE_URL=${PUBLIC_BASE_URL:-https://mobius.you}
       - PUBLIC_CANONICAL_URL=${PUBLIC_CANONICAL_URL:-https://mobius.you}
@@ -50,8 +33,17 @@ services:
       - PROVISIONING_STALE_SECONDS=${PROVISIONING_STALE_SECONDS:-900}
     volumes:
       - mobius_launch_data:/data
+    networks:
+      mobius_edge:
+        aliases:
+          - mobius-launch
 
 volumes:
-  caddy_data:
-  caddy_config:
   mobius_launch_data:
+    name: ${MOBIUS_LAUNCH_VOLUME:-deploy_mobius_launch_data}
+    external: true
+
+networks:
+  mobius_edge:
+    name: mobius_edge
+    external: true

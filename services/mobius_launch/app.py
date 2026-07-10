@@ -91,6 +91,17 @@ MOBIUS_VOLUME_SIZE_OPTIONS_GB = os.environ.get(
     "MOBIUS_VOLUME_SIZE_OPTIONS_GB", "2,5,10,20"
 ).strip()
 MOBIUS_DEPLOY_ENVIRONMENT = os.environ.get("MOBIUS_DEPLOY_ENVIRONMENT", "production").strip()
+MOBIUS_LAUNCH_SOURCE_REPO = os.environ.get(
+    "MOBIUS_LAUNCH_SOURCE_REPO", "mobius-os/mobius-os.github.io"
+).strip()
+MOBIUS_LAUNCH_SOURCE_PATH = os.environ.get(
+    "MOBIUS_LAUNCH_SOURCE_PATH", "services/mobius_launch"
+).strip()
+MOBIUS_LAUNCH_GIT_SHA = (
+    os.environ.get("MOBIUS_LAUNCH_GIT_SHA", "unknown").strip() or "unknown"
+)
+MOBIUS_LAUNCH_IMAGE_REF = os.environ.get("MOBIUS_LAUNCH_IMAGE_REF", "").strip()
+MOBIUS_LAUNCH_DEPLOY_MODE = os.environ.get("MOBIUS_LAUNCH_DEPLOY_MODE", "unknown").strip()
 
 os.makedirs(DATA_DIR, exist_ok=True)
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
@@ -116,6 +127,20 @@ class RailwayAPIError(RuntimeError):
 
 def now_iso():
     return datetime.now(timezone.utc).replace(microsecond=0).isoformat()
+
+
+def build_info():
+    return {
+        "service": "mobius-launch",
+        "source_repo": MOBIUS_LAUNCH_SOURCE_REPO,
+        "source_path": MOBIUS_LAUNCH_SOURCE_PATH,
+        "git_sha": MOBIUS_LAUNCH_GIT_SHA,
+        "image_ref": MOBIUS_LAUNCH_IMAGE_REF or "unknown",
+        "deploy_mode": MOBIUS_LAUNCH_DEPLOY_MODE or "unknown",
+        "public_base_url": PUBLIC_BASE_URL,
+        "public_canonical_url": PUBLIC_CANONICAL_URL,
+        "public_hosts": sorted(PUBLIC_HOSTS),
+    }
 
 
 def load_secret():
@@ -4549,7 +4574,17 @@ def delete_instance(instance_id):
 
 @app.get("/health")
 def health():
-    return {"status": "ok", "service": "mobius-launch"}
+    return {
+        "status": "ok",
+        "service": "mobius-launch",
+        "source_repo": MOBIUS_LAUNCH_SOURCE_REPO,
+        "git_sha": MOBIUS_LAUNCH_GIT_SHA,
+    }
+
+
+@app.get("/version")
+def version():
+    return build_info()
 
 
 if __name__ == "__main__":
