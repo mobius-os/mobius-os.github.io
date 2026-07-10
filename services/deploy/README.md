@@ -4,6 +4,10 @@ This stack is the org-owned deployment source for the launcher at
 `https://mobius.you` and `https://mobius.page`. The static Pages site can stay
 on `mobius-os.github.io`; this service owns only the dynamic launcher.
 
+`mobius.Caddyfile` is the org-owned edge fragment for the public launcher
+domains. On a shared VPS, the host-level Caddy can import that fragment while
+continuing to serve unrelated hosts from their own repos.
+
 ## Prerequisites
 
 - A VPS or equivalent host with Docker and Docker Compose.

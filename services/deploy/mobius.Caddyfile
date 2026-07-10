@@ -1,0 +1,16 @@
+mobius.page, mobius.you {
+	encode gzip
+	reverse_proxy mobius-launch:8080
+	log {
+		output stdout
+		format console
+	}
+}
+
+www.mobius.page {
+	redir https://mobius.page{uri} permanent
+}
+
+www.mobius.you {
+	redir https://mobius.you{uri} permanent
+}
