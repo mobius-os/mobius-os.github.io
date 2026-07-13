@@ -25,6 +25,7 @@ services:
       - RAILWAY_TEMPLATE_URL=${RAILWAY_TEMPLATE_URL:-https://railway.com/deploy/xVMuX9?referralCode=cERpKq&utm_medium=integration&utm_source=template&utm_campaign=generic}
       - RAILWAY_TEMPLATE_CODE=${RAILWAY_TEMPLATE_CODE:-xVMuX9}
       - RAILWAY_REFERRAL_CODE=${RAILWAY_REFERRAL_CODE:-cERpKq}
+      - RAILWAY_SIGNUP_URL=${RAILWAY_SIGNUP_URL:-}
       - GOOGLE_CLIENT_ID=${GOOGLE_CLIENT_ID:-}
       - GOOGLE_CLIENT_SECRET=${GOOGLE_CLIENT_SECRET:-}
       - ALLOW_PROTOTYPE_EMAIL_LOGIN=${ALLOW_PROTOTYPE_EMAIL_LOGIN:-false}

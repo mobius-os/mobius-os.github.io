@@ -62,6 +62,18 @@ RAILWAY_TEMPLATE_URL = os.environ.get(
 ).strip()
 RAILWAY_TEMPLATE_CODE = os.environ.get("RAILWAY_TEMPLATE_CODE", "xVMuX9").strip()
 RAILWAY_REFERRAL_CODE = os.environ.get("RAILWAY_REFERRAL_CODE", "cERpKq").strip()
+# Step 1 of onboarding sends the user here to create their Railway account. The
+# referral has to attach at signup: Railway silently ignores referralCode on the
+# OAuth authorize endpoint, and its ToS prompt fires during signup, not mid-OAuth
+# (see the "reducing OAuth onboarding friction" feedback thread). Defaults to the
+# canonical referral link derived from RAILWAY_REFERRAL_CODE.
+# `or` (not the get() default) so a set-but-empty RAILWAY_SIGNUP_URL="" from an
+# env-file still falls back to the derived link instead of rendering href="".
+RAILWAY_SIGNUP_URL = os.environ.get("RAILWAY_SIGNUP_URL", "").strip() or (
+    f"https://railway.com?referralCode={RAILWAY_REFERRAL_CODE}"
+    if RAILWAY_REFERRAL_CODE
+    else "https://railway.com"
+)
 PROVISIONING_STALE_SECONDS = int(os.environ.get("PROVISIONING_STALE_SECONDS", "900"))
 GOOGLE_AUTH_URL = os.environ.get("GOOGLE_AUTH_URL", "https://accounts.google.com/o/oauth2/v2/auth")
 GOOGLE_TOKEN_URL = os.environ.get("GOOGLE_TOKEN_URL", "https://oauth2.googleapis.com/token")
@@ -2941,6 +2953,71 @@ LAYOUT = """
       white-space: nowrap;
     }
     .signal strong { color: var(--text); font-weight: 720; }
+    /* Onboarding stepper: create Railway account -> connect -> deploy. Steps are
+       guided, not gated -- step 1 leads, opening it promotes step 2, but a user
+       who already has a Railway account can Connect at any time. */
+    .stepper { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
+    .step {
+      display: grid;
+      grid-template-columns: 34px minmax(0, 1fr);
+      gap: 14px;
+      align-items: start;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: color-mix(in srgb, var(--surface2) 42%, transparent);
+      padding: 16px;
+      transition: border-color 180ms ease, background 180ms ease, opacity 180ms ease;
+    }
+    .step-num {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 720;
+      flex: none;
+    }
+    .step-body { min-width: 0; display: grid; gap: 4px; }
+    .step-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+    .step-cta { margin-top: 10px; align-self: start; min-width: min(100%, 260px); }
+    .step.locked { opacity: 0.6; }
+    .step.locked .step-num { background: transparent; }
+    .step-done-badge { display: none; font-size: 12px; color: var(--ok); font-weight: 650; }
+    /* Step 2 reads as the secondary action until step 1 is opened. */
+    .step-connect:not([disabled]) {
+      background: var(--surface2);
+      border-color: var(--border);
+      color: var(--text);
+      box-shadow: none;
+    }
+    /* Once the signup tab is opened, check off step 1 and promote step 2. */
+    .stepper.step1-done .step[data-step="1"] { opacity: 0.72; }
+    .stepper.step1-done .step[data-step="1"] .step-num {
+      background: var(--ok-soft);
+      border-color: transparent;
+      color: var(--ok);
+      font-size: 0;
+    }
+    .stepper.step1-done .step[data-step="1"] .step-num::after { content: "✓"; font-size: 16px; }
+    .stepper.step1-done .step-done-badge { display: inline; }
+    .stepper.step1-done .step-cta.step-create {
+      background: var(--surface2);
+      border-color: var(--border);
+      color: var(--muted);
+      box-shadow: none;
+    }
+    .stepper.step1-done .step-connect:not([disabled]) {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #ffffff;
+      box-shadow: 0 10px 26px rgba(139, 108, 247, 0.25);
+    }
+    .stepper.step1-done .step-connect:not([disabled]):hover { background: var(--accent-hover); }
     .deploy-inline {
       display: grid;
       grid-template-columns: minmax(220px, 1fr) auto;
@@ -3553,14 +3630,38 @@ def index():
               <div class="command">{h(railway_redirect_uri())}</div>
             </div>
             """
-        connection_action = """<button class="primary large railway-connect" type="button" disabled><span class="button-main">Connect Railway</span><span class="button-sub">Choose email on Railway</span></button>"""
+        # Step 2 CTA: a real OAuth link when configured, disabled otherwise. The
+        # ':not([disabled])' CSS keeps a disabled Connect from being promoted.
         if oauth_ready:
-            connection_action = f"""
-              <a class="button primary large railway-connect" href="{path('/railway/connect')}">
-                  <span class="button-main">Connect Railway</span>
-                  <span class="button-sub">Choose email on Railway</span>
-              </a>
+            connect_action = f"""
+              <a class="button large step-cta step-connect" href="{path('/railway/connect')}">Connect Railway</a>
             """
+        else:
+            connect_action = """<button class="button large step-cta step-connect" type="button" disabled>Connect Railway</button>"""
+        # Guided, not gated: opening step 1 marks it done and promotes step 2,
+        # persisted in localStorage so it survives the round-trip to Railway. The
+        # real gate for step 3 is the actual OAuth connection, not this flag. The
+        # key is per-user so a shared browser doesn't show one account's progress
+        # to the next.
+        signup_flag_key = "mobius_railway_signup_opened:" + user["id"]
+        stepper_script = """
+        <script>
+        (function () {
+          var stepper = document.querySelector('[data-stepper]');
+          if (!stepper) return;
+          var KEY = '__KEY__';
+          function promote() { stepper.classList.add('step1-done'); }
+          try { if (localStorage.getItem(KEY) === '1') promote(); } catch (e) {}
+          var trigger = stepper.querySelector('[data-step1]');
+          if (trigger) {
+            trigger.addEventListener('click', function () {
+              try { localStorage.setItem(KEY, '1'); } catch (e) {}
+              promote();
+            });
+          }
+        })();
+        </script>
+        """.replace("__KEY__", signup_flag_key)
         body = f"""
         <main class="shell">
           <header class="topbar">
@@ -3580,23 +3681,51 @@ def index():
                     <div>
                       <p class="kicker">One-click Railway deployment</p>
                       <h2>Deploy Möbius.</h2>
-                      <p class="hint">A private container in your Railway account, with persistent storage and live usage visibility.</p>
+                      <p class="hint">Three quick steps: create a Railway account, connect it, and deploy your private Möbius.</p>
                     </div>
                   </div>
-                  <div class="connect-center">
-                    {connection_action}
-                  </div>
                 </div>
+                <ol class="stepper" data-stepper>
+                  <li class="step" data-step="1">
+                    <span class="step-num">1</span>
+                    <div class="step-body">
+                      <div class="step-head">
+                        <h3>Create your Railway account</h3>
+                        <span class="step-done-badge">Opened &#8599;</span>
+                      </div>
+                      <p class="hint">Free for a month, no card needed. You'll accept Railway's terms here.</p>
+                      <a class="button primary large step-cta step-create" href="{h(RAILWAY_SIGNUP_URL)}" target="_blank" rel="noopener noreferrer" data-step1>
+                        <span>Create Railway account</span>{icon('external')}
+                      </a>
+                    </div>
+                  </li>
+                  <li class="step" data-step="2">
+                    <span class="step-num">2</span>
+                    <div class="step-body">
+                      <h3>Connect Railway</h3>
+                      <p class="hint">Authorize Möbius to deploy on your behalf. Already have a Railway account? You can start here.</p>
+                      {connect_action}
+                    </div>
+                  </li>
+                  <li class="step locked" data-step="3">
+                    <span class="step-num">3</span>
+                    <div class="step-body">
+                      <h3>Deploy Möbius</h3>
+                      <p class="hint">A private container in your Railway account, with persistent storage and live usage visibility. Unlocks once Railway is connected.</p>
+                    </div>
+                  </li>
+                </ol>
                 {connection_notice}
-                  <div class="signal-strip">
-                    <span class="signal"><strong>$5</strong> trial credit</span>
-                    <span class="signal">No card for trial</span>
-                    <span class="signal">Email sign-in works</span>
-                  </div>
+                <div class="signal-strip">
+                  <span class="signal"><strong>1-month</strong> free trial</span>
+                  <span class="signal">No card for trial</span>
+                  <span class="signal">Email sign-in works</span>
+                </div>
               </div>
             </section>
           </div>
         </main>
+        {stepper_script}
         """
         return render(body)
 
@@ -4226,8 +4355,9 @@ def connect_railway():
     }
     if "offline_access" in RAILWAY_OAUTH_SCOPES.split():
         params["prompt"] = "consent"
-    if RAILWAY_REFERRAL_CODE:
-        params["referralCode"] = RAILWAY_REFERRAL_CODE
+    # No referralCode here: Railway ignores it on the authorize endpoint. The
+    # referral attaches when the user creates their account (onboarding step 1,
+    # RAILWAY_SIGNUP_URL), which is also where Railway shows its ToS.
 
     auth_url = RAILWAY_AUTH_URL + "?" + urllib.parse.urlencode(params)
     resp = make_response(redirect(auth_url))
