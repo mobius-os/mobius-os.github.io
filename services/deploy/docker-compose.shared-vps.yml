@@ -35,7 +35,7 @@ services:
     volumes:
       - mobius_launch_data:/data
     networks:
-      mobius_edge:
+      edge-launch:
         aliases:
           - mobius-launch
 
@@ -44,7 +44,9 @@ volumes:
     name: ${MOBIUS_LAUNCH_VOLUME:-deploy_mobius_launch_data}
     external: true
 
+# The launcher's trust-zone network on the shared edge (see the edge repo's
+# manifest.json). Only the edge proxy and this service join it.
 networks:
-  mobius_edge:
-    name: mobius_edge
+  edge-launch:
+    name: edge-launch
     external: true

@@ -5,8 +5,8 @@ This stack is the org-owned deployment source for the launcher at
 on `mobius-os.github.io`; this service owns only the dynamic launcher.
 
 `mobius.Caddyfile` is the org-owned edge fragment for the public launcher
-domains. On a shared VPS, the host-level Caddy can import that fragment while
-continuing to serve unrelated hosts from their own repos.
+domains. On a shared VPS, the host's edge proxy serves that fragment while
+continuing to serve unrelated hosts from their own repos' fragments.
 
 ## Prerequisites
 
@@ -19,9 +19,9 @@ continuing to serve unrelated hosts from their own repos.
 There are two supported deployment modes:
 
 - **Dedicated host:** this repo owns Caddy and binds ports 80 and 443.
-- **Shared VPS:** another edge Caddy already owns ports 80 and 443, and imports
-  this repo's `mobius.Caddyfile` while the launcher runs as its own Compose
-  project on the `mobius_edge` Docker network.
+- **Shared VPS:** the host's shared edge proxy owns ports 80 and 443 and
+  serves this repo's `mobius.Caddyfile` fragment, while the launcher runs as
+  its own Compose project on the external `edge-launch` Docker network.
 
 ## Deploy
 
@@ -38,9 +38,13 @@ docker compose logs -f caddy mobius-launch
 
 ### Shared VPS
 
-Use this mode when a host-level Caddy container from another stack already owns
-ports 80 and 443. The launcher runs in the `mobius-launch` Compose project, and
-the edge Caddy reaches it through the external `mobius_edge` network.
+Use this mode when the host runs a shared edge proxy (the `edge` repo) that
+owns ports 80 and 443. The launcher runs in the `mobius-launch` Compose
+project on the external `edge-launch` network, and `deploy-shared-vps.sh`
+installs `mobius.Caddyfile` into the edge via its `edgectl` (checkout
+location overridable with `EDGE_DIR`, default `~/projects/edge`). The edge
+enforces per-producer hostname ownership, validates the assembled config
+before reload, and keeps the previous fragment on any failure.
 
 ```bash
 git clone https://github.com/mobius-os/mobius-os.github.io.git
@@ -50,13 +54,6 @@ cp .env.example .env
 # the existing production volume if migrating from another Compose project.
 ./deploy-shared-vps.sh
 ```
-
-The importing Caddy stack must:
-
-- mount this repo's `services/deploy/mobius.Caddyfile` at
-  `/etc/caddy/mobius.Caddyfile`;
-- attach its Caddy container to the external `mobius_edge` network;
-- import `/etc/caddy/mobius.Caddyfile` from its root Caddyfile.
 
 When migrating the current shared VPS from the older `deploy` Compose project,
 keep `MOBIUS_LAUNCH_VOLUME=deploy_mobius_launch_data`, move traffic to the new
@@ -126,5 +123,5 @@ git pull
 ./deploy-shared-vps.sh
 ```
 
-After shared-VPS updates, reload or recreate the importing Caddy container if
-`mobius.Caddyfile` changed.
+`deploy-shared-vps.sh` reinstalls the fragment on every run; `edgectl`
+validates and reloads the edge proxy only when needed.
