@@ -3810,7 +3810,7 @@ def login_page():
         {brand()}
         <nav class="login-nav" aria-label="About Möbius">
           <a href="https://mobius-os.github.io/">What is Möbius?</a>
-          <a href="https://github.com/mobius-os">Open source</a>
+          <a href="https://github.com/mobius-os/mobius">Open source</a>
         </nav>
       </header>
       <section class="login-layout" aria-labelledby="login-heading">
