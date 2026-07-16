@@ -1985,7 +1985,7 @@ def railway_region_label(value):
     for prefix, label in labels.items():
         if region.startswith(prefix):
             return label
-    return str(value or "Unknown region").replace("_", " ")
+    return str(value or "Railway managed").replace("_", " ")
 
 
 def runtime_status_label(value):
