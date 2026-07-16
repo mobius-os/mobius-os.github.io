@@ -118,6 +118,7 @@ MOBIUS_LAUNCH_DEPLOY_MODE = os.environ.get("MOBIUS_LAUNCH_DEPLOY_MODE", "unknown
 os.makedirs(DATA_DIR, exist_ok=True)
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 LOGO_FILENAME = "moebius.png"
+PREVIEW_FILENAME = "editor-desktop.png"
 
 
 def static_asset_version(filename):
@@ -129,6 +130,7 @@ def static_asset_version(filename):
 
 
 LOGO_VERSION = static_asset_version(LOGO_FILENAME)
+PREVIEW_VERSION = static_asset_version(PREVIEW_FILENAME)
 
 app = Flask(__name__)
 
@@ -223,6 +225,11 @@ def favicon():
 @app.get("/moebius.png")
 def moebius_logo():
     return send_from_directory(STATIC_DIR, LOGO_FILENAME, mimetype="image/png", max_age=86400)
+
+
+@app.get("/workspace-preview.png")
+def workspace_preview():
+    return send_from_directory(STATIC_DIR, PREVIEW_FILENAME, mimetype="image/png", max_age=86400)
 
 
 @app.before_request
@@ -379,6 +386,10 @@ def path(route=""):
 
 def logo_url():
     return f"{path('/moebius.png')}?v={LOGO_VERSION}"
+
+
+def preview_url():
+    return f"{path('/workspace-preview.png')}?v={PREVIEW_VERSION}"
 
 
 def current_public_base_url():
@@ -1383,7 +1394,7 @@ def deploy_template(access_token, template, workspace_id, volume_size_gb=None):
     # creates the project, all template services, and the /data volume, AND
     # deploys them, returning {projectId, workflowId}. This replaces the old
     # projectCreate + templateDeployV2 + serviceInstanceDeployV2 sequence, whose
-    # trailing deploy just triggered a redundant second build.
+    # trailing deploy triggered a redundant second build.
     if not workspace_id:
         raise RailwayAPIError(
             "No Railway workspace was found for your account. Reconnect Railway and try again."
@@ -1484,7 +1495,7 @@ def volume_instance_size_gb(volume_instance):
 
 
 def wait_for_template_service(access_token, project_id, timeout_seconds=300, on_wait=None):
-    # Waits only for the template to REGISTER the service + volume (fast — well
+    # Waits only for the template to REGISTER the service + volume (fast, well
     # before the image finishes building). The build itself is tracked
     # afterwards via the deployment status (see reconcile_deployment_status), so
     # a slow build no longer trips this timeout into a false "error".
@@ -2403,10 +2414,10 @@ LAYOUT = """
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Launch a private Möbius container on Railway.">
+  <meta name="description" content="Launch a private Möbius AI workspace in a Railway account you control.">
   <link rel="canonical" href="{{ canonical_url }}">
   <meta name="theme-color" content="#0d0d0d">
-  <title>Möbius Launch</title>
+  <title>Möbius: Your private AI workspace</title>
   <link rel="icon" type="image/png" href="{{ favicon_url }}">
   <link rel="apple-touch-icon" href="{{ favicon_url }}">
   <link rel="preconnect" href="https://rsms.me/">
@@ -2424,6 +2435,7 @@ LAYOUT = """
       --muted: #a8a8a8;
       --accent: #8b6cf7;
       --accent-hover: #7c5ce6;
+      --accent-active: #6d4bd7;
       --accent-dim: rgba(139, 108, 247, 0.14);
       --ok: #10b981;
       --ok-soft: rgba(16, 185, 129, 0.14);
@@ -2455,6 +2467,207 @@ LAYOUT = """
     a:hover { text-decoration: underline; }
     .shell { max-width: 1120px; margin: 0 auto; padding: 20px 20px 64px; }
     .narrow { max-width: 460px; padding-top: 72px; }
+    .login-shell {
+      min-height: 100vh;
+      display: grid;
+      grid-template-rows: auto 1fr auto;
+      gap: clamp(34px, 6vh, 72px);
+      position: relative;
+      isolation: isolate;
+    }
+    .login-shell::before {
+      content: "";
+      position: fixed;
+      z-index: -1;
+      width: min(62vw, 760px);
+      aspect-ratio: 1;
+      left: -18vw;
+      top: 16vh;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(139, 108, 247, 0.15), rgba(139, 108, 247, 0) 68%);
+      pointer-events: none;
+    }
+    .login-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+    }
+    .login-topbar .mark { width: 40px; height: 40px; }
+    .login-topbar .subtitle { font-size: 12px; }
+    .login-nav { display: flex; align-items: center; gap: 18px; color: var(--muted); font-size: 13px; }
+    .login-nav a:hover { color: var(--text); text-decoration: none; }
+    .login-layout {
+      display: grid;
+      grid-template-columns: minmax(0, 1.2fr) minmax(340px, 0.72fr);
+      align-items: center;
+      gap: clamp(44px, 9vw, 116px);
+      width: 100%;
+    }
+    .login-story { max-width: 690px; }
+    .login-kicker {
+      display: inline-flex;
+      align-items: center;
+      gap: 9px;
+      margin: 0 0 18px;
+      color: #b9a7ff;
+      font-size: 13px;
+      font-weight: 700;
+    }
+    .login-kicker::before {
+      content: "";
+      width: 22px;
+      height: 2px;
+      border-radius: 999px;
+      background: var(--accent);
+    }
+    .login-story h2 {
+      max-width: 11ch;
+      font-size: clamp(44px, 6.4vw, 78px);
+      font-weight: 730;
+      line-height: 0.98;
+      letter-spacing: -0.035em;
+      text-wrap: balance;
+    }
+    .login-lead {
+      max-width: 60ch;
+      margin: 24px 0 0;
+      color: var(--muted);
+      font-size: clamp(16px, 1.8vw, 19px);
+      line-height: 1.55;
+      text-wrap: pretty;
+    }
+    .login-promise-list {
+      position: relative;
+      display: grid;
+      gap: 0;
+      max-width: 620px;
+      margin: 32px 0 0;
+      padding: 0;
+      list-style: none;
+      border-block: 1px solid var(--border-light);
+    }
+    .login-promise-list li {
+      display: grid;
+      grid-template-columns: 18px minmax(112px, 0.38fr) minmax(0, 1fr);
+      align-items: baseline;
+      gap: 14px;
+      padding: 13px 0;
+      margin: 0;
+    }
+    .login-promise-list li + li { border-top: 1px solid var(--border-light); }
+    .promise-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 16px rgba(139, 108, 247, 0.64);
+    }
+    .login-promise-list li:nth-child(2) .promise-dot { background: #7dd3fc; box-shadow: 0 0 16px rgba(125, 211, 252, 0.48); }
+    .login-promise-list li:nth-child(3) .promise-dot { background: var(--ok); box-shadow: 0 0 16px rgba(16, 185, 129, 0.48); }
+    .login-promise-list strong { font-size: 14px; color: var(--text); }
+    .login-promise-list span:last-child { color: var(--muted); font-size: 13px; }
+    .login-product-preview {
+      margin: 24px 0 0;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      background: #090909;
+    }
+    .login-product-preview img {
+      display: block;
+      width: 100%;
+      height: auto;
+      aspect-ratio: 16 / 7;
+      object-fit: cover;
+      object-position: top;
+    }
+    .login-product-preview figcaption {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 10px 12px;
+      border-top: 1px solid var(--border-light);
+      color: var(--muted);
+      font-size: 11px;
+    }
+    .login-product-preview strong { color: var(--text); font-size: 11px; }
+    .login-card {
+      width: 100%;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+    }
+    .login-card-main { padding: clamp(24px, 4vw, 34px); }
+    .login-card h2 { font-size: 25px; line-height: 1.08; }
+    .login-card-copy { margin: 10px 0 24px; color: var(--muted); font-size: 14px; text-wrap: pretty; }
+    .login-card .provider-list { margin: 0; }
+    .login-card .provider-list form, .login-card .provider-list button { width: 100%; }
+    .login-card .provider-list button, .login-card-main > form .primary { min-height: 50px; font-size: 14px; }
+    .login-after {
+      display: grid;
+      gap: 10px;
+      padding: 16px clamp(24px, 4vw, 34px);
+      border-top: 1px solid var(--border-light);
+      background: var(--surface3);
+    }
+    .login-after strong { font-size: 12px; color: var(--text); }
+    .login-after span { color: var(--muted); font-size: 12px; line-height: 1.45; }
+    .login-after ol {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 8px;
+      margin: 0;
+      padding: 0;
+      list-style: none;
+      counter-reset: launch-step;
+    }
+    .login-after li {
+      counter-increment: launch-step;
+      display: grid;
+      gap: 3px;
+      min-width: 0;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1.35;
+    }
+    .login-after li::before {
+      content: "0" counter(launch-step);
+      color: #a992ff;
+      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+      font-size: 9px;
+      font-weight: 700;
+    }
+    .login-trust {
+      display: flex;
+      align-items: flex-start;
+      gap: 9px;
+      margin: 18px 0 0;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.45;
+    }
+    .login-trust::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      margin-top: 5px;
+      border-radius: 50%;
+      background: var(--ok);
+      flex: none;
+    }
+    .login-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .login-footer-links { display: flex; flex-wrap: wrap; gap: 16px; }
+    .login-footer a:hover { color: var(--text); text-decoration: none; }
     .topbar {
       display: flex;
       align-items: center;
@@ -2586,10 +2799,10 @@ LAYOUT = """
     }
     .button.subtle, button.subtle { background: transparent; color: var(--muted); }
     .button.primary, button.primary {
-      background: var(--accent);
-      border-color: var(--accent);
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
       color: #ffffff;
-      box-shadow: 0 10px 26px rgba(139, 108, 247, 0.25);
+      box-shadow: 0 4px 8px rgba(139, 108, 247, 0.22);
     }
     .button.danger, button.danger {
       color: var(--danger);
@@ -2614,7 +2827,7 @@ LAYOUT = """
     }
     button:disabled { cursor: not-allowed; opacity: 0.55; }
     .button:hover, button:hover { border-color: var(--accent); text-decoration: none; }
-    .button.primary:hover, button.primary:hover { background: var(--accent-hover); }
+    .button.primary:hover, button.primary:hover { background: var(--accent-active); }
     .button:active, button:active { transform: scale(0.97); }
     .button.copied, button.copied {
       color: var(--ok);
@@ -2954,7 +3167,7 @@ LAYOUT = """
     }
     .signal strong { color: var(--text); font-weight: 720; }
     /* Onboarding stepper: create Railway account -> connect -> deploy. Steps are
-       guided, not gated -- step 1 leads, opening it promotes step 2, but a user
+       guided, not gated: step 1 leads, opening it promotes step 2, but a user
        who already has a Railway account can Connect at any time. */
     .stepper { list-style: none; margin: 0; padding: 0; display: grid; gap: 10px; }
     .step {
@@ -3012,12 +3225,12 @@ LAYOUT = """
       box-shadow: none;
     }
     .stepper.step1-done .step-connect:not([disabled]) {
-      background: var(--accent);
-      border-color: var(--accent);
+      background: var(--accent-hover);
+      border-color: var(--accent-hover);
       color: #ffffff;
-      box-shadow: 0 10px 26px rgba(139, 108, 247, 0.25);
+      box-shadow: 0 4px 8px rgba(139, 108, 247, 0.22);
     }
-    .stepper.step1-done .step-connect:not([disabled]):hover { background: var(--accent-hover); }
+    .stepper.step1-done .step-connect:not([disabled]):hover { background: var(--accent-active); }
     .deploy-inline {
       display: grid;
       grid-template-columns: minmax(220px, 1fr) auto;
@@ -3435,6 +3648,11 @@ LAYOUT = """
     @media (max-width: 860px) {
       .shell { padding: 18px 14px 48px; }
       .narrow { padding-top: 42px; }
+      .login-shell { gap: 42px; padding-bottom: 24px; }
+      .login-layout { grid-template-columns: 1fr; gap: 38px; }
+      .login-story { max-width: 720px; }
+      .login-story h2 { max-width: 12ch; font-size: clamp(42px, 10vw, 68px); }
+      .login-card { max-width: 560px; }
       .topbar { align-items: flex-start; flex-direction: column; }
       .actions { justify-content: flex-start; }
       .form-grid { grid-template-columns: 1fr; }
@@ -3480,6 +3698,22 @@ LAYOUT = """
         border-left: 0;
         border-top: 1px solid var(--border-light);
       }
+    }
+    @media (max-width: 520px) {
+      .login-shell { gap: 34px; }
+      .login-topbar { align-items: flex-start; }
+      .login-nav { gap: 12px; }
+      .login-nav a:first-child { display: none; }
+      .login-story h2 { font-size: clamp(38px, 13.5vw, 56px); letter-spacing: -0.03em; }
+      .login-lead { margin-top: 18px; }
+      .login-promise-list { margin-top: 26px; }
+      .login-promise-list li { grid-template-columns: 16px minmax(0, 1fr); gap: 10px; }
+      .login-promise-list span:last-child { grid-column: 2; }
+      .login-card-main { padding: 24px 20px; }
+      .login-after { padding: 15px 20px; }
+      .login-after ol { grid-template-columns: 1fr; gap: 7px; }
+      .login-after li { grid-template-columns: 24px minmax(0, 1fr); gap: 4px; }
+      .login-footer { align-items: flex-start; flex-direction: column; gap: 8px; }
     }
   </style>
 </head>
@@ -3555,15 +3789,23 @@ def login_page():
             <button class="primary" type="submit">Continue with Google</button>
           </form>
         """
+    elif email_login_enabled():
+        google_button = ""
     else:
         google_button = """
           <button class="primary" type="button" disabled>Continue with Google</button>
           <p class="hint">Google OAuth is ready in the app, but this server still needs GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET.</p>
         """
+    provider_block = ""
+    if google_button:
+        provider_block = f"""
+            <div class="provider-list">
+              {google_button}
+            </div>
+        """
     email_fallback = ""
     if email_login_enabled():
         email_fallback = f"""
-          <div class="divider">or</div>
           <form method="post" action="{path('/login')}">
             <label>
               Email
@@ -3573,22 +3815,74 @@ def login_page():
           </form>
         """
     body = f"""
-    <main class="shell narrow">
-      <section class="panel">
-        <div class="section">
-          <div class="brand block">
-            <img class="mark" src="{logo_url()}" alt="">
-            <div>
-              <h1>Möbius Launch</h1>
-              <p class="subtitle">Sign in to continue.</p>
-            </div>
-          </div>
-          <div class="provider-list">
-            {google_button}
-          </div>
-          {email_fallback}
+    <main class="shell login-shell">
+      <header class="login-topbar">
+        {brand()}
+        <nav class="login-nav" aria-label="About Möbius">
+          <a href="https://mobius-os.github.io/">What is Möbius?</a>
+          <a href="https://github.com/mobius-os">Open source</a>
+        </nav>
+      </header>
+      <section class="login-layout" aria-labelledby="login-heading">
+        <div class="login-story">
+          <p class="login-kicker">Your apps and agents in one private workspace</p>
+          <h2 id="login-heading">Build apps around the way you work.</h2>
+          <p class="login-lead">
+            Build and use apps with an agent in Möbius. Open the same workspace on your phone
+            or computer. Memory and reflection keep useful context from one task to the next.
+          </p>
+          <ul class="login-promise-list" aria-label="What to expect from Möbius">
+            <li>
+              <span class="promise-dot" aria-hidden="true"></span>
+              <strong>Build useful apps</strong>
+              <span>Work beside an agent, inspect the interface, and keep the app.</span>
+            </li>
+            <li>
+              <span class="promise-dot" aria-hidden="true"></span>
+              <strong>Pick up anywhere</strong>
+              <span>Continue the same workspace from a laptop or phone.</span>
+            </li>
+            <li>
+              <span class="promise-dot" aria-hidden="true"></span>
+              <strong>Improve the loop</strong>
+              <span>Use memory and reflection so you do not have to explain the same thing again.</span>
+            </li>
+          </ul>
+          <figure class="login-product-preview">
+            <img src="{preview_url()}" alt="Editor showing the files and source behind a Möbius app">
+            <figcaption><strong>Inside Möbius</strong><span>Editor · apps · agent chat</span></figcaption>
+          </figure>
         </div>
+        <aside class="login-card" aria-label="Sign in to Möbius Launch">
+          <div class="login-card-main">
+            <h2>Create your private workspace.</h2>
+            <p class="login-card-copy">
+              Sign in to create and manage a Möbius deployment in a Railway account you control.
+            </p>
+            {provider_block}
+            {email_fallback}
+            <p class="login-trust">
+              Möbius Launch provisions your workspace. It does not store your conversations,
+              files, apps, or agent activity.
+            </p>
+          </div>
+          <div class="login-after">
+            <strong>After sign-in</strong>
+            <ol aria-label="Launch steps">
+              <li>Connect your Railway workspace</li>
+              <li>Review the private deployment</li>
+              <li>Open your Möbius instance</li>
+            </ol>
+          </div>
+        </aside>
       </section>
+      <footer class="login-footer">
+        <span>Möbius OS · Open source</span>
+        <div class="login-footer-links">
+          <a href="{path('/transparency')}">Data transparency</a>
+          <a href="https://github.com/mobius-os/mobius">View the platform source</a>
+        </div>
+      </footer>
     </main>
     """
     return render(body)
@@ -3681,7 +3975,7 @@ def index():
                     <div>
                       <p class="kicker">One-click Railway deployment</p>
                       <h2>Deploy Möbius.</h2>
-                      <p class="hint">Three quick steps: create a Railway account, connect it, and deploy your private Möbius.</p>
+                      <p class="hint">Three steps: create a Railway account, connect it, and deploy your private Möbius.</p>
                     </div>
                   </div>
                 </div>
@@ -4214,7 +4508,7 @@ def login():
     ).fetchone()
     if existing and existing["auth_provider"] != "prototype-email":
         # Never let the passwordless fallback resolve to an account created via a
-        # real provider (e.g. Google) — that would be an account takeover.
+        # real provider (e.g. Google). That would be an account takeover.
         return oauth_error(
             "Use your original sign-in",
             "This email is already registered with a different sign-in method.",
@@ -4695,13 +4989,13 @@ def delete_instance(instance_id):
                 status="delete_failed",
                 current_step="Delete failed",
                 provision_token="",
-                last_error="Could not delete the Railway project — try again, or delete it from Railway.",
+                last_error="Could not delete the Railway project. Try again, or delete it from Railway.",
             )
             add_instance_event(
                 db(),
                 instance_id,
                 "error",
-                "Could not delete the Railway project — try again, or delete it from Railway.",
+                "Could not delete the Railway project. Try again, or delete it from Railway.",
             )
             db().commit()
             return redirect(path("/#new"), code=303)
