@@ -394,6 +394,10 @@ def preview_url():
 
 def product_icon_url(name):
     filename = f"{name}-icon.png"
+    return static_product_url(filename)
+
+
+def static_product_url(filename):
     return f"{path('/static/' + filename)}?v={static_asset_version(filename)}"
 
 
@@ -2505,7 +2509,7 @@ LAYOUT = """
     .login-layout {
       display: grid;
       grid-template-columns: minmax(0, 0.95fr) minmax(380px, 0.72fr);
-      align-items: center;
+      align-items: start;
       gap: clamp(44px, 7vw, 88px);
       width: 100%;
     }
@@ -2584,7 +2588,62 @@ LAYOUT = """
       font-size: 11px;
     }
     .login-product-preview strong { color: var(--text); font-size: 11px; }
+    .login-continuity {
+      margin: 24px 0 0;
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      background: linear-gradient(145deg, rgba(139, 108, 247, 0.08), rgba(255, 255, 255, 0.015));
+    }
+    .login-continuity figcaption {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 14px;
+      margin-bottom: 12px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+    .login-continuity figcaption strong { color: var(--text); font-size: 11px; }
+    .login-continuity-frames {
+      display: grid;
+      grid-template-columns: minmax(0, 2.2fr) minmax(108px, 0.72fr);
+      align-items: end;
+      gap: 12px;
+    }
+    .login-web-frame {
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      background: #080808;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.28);
+    }
+    .login-web-frame img, .login-phone-frame img { display: block; width: 100%; height: auto; }
+    .login-phone-frame {
+      position: relative;
+      overflow: hidden;
+      padding: 5px;
+      border: 1px solid #3a3a3d;
+      border-radius: 20px;
+      background: #111;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.34);
+    }
+    .login-phone-frame::before {
+      content: "";
+      position: absolute;
+      z-index: 2;
+      top: 8px;
+      left: 50%;
+      width: 35%;
+      height: 9px;
+      transform: translateX(-50%);
+      border-radius: 999px;
+      background: #050505;
+    }
+    .login-phone-frame img { border-radius: 15px; }
     .login-card {
+      position: sticky;
+      top: 24px;
       width: 100%;
       background: var(--surface);
       border: 1px solid var(--border);
@@ -3696,6 +3755,7 @@ LAYOUT = """
       .login-story { max-width: 720px; }
       .login-story h2 { max-width: 12ch; font-size: clamp(42px, 10vw, 68px); }
       .login-card { max-width: 560px; order: -1; }
+      .login-card { position: static; }
       .topbar { align-items: flex-start; flex-direction: column; }
       .dashboard-intro { align-items: flex-start; flex-direction: column; margin-top: 24px; }
       .actions { justify-content: flex-start; }
@@ -3751,6 +3811,8 @@ LAYOUT = """
       .login-story h2 { font-size: clamp(38px, 13.5vw, 56px); letter-spacing: -0.03em; }
       .login-lead { margin-top: 18px; }
       .login-principles { margin-top: 22px; }
+      .login-continuity { padding: 10px; }
+      .login-continuity-frames { grid-template-columns: minmax(0, 1.8fr) minmax(82px, 0.7fr); gap: 8px; }
       .login-card-main { padding: 24px 20px; }
       .login-after { padding: 15px 20px; }
       .login-after ol { grid-template-columns: 1fr; gap: 7px; }
@@ -3867,7 +3929,7 @@ def login_page():
       </header>
       <section class="login-layout" aria-labelledby="login-heading">
         <div class="login-story">
-          <p class="login-kicker">Community-built AGI, growing with its users</p>
+          <p class="login-kicker">Open-source AGI, growing with its users</p>
           <h2 id="login-heading">Your own app-building workspace.</h2>
           <p class="login-lead">
             Turn repeated work into apps you keep. Use them on phone and web, personalize the
@@ -3884,9 +3946,16 @@ def login_page():
             </div>
             <div class="login-principle">
               <img src="{product_icon_url('contribute')}" alt="">
-              <div><strong>Contribute</strong><span>Community-built AGI</span></div>
+              <div><strong>Contribute</strong><span>Build it together</span></div>
             </div>
           </div>
+          <figure class="login-continuity">
+            <figcaption><strong>Start with one sentence</strong><span>The same workspace on web and phone</span></figcaption>
+            <div class="login-continuity-frames">
+              <div class="login-web-frame"><img src="{static_product_url('chat-web.png')}" alt="Möbius chat on the web with a Build an app action"></div>
+              <div class="login-phone-frame"><img src="{static_product_url('chat-mobile.png')}" alt="The same Möbius chat on a phone"></div>
+            </div>
+          </figure>
           <figure class="login-product-preview">
             <img src="{preview_url()}" alt="The Möbius App Store with community apps for skills, tasks, memory, reflection, and editing">
             <figcaption><strong>Inside Möbius</strong><span>Apps · productivity · personalization</span></figcaption>

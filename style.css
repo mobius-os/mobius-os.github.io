@@ -614,7 +614,12 @@ p.muted, .muted { color: var(--muted); }
 
 .ecosystem-stage {
   position: relative;
-  padding: 18px 0 0;
+  padding: clamp(30px, 4vw, 52px);
+  border: 1px solid rgba(139, 108, 247, 0.28);
+  border-radius: 28px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(139, 108, 247, 0.09), transparent 42%),
+    rgba(255, 255, 255, 0.015);
 }
 
 .ecosystem-flow {
@@ -625,17 +630,6 @@ p.muted, .muted { color: var(--muted); }
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-.ecosystem-flow::before {
-  content: "";
-  position: absolute;
-  z-index: 0;
-  top: 42px;
-  left: 7%;
-  right: 7%;
-  height: 1px;
-  background: linear-gradient(90deg, #5d4b91, #8b6cf7 34%, #d66f9d 70%, #5d4b91);
 }
 
 .ecosystem-step {
@@ -698,13 +692,16 @@ p.muted, .muted { color: var(--muted); }
 .ecosystem-signal {
   position: absolute;
   z-index: 2;
-  top: 57px;
-  left: 7%;
+  top: -4px;
+  left: -4px;
   width: 8px;
   height: 8px;
   border-radius: 50%;
   background: #d8ceff;
   box-shadow: 0 0 0 5px rgba(139, 108, 247, 0.16), 0 0 18px rgba(139, 108, 247, 0.72);
+  offset-path: inset(0 round 28px);
+  offset-distance: 4%;
+  offset-rotate: 0deg;
   pointer-events: none;
 }
 
@@ -714,9 +711,11 @@ p.muted, .muted { color: var(--muted); }
   justify-content: center;
   gap: 12px;
   max-width: 720px;
-  margin: 48px auto 0;
-  padding-top: 20px;
-  border-top: 1px solid var(--border-light);
+  margin: 42px auto 0;
+  padding: 14px 18px;
+  border: 1px solid var(--border-light);
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.18);
   color: #c8c8c8;
   font-size: 0.9rem;
   text-align: center;
@@ -1069,15 +1068,14 @@ footer.site .inner {
 }
 
 @keyframes ecosystemTravel {
-  0% { left: 7%; opacity: 0; }
-  8%, 88% { opacity: 1; }
-  100% { left: calc(93% - 8px); opacity: 0; }
+  0% { offset-distance: 0%; }
+  100% { offset-distance: 100%; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
   .hero-platform-window { animation: heroDrift 10s ease-in-out infinite; }
   .hero-platform-note { animation: noteDrift 8s ease-in-out 1s infinite; }
-  .ecosystem-signal { animation: ecosystemTravel 7s ease-in-out infinite; }
+  .ecosystem-signal { animation: ecosystemTravel 12s linear infinite; }
 }
 
 @media (max-width: 980px) {
@@ -1125,6 +1123,9 @@ footer.site .inner {
   .news-story { padding-bottom: 0; }
   .ecosystem-flow { grid-template-columns: 1fr; gap: 34px; }
   .ecosystem-flow::before {
+    content: "";
+    position: absolute;
+    z-index: 0;
     top: 12px;
     bottom: 12px;
     left: 42px;
@@ -1135,7 +1136,7 @@ footer.site .inner {
   }
   .ecosystem-step { grid-template-columns: 84px minmax(0, 1fr); align-items: center; gap: 22px; }
   .ecosystem-signal { display: none; }
-  .ecosystem-return { justify-content: flex-start; margin-left: 0; text-align: left; }
+  .ecosystem-return { justify-content: flex-start; margin-left: 0; border-radius: 16px; text-align: left; }
   .personal-section { grid-template-columns: 1fr; }
   .section-head { align-items: flex-start; flex-direction: column; }
   .developer-actions, .hero-actions { width: 100%; }
@@ -1163,6 +1164,7 @@ footer.site .inner {
   .phone-story h3 { font-size: 1.25rem; }
   .phone-story > p:not(.app-label) { font-size: 0.82rem; }
   .community-section { gap: 42px; }
+  .ecosystem-stage { padding: 24px 20px; border-radius: 22px; }
   .ecosystem-step { grid-template-columns: 68px minmax(0, 1fr); gap: 17px; }
   .ecosystem-icon { width: 68px; height: 68px; border-radius: 13px; }
   .ecosystem-icon img { width: 60px; height: 60px; }
@@ -1176,6 +1178,7 @@ footer.site .inner {
 }
 
 @media (prefers-reduced-motion: reduce) {
+  .ecosystem-signal { display: none; }
   *, *::before, *::after {
     transition-duration: 1ms !important;
     scroll-behavior: auto !important;
