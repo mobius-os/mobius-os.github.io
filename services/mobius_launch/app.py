@@ -392,6 +392,11 @@ def preview_url():
     return f"{path('/workspace-preview.png')}?v={PREVIEW_VERSION}"
 
 
+def product_icon_url(name):
+    filename = f"{name}-icon.png"
+    return f"{path('/static/' + filename)}?v={static_asset_version(filename)}"
+
+
 def current_public_base_url():
     forwarded_host = (request.headers.get("X-Forwarded-Host") or "").split(",")[0].strip()
     host = (forwarded_host or request.host or "").split(":", 1)[0].lower()
@@ -2537,18 +2542,25 @@ LAYOUT = """
       line-height: 1.55;
       text-wrap: pretty;
     }
-    .login-facts {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px 20px;
+    .login-principles {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
       margin: 26px 0 0;
       padding: 13px 0;
       border-block: 1px solid var(--border-light);
     }
-    .login-facts span { color: #c9c9c9; font-size: 12px; font-weight: 650; }
-    .login-facts span::before { content: ""; display: inline-block; width: 6px; height: 6px; margin: 0 8px 1px 0; border-radius: 50%; background: var(--accent); }
-    .login-facts span:nth-child(2)::before { background: #7dd3fc; }
-    .login-facts span:nth-child(3)::before { background: var(--ok); }
+    .login-principle {
+      display: grid;
+      grid-template-columns: 36px minmax(0, 1fr);
+      align-items: center;
+      gap: 9px;
+      min-width: 0;
+    }
+    .login-principle img { display: block; width: 36px; height: 36px; object-fit: contain; }
+    .login-principle strong, .login-principle span { display: block; }
+    .login-principle strong { color: #dddddd; font-size: 12px; font-weight: 700; }
+    .login-principle span { margin-top: 1px; color: var(--muted); font-size: 10px; line-height: 1.25; }
     .login-product-preview {
       margin: 24px 0 0;
       overflow: hidden;
@@ -2560,9 +2572,6 @@ LAYOUT = """
       display: block;
       width: 100%;
       height: auto;
-      aspect-ratio: 16 / 7.5;
-      object-fit: cover;
-      object-position: top;
     }
     .login-product-preview figcaption {
       display: flex;
@@ -2711,7 +2720,32 @@ LAYOUT = """
       border: 1px solid var(--border);
       border-radius: var(--radius);
       overflow: hidden;
-      box-shadow: 0 12px 40px rgba(0,0,0,0.22);
+      box-shadow: 0 6px 8px rgba(0,0,0,0.18);
+    }
+    .dashboard-intro {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 24px;
+      margin: 30px 0 26px;
+      padding: 0 2px;
+    }
+    .dashboard-intro > div { max-width: 620px; }
+    .dashboard-intro h2 {
+      font-size: clamp(30px, 4vw, 42px);
+      font-weight: 730;
+      line-height: 1.02;
+      letter-spacing: -0.025em;
+    }
+    .dashboard-intro p { margin: 10px 0 0; color: var(--muted); font-size: 14px; }
+    .dashboard-count {
+      flex: none;
+      padding: 7px 10px;
+      border: 1px solid var(--border-light);
+      border-radius: 999px;
+      color: #cfcfcf;
+      font-size: 11px;
+      font-weight: 680;
     }
     .section { padding: 20px; }
     .section + .section { border-top: 1px solid var(--border); }
@@ -3663,6 +3697,7 @@ LAYOUT = """
       .login-story h2 { max-width: 12ch; font-size: clamp(42px, 10vw, 68px); }
       .login-card { max-width: 560px; order: -1; }
       .topbar { align-items: flex-start; flex-direction: column; }
+      .dashboard-intro { align-items: flex-start; flex-direction: column; margin-top: 24px; }
       .actions { justify-content: flex-start; }
       .form-grid { grid-template-columns: 1fr; }
       .tier-grid { grid-template-columns: 1fr; }
@@ -3715,7 +3750,7 @@ LAYOUT = """
       .login-nav a:first-child { display: none; }
       .login-story h2 { font-size: clamp(38px, 13.5vw, 56px); letter-spacing: -0.03em; }
       .login-lead { margin-top: 18px; }
-      .login-facts { margin-top: 22px; }
+      .login-principles { margin-top: 22px; }
       .login-card-main { padding: 24px 20px; }
       .login-after { padding: 15px 20px; }
       .login-after ol { grid-template-columns: 1fr; gap: 7px; }
@@ -3777,13 +3812,13 @@ def icon(name):
     return f"""<svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">{ICONS[name]}</svg>"""
 
 
-def brand():
+def brand(subtitle="Launch"):
     return f"""
     <div class="brand">
       <img class="mark" src="{logo_url()}" alt="">
       <div>
         <h1>Möbius</h1>
-        <p class="subtitle">Launch</p>
+        <p class="subtitle">{h(subtitle)}</p>
       </div>
     </div>
     """
@@ -3838,10 +3873,19 @@ def login_page():
             Turn repeated work into apps you keep. Use them on phone and web, personalize the
             workspace, and let memory and reflection improve the next loop.
           </p>
-          <div class="login-facts" aria-label="What to expect from Möbius">
-            <span>Apps for your work</span>
-            <span>Phone and web</span>
-            <span>Personalized over time</span>
+          <div class="login-principles" aria-label="How Möbius grows with you">
+            <div class="login-principle">
+              <img src="{product_icon_url('memory')}" alt="">
+              <div><strong>Memory</strong><span>Personalization</span></div>
+            </div>
+            <div class="login-principle">
+              <img src="{product_icon_url('reflection')}" alt="">
+              <div><strong>Reflection</strong><span>Self-improvement</span></div>
+            </div>
+            <div class="login-principle">
+              <img src="{product_icon_url('contribute')}" alt="">
+              <div><strong>Contribute</strong><span>Community-built AGI</span></div>
+            </div>
           </div>
           <figure class="login-product-preview">
             <img src="{preview_url()}" alt="The Möbius App Store with community apps for skills, tasks, memory, reflection, and editing">
@@ -3956,7 +4000,7 @@ def index():
         body = f"""
         <main class="shell">
           <header class="topbar">
-            {brand()}
+            {brand("Dashboard")}
             <div class="actions">
               <form method="post" action="{path('/logout')}">
                 <button class="subtle" type="submit">Sign out</button>
@@ -4401,7 +4445,7 @@ def index():
         instances_panel = f"""
     <section class="home-section">
       <div class="section-title">
-        <h2>Your Möbius</h2>
+        <h2>Your deployments</h2>
       </div>
       <div class="container-list">{instance_markup}</div>
     </section>
@@ -4409,11 +4453,26 @@ def index():
     """
 
     main_content = f"{instances_panel}{deploy_form}" if has_instances else f"{deploy_form}{instances_panel}"
+    deployment_count = len(rows)
+    dashboard_note = (
+        "Open a workspace, check its usage, or create another deployment."
+        if deployment_count
+        else "Create your first deployment, then return here whenever you want to manage it."
+    )
+    dashboard_intro = f"""
+      <section class="dashboard-intro" aria-labelledby="dashboard-heading">
+        <div>
+          <h2 id="dashboard-heading">Your private Möbius.</h2>
+          <p>{dashboard_note}</p>
+        </div>
+        <span class="dashboard-count">{deployment_count} {'deployment' if deployment_count == 1 else 'deployments'}</span>
+      </section>
+    """
 
     body = f"""
     <main class="shell">
       <header class="topbar">
-        {brand()}
+        {brand("Dashboard")}
         <div class="actions">
           {top_status}
           <form method="post" action="{path('/logout')}">
@@ -4421,6 +4480,7 @@ def index():
           </form>
         </div>
       </header>
+      {dashboard_intro}
       <div class="stack">{main_content}</div>
     </main>
     """
