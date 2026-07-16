@@ -61,28 +61,26 @@
   <main class="landing-main">
     <section class="product-hero" id="product">
       <div class="product-hero-copy">
-        <p class="eyebrow">Open source · self-hosted · built to change</p>
+        <p class="eyebrow">Community-built AGI app platform</p>
         <h1>Build the apps that fit your life.</h1>
         <p class="hero-lead">
-          Möbius is a personal AI workspace for building apps with an agent. Use those apps
-          on your phone or computer, and let reflection carry useful context into the next task.
+          Möbius gives a capable coding agent a workspace it can shape. Build useful apps,
+          open them anywhere, and improve the system through memory, reflection, and use.
         </p>
         <div class="hero-actions">
           <a class="btn" href="https://mobius.you/">Start your Möbius</a>
           <a class="btn secondary" href="https://github.com/mobius-os/mobius">Explore the source</a>
         </div>
-        <p class="hero-note">Your workspace, apps, files, and agent activity stay in the deployment you control.</p>
+        <p class="hero-note">Bring a ChatGPT plan with Codex access or a supported Claude Code plan. Your data stays in the deployment you control.</p>
       </div>
 
       <div class="hero-product" aria-label="Beat Machine and the Memory graph running on phones">
-        <figure class="phone-frame hero-phone hero-phone--beat">
-          <div class="phone-speaker" aria-hidden="true"></div>
-          <img src="assets/product/beat-machine-mobile.png" alt="Beat Machine with a colorful step sequencer on a phone" width="390" height="844">
+        <figure class="iphone-mockup hero-phone hero-phone--beat">
+          <img src="assets/product/beat-machine-iphone.png" alt="Beat Machine with a colorful step sequencer on an iPhone" width="669" height="1310">
           <figcaption>Beat Machine</figcaption>
         </figure>
-        <figure class="phone-frame hero-phone hero-phone--memory">
-          <div class="phone-speaker" aria-hidden="true"></div>
-          <img src="assets/product/memory-graph-mobile.png" alt="A personal knowledge graph in the Memory app on a phone" width="390" height="844">
+        <figure class="iphone-mockup hero-phone hero-phone--memory">
+          <img src="assets/product/memory-graph-iphone.png" alt="A personal knowledge graph in the Memory app on an iPhone" width="669" height="1310">
           <figcaption>Memory</figcaption>
         </figure>
       </div>
@@ -112,9 +110,8 @@
             </div>
             <img src="assets/product/editor-desktop.png" alt="Editor showing app files and source code on a computer" loading="lazy" width="1280" height="820">
           </figure>
-          <figure class="phone-frame editor-phone">
-            <div class="phone-speaker" aria-hidden="true"></div>
-            <img src="assets/product/editor-mobile.png" alt="The same app source open in Editor on a phone" loading="lazy" width="390" height="844">
+          <figure class="iphone-mockup editor-phone">
+            <img src="assets/product/editor-iphone.png" alt="Editor showing the same app files on an iPhone" loading="lazy" width="669" height="1310">
           </figure>
         </div>
         <div class="builder-copy">
@@ -122,7 +119,7 @@
             <div><h3>See what you are working on</h3><p>Browse app files, open the source, and check the state of the repository in one place.</p></div>
           </div>
           <div class="builder-point">
-            <div><h3>Keep going wherever you are</h3><p>Open the same code from your phone when you want to check a detail or make a small change.</p></div>
+            <div><h3>Keep going wherever you are</h3><p>Browse the same project from your phone and follow the work without setting up another environment.</p></div>
           </div>
           <a class="text-link" href="docs/contributing.html">See how Möbius apps work <span aria-hidden="true">→</span></a>
         </div>
@@ -138,42 +135,33 @@
         </p>
       </div>
 
-      <article class="showcase-row showcase-row--tandem">
-        <div class="showcase-copy">
+      <div class="app-card-grid">
+        <article class="app-card">
+          <figure class="product-window app-card-media">
+            <img src="assets/product/tandem-reader.png" alt="Tandem displaying the same short story in Spanish and English" loading="lazy" width="1120" height="800">
+          </figure>
           <p class="app-label">Tandem · Language learning</p>
           <h3>Read one story in two languages.</h3>
-          <p>Generate a story at your level and read the original beside its translation. Tap a word when you get stuck.</p>
-        </div>
-        <figure class="product-window showcase-media">
-          <div class="window-bar" aria-hidden="true"><span></span><span></span><span></span><b>Tandem</b></div>
-          <img src="assets/product/tandem-reader.png" alt="Tandem displaying the same short story in Spanish and English" loading="lazy" width="1120" height="800">
-        </figure>
-      </article>
-
-      <article class="showcase-row showcase-row--beat">
-        <div class="showcase-copy">
+          <p>Generate a story at your level and read the translation beside it.</p>
+        </article>
+        <article class="app-card app-card--phone">
+          <figure class="iphone-mockup app-card-iphone">
+            <img src="assets/product/beat-machine-iphone.png" alt="Beat Machine with a colorful step sequencer on an iPhone" loading="lazy" width="669" height="1310">
+          </figure>
           <p class="app-label">Beat Machine · Music</p>
           <h3>Sketch a beat while the idea is fresh.</h3>
-          <p>Build a pattern on the 32-step sequencer, shape the sound, and add your own recordings. The sequencer is ready as soon as the app opens, with room to keep exploring.</p>
-        </div>
-        <figure class="phone-frame showcase-phone">
-          <div class="phone-speaker" aria-hidden="true"></div>
-          <img src="assets/product/beat-machine-mobile.png" alt="Beat Machine with a colorful step sequencer and sound controls" loading="lazy" width="390" height="844">
-        </figure>
-      </article>
-
-      <article class="showcase-row showcase-row--store">
-        <div class="showcase-copy">
+          <p>Build a pattern, shape the sound, and add your own recordings.</p>
+        </article>
+        <article class="app-card">
+          <figure class="product-window app-card-media app-card-media--store">
+            <img src="assets/product/app-store.png" alt="The Möbius App Store showing Skills, Tasks, Notes, Memory, Reflection, and other apps" loading="lazy" width="2048" height="1712">
+          </figure>
           <p class="app-label">App Store · Community catalog</p>
           <h3>Start with an app, then make it yours.</h3>
-          <p>Browse focused tools for notes, tasks, memory, news, building, and more. A useful app can become a starting point instead of another blank page.</p>
-          <a class="text-link" href="apps/">Browse the current catalog <span aria-hidden="true">→</span></a>
-        </div>
-        <figure class="product-window showcase-media showcase-media--crop">
-          <div class="window-bar" aria-hidden="true"><span></span><span></span><span></span><b>Möbius App Store</b></div>
-          <img src="assets/product/app-store.png" alt="The Möbius App Store showing Skills, Tasks, Notes, Memory, Reflection, and other apps" loading="lazy" width="2048" height="1712">
-        </figure>
-      </article>
+          <p>Install a community app, change it, or use it as the start of something new.</p>
+        </article>
+      </div>
+      <a class="text-link" href="apps/">Browse the current catalog <span aria-hidden="true">→</span></a>
     </section>
 
     <section class="personal-section" id="personalization">
@@ -190,9 +178,8 @@
         </div>
       </div>
       <div class="personal-visual">
-        <figure class="phone-frame memory-phone">
-          <div class="phone-speaker" aria-hidden="true"></div>
-          <img src="assets/product/memory-graph-mobile.png" alt="Memory showing connected notes as a graph on a phone" loading="lazy" width="390" height="844">
+        <figure class="iphone-mockup memory-phone">
+          <img src="assets/product/memory-graph-iphone.png" alt="Memory showing connected notes as a graph on an iPhone" loading="lazy" width="669" height="1310">
           <figcaption>Your memory, connected.</figcaption>
         </figure>
         <figure class="theme-frame">
@@ -204,35 +191,24 @@
 
     <section class="community-section" id="self-improvement">
       <div class="section-intro">
-        <h2>A personal fix can become shared infrastructure.</h2>
+        <h2>A community-built AGI project, grounded in useful apps.</h2>
         <p>
-          A useful platform change should not stay buried in one app. An agent can help prepare
-          the change, then the community can review and test it before anyone else depends on it.
+          Möbius gives capable agents broad control inside the workspace. Git and recovery make
+          that power reversible, while community review turns good local changes into a stronger platform.
         </p>
       </div>
       <ol class="community-loop">
-        <li><span>1</span><div><strong>Build an app</strong><p>Solve a real problem inside your own workflow.</p></div></li>
-        <li><span>2</span><div><strong>Spot what repeats</strong><p>Identify a useful capability that should not be rebuilt every time.</p></div></li>
-        <li><span>3</span><div><strong>Share the extension</strong><p>Open a proposal for review, testing, and discussion.</p></div></li>
-        <li><span>4</span><div><strong>Strengthen the platform</strong><p>Better primitives lead to better apps and less duplicated work.</p></div></li>
+        <li><span>1</span><div><strong>Build for a real need</strong><p>Turn a conversation into an app you use.</p></div></li>
+        <li><span>2</span><div><strong>Improve the loop</strong><p>Memory and reflection surface what should work better next time.</p></div></li>
+        <li><span>3</span><div><strong>Share what generalizes</strong><p>Community review turns useful extensions into platform capabilities.</p></div></li>
       </ol>
-    </section>
-
-    <section class="ownership-section">
-      <div>
-        <h2>See how it works and decide where it runs.</h2>
-      </div>
-      <div class="ownership-grid">
-        <div><strong>Self-hosted</strong><p>Run Möbius in infrastructure you control.</p></div>
-        <div><strong>Model-flexible</strong><p>Connect the agents and models that fit your work.</p></div>
-      </div>
     </section>
 
     <section class="final-cta">
       <img src="mobius-brand.png" alt="" width="72" height="72">
       <p class="eyebrow">Start with one useful loop</p>
       <h2>Build something you will want to open tomorrow.</h2>
-      <p>Launch a private workspace or explore the open-source platform and community apps.</p>
+      <p>Launch a private workspace with Codex or Claude Code, or explore the open-source platform and community apps.</p>
       <div class="hero-actions">
         <a class="btn" href="https://mobius.you/">Start your Möbius</a>
         <a class="btn secondary" href="https://github.com/mobius-os">Visit GitHub</a>

@@ -118,7 +118,7 @@ MOBIUS_LAUNCH_DEPLOY_MODE = os.environ.get("MOBIUS_LAUNCH_DEPLOY_MODE", "unknown
 os.makedirs(DATA_DIR, exist_ok=True)
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 LOGO_FILENAME = "moebius.png"
-PREVIEW_FILENAME = "editor-desktop.png"
+PREVIEW_FILENAME = "app-store.png"
 
 
 def static_asset_version(filename):
@@ -2499,12 +2499,12 @@ LAYOUT = """
     .login-nav a:hover { color: var(--text); text-decoration: none; }
     .login-layout {
       display: grid;
-      grid-template-columns: minmax(0, 1.2fr) minmax(340px, 0.72fr);
+      grid-template-columns: minmax(0, 0.95fr) minmax(380px, 0.72fr);
       align-items: center;
-      gap: clamp(44px, 9vw, 116px);
+      gap: clamp(44px, 7vw, 88px);
       width: 100%;
     }
-    .login-story { max-width: 690px; }
+    .login-story { max-width: 630px; }
     .login-kicker {
       display: inline-flex;
       align-items: center;
@@ -2522,8 +2522,8 @@ LAYOUT = """
       background: var(--accent);
     }
     .login-story h2 {
-      max-width: 11ch;
-      font-size: clamp(44px, 6.4vw, 78px);
+      max-width: 12ch;
+      font-size: clamp(42px, 5.4vw, 66px);
       font-weight: 730;
       line-height: 0.98;
       letter-spacing: -0.035em;
@@ -2537,36 +2537,18 @@ LAYOUT = """
       line-height: 1.55;
       text-wrap: pretty;
     }
-    .login-promise-list {
-      position: relative;
-      display: grid;
-      gap: 0;
-      max-width: 620px;
-      margin: 32px 0 0;
-      padding: 0;
-      list-style: none;
+    .login-facts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px 20px;
+      margin: 26px 0 0;
+      padding: 13px 0;
       border-block: 1px solid var(--border-light);
     }
-    .login-promise-list li {
-      display: grid;
-      grid-template-columns: 18px minmax(112px, 0.38fr) minmax(0, 1fr);
-      align-items: baseline;
-      gap: 14px;
-      padding: 13px 0;
-      margin: 0;
-    }
-    .login-promise-list li + li { border-top: 1px solid var(--border-light); }
-    .promise-dot {
-      width: 8px;
-      height: 8px;
-      border-radius: 50%;
-      background: var(--accent);
-      box-shadow: 0 0 16px rgba(139, 108, 247, 0.64);
-    }
-    .login-promise-list li:nth-child(2) .promise-dot { background: #7dd3fc; box-shadow: 0 0 16px rgba(125, 211, 252, 0.48); }
-    .login-promise-list li:nth-child(3) .promise-dot { background: var(--ok); box-shadow: 0 0 16px rgba(16, 185, 129, 0.48); }
-    .login-promise-list strong { font-size: 14px; color: var(--text); }
-    .login-promise-list span:last-child { color: var(--muted); font-size: 13px; }
+    .login-facts span { color: #c9c9c9; font-size: 12px; font-weight: 650; }
+    .login-facts span::before { content: ""; display: inline-block; width: 6px; height: 6px; margin: 0 8px 1px 0; border-radius: 50%; background: var(--accent); }
+    .login-facts span:nth-child(2)::before { background: #7dd3fc; }
+    .login-facts span:nth-child(3)::before { background: var(--ok); }
     .login-product-preview {
       margin: 24px 0 0;
       overflow: hidden;
@@ -2578,7 +2560,7 @@ LAYOUT = """
       display: block;
       width: 100%;
       height: auto;
-      aspect-ratio: 16 / 7;
+      aspect-ratio: 16 / 7.5;
       object-fit: cover;
       object-position: top;
     }
@@ -2599,6 +2581,7 @@ LAYOUT = """
       border: 1px solid var(--border);
       border-radius: 14px;
       overflow: hidden;
+      box-shadow: 0 8px 8px rgba(0, 0, 0, 0.24);
     }
     .login-card-main { padding: clamp(24px, 4vw, 34px); }
     .login-card h2 { font-size: 25px; line-height: 1.08; }
@@ -2658,6 +2641,15 @@ LAYOUT = """
       background: var(--ok);
       flex: none;
     }
+    .login-requirement {
+      margin: 16px 0 0;
+      padding-top: 14px;
+      border-top: 1px solid var(--border-light);
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.5;
+    }
+    .login-requirement strong { color: var(--text); }
     .login-footer {
       display: flex;
       align-items: center;
@@ -3652,7 +3644,7 @@ LAYOUT = """
       .login-layout { grid-template-columns: 1fr; gap: 38px; }
       .login-story { max-width: 720px; }
       .login-story h2 { max-width: 12ch; font-size: clamp(42px, 10vw, 68px); }
-      .login-card { max-width: 560px; }
+      .login-card { max-width: 560px; order: -1; }
       .topbar { align-items: flex-start; flex-direction: column; }
       .actions { justify-content: flex-start; }
       .form-grid { grid-template-columns: 1fr; }
@@ -3706,9 +3698,7 @@ LAYOUT = """
       .login-nav a:first-child { display: none; }
       .login-story h2 { font-size: clamp(38px, 13.5vw, 56px); letter-spacing: -0.03em; }
       .login-lead { margin-top: 18px; }
-      .login-promise-list { margin-top: 26px; }
-      .login-promise-list li { grid-template-columns: 16px minmax(0, 1fr); gap: 10px; }
-      .login-promise-list span:last-child { grid-column: 2; }
+      .login-facts { margin-top: 22px; }
       .login-card-main { padding: 24px 20px; }
       .login-after { padding: 15px 20px; }
       .login-after ol { grid-template-columns: 1fr; gap: 7px; }
@@ -3825,37 +3815,25 @@ def login_page():
       </header>
       <section class="login-layout" aria-labelledby="login-heading">
         <div class="login-story">
-          <p class="login-kicker">Your apps and agents in one private workspace</p>
-          <h2 id="login-heading">Build apps around the way you work.</h2>
+          <p class="login-kicker">Community-built AGI app platform</p>
+          <h2 id="login-heading">Your own app-building workspace.</h2>
           <p class="login-lead">
-            Build and use apps with an agent in Möbius. Open the same workspace on your phone
-            or computer. Memory and reflection keep useful context from one task to the next.
+            Build apps with Codex or Claude Code, shape the platform, and use memory and
+            reflection to improve the next loop. Everything runs in a private deployment you control.
           </p>
-          <ul class="login-promise-list" aria-label="What to expect from Möbius">
-            <li>
-              <span class="promise-dot" aria-hidden="true"></span>
-              <strong>Build useful apps</strong>
-              <span>Work beside an agent, inspect the interface, and keep the app.</span>
-            </li>
-            <li>
-              <span class="promise-dot" aria-hidden="true"></span>
-              <strong>Pick up anywhere</strong>
-              <span>Continue the same workspace from a laptop or phone.</span>
-            </li>
-            <li>
-              <span class="promise-dot" aria-hidden="true"></span>
-              <strong>Improve the loop</strong>
-              <span>Use memory and reflection so you do not have to explain the same thing again.</span>
-            </li>
-          </ul>
+          <div class="login-facts" aria-label="What to expect from Möbius">
+            <span>Build and keep apps</span>
+            <span>Phone and web</span>
+            <span>Memory and reflection</span>
+          </div>
           <figure class="login-product-preview">
-            <img src="{preview_url()}" alt="Editor showing the files and source behind a Möbius app">
-            <figcaption><strong>Inside Möbius</strong><span>Editor · apps · agent chat</span></figcaption>
+            <img src="{preview_url()}" alt="The Möbius App Store with community apps for skills, tasks, memory, reflection, and editing">
+            <figcaption><strong>Inside Möbius</strong><span>Apps · memory · reflection</span></figcaption>
           </figure>
         </div>
         <aside class="login-card" aria-label="Sign in to Möbius Launch">
           <div class="login-card-main">
-            <h2>Create your private workspace.</h2>
+            <h2>Launch your private Möbius.</h2>
             <p class="login-card-copy">
               Sign in to create and manage a Möbius deployment in a Railway account you control.
             </p>
@@ -3865,6 +3843,7 @@ def login_page():
               Möbius Launch provisions your workspace. It does not store your conversations,
               files, apps, or agent activity.
             </p>
+            <p class="login-requirement"><strong>Agent access:</strong> connect a ChatGPT plan with Codex access or a supported Claude Code plan inside your workspace.</p>
           </div>
           <div class="login-after">
             <strong>After sign-in</strong>

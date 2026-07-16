@@ -2,9 +2,9 @@
   <img src="mobius-brand.png" width="76" alt="Möbius OS">
 </p>
 
-# Build and launch Möbius
+# Möbius product site and launcher
 
-This repository contains the [Möbius OS product site](https://mobius-os.github.io/) and [Möbius Launch](https://mobius.you/), the service that creates private Möbius instances in user-owned Railway accounts. It also publishes the app catalog, manifest specification, and contributor documentation.
+This repository contains the [Möbius product site](https://mobius-os.github.io/) and [Möbius Launch](https://mobius.you/). It also publishes the app catalog and documentation for people building Möbius apps.
 
 <p align="center">
   <a href="https://mobius.you/"><strong>Launch Möbius</strong></a> ·
@@ -17,9 +17,9 @@ This repository contains the [Möbius OS product site](https://mobius-os.github.
 
 ## Build the apps that fit your life
 
-Möbius is an open-source, self-hosted artificial intelligence (AI) workspace for building and using focused apps. You can work beside an agent and inspect the interface and source. The resulting app stays in the same workspace where you use it.
+Möbius is a community-built AGI app platform. A capable coding agent can build an app beside the conversation, then leave it in the same workspace where you use it.
 
-Apps are the main surface. They turn a recurring need into an interface you can open and use. Personalization shares useful context, preferences, files, and themes across the workspace. Reflection reviews completed work and can turn repeated friction into a better default, a skill, or a change to an app.
+Apps are the main surface. Personalization carries useful context, preferences, files, and themes across the workspace. Memory and Reflection help turn repeated friction into a better default, a skill, or an app change.
 
 Möbius saves context and working patterns so the next task starts with more of what it needs.
 
@@ -30,11 +30,11 @@ Editor keeps the files behind your apps close at hand. Browse the project and ch
 <table>
   <tr>
     <td width="68%"><img src="assets/product/editor-desktop.png" alt="Editor showing app files and source on a desktop"></td>
-    <td width="32%"><img src="assets/product/editor-mobile.png" alt="The same app source open in Editor on a phone"></td>
+    <td width="32%"><img src="assets/product/editor-iphone.png" alt="Editor showing the app files on an iPhone"></td>
   </tr>
   <tr>
     <td><strong>Desktop:</strong> browse files, inspect repository state, and edit the source.</td>
-    <td><strong>Phone:</strong> check the same code and make a small change wherever you are.</td>
+    <td><strong>Phone:</strong> browse the same project and follow a change wherever you are.</td>
   </tr>
 </table>
 
@@ -45,7 +45,7 @@ Community apps cover work, learning, planning, and reflection. Install one as it
 <table>
   <tr>
     <td width="58%"><img src="assets/product/tandem-reader.png" alt="Tandem showing a bilingual story"></td>
-    <td width="42%"><img src="assets/product/beat-machine-mobile.png" alt="Beat Machine showing a colorful step sequencer on a phone"></td>
+    <td width="42%"><img src="assets/product/beat-machine-iphone.png" alt="Beat Machine showing a colorful step sequencer on an iPhone"></td>
   </tr>
   <tr>
     <td><strong>Tandem:</strong> read generated material in two languages at your chosen level.</td>
@@ -63,7 +63,7 @@ Themes control how the workspace looks. Memory connects useful notes, decisions,
 
 <table>
   <tr>
-    <td width="36%"><img src="assets/product/memory-graph-mobile.png" alt="Memory showing connected notes as a graph on a phone"></td>
+    <td width="36%"><img src="assets/product/memory-graph-iphone.png" alt="Memory showing connected notes as a graph on an iPhone"></td>
     <td width="64%"><img src="assets/product/themes.png" alt="Default and custom Möbius themes"></td>
   </tr>
   <tr>
@@ -74,15 +74,14 @@ Themes control how the workspace looks. Memory connects useful notes, decisions,
 
 ## Improve the platform through use
 
-The roadmap describes a community development loop based on work inside real apps:
+The platform grows through work inside real apps:
 
 1. Build an app for a problem in your own workflow
-2. Identify a capability that other apps could reuse
-3. Propose the extension for community review and testing
-4. Merge the useful primitive into the platform
-5. Build better apps with less duplicated work
+2. Notice a pattern that other apps could reuse
+3. Review and test the change with the community
+4. Carry the useful part into the platform
 
-People can participate at different levels. Some will build an app for themselves. Others will review platform code or help test a change before it ships. Personal extensions can stay private, while reusable work can go back to the community.
+Personal changes can stay private. Reusable work can go back to the community as an app, skill, or platform capability.
 
 ## Launch a private workspace
 
