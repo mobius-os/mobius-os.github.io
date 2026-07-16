@@ -37,7 +37,9 @@ The public runtime exposes:
 Railway's docs currently describe:
 
 - A free trial with a one-time $5 grant for up to 30 days, available without a credit card.
+- Free with $1 of resource credit per month after the trial.
 - Hobby at $5/month, including $5 of resource usage each billing cycle.
+- Pro at $20/month, including $20 of resource usage each billing cycle.
 - Usage-based compute pricing for CPU, RAM, volume storage, and network egress.
 - Hard usage limits that take workloads offline to prevent additional usage.
 

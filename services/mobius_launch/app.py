@@ -1816,7 +1816,12 @@ METRIC_MEASUREMENTS = [
     "NETWORK_TX_GB",
 ]
 RAILWAY_MONTHLY_RESOURCE_MINUTES = 30 * 24 * 60
-RAILWAY_TRIAL_ALLOWANCE_USD = 5.0
+RAILWAY_INCLUDED_USAGE_USD = {
+    "trial": 5.0,
+    "free": 1.0,
+    "hobby": 5.0,
+    "pro": 20.0,
+}
 RAILWAY_USAGE_RATES = {
     "CPU_USAGE": 20.0 / RAILWAY_MONTHLY_RESOURCE_MINUTES,
     "MEMORY_USAGE_GB": 10.0 / RAILWAY_MONTHLY_RESOURCE_MINUTES,
@@ -1909,6 +1914,89 @@ def usage_cost(usage, value_key="value"):
             raw = 0.0
         total += raw * rate
     return total
+
+
+def usage_credit_context(plan_label, used_cost):
+    plan = normalize_plan_label(plan_label)
+    allowance = RAILWAY_INCLUDED_USAGE_USD.get(plan)
+    if allowance is None:
+        return {
+            "plan": plan,
+            "heading": "Estimated resource usage",
+            "primary_label": format_usd(used_cost),
+            "used_label": format_usd(used_cost),
+            "allowance": None,
+            "allowance_label": "",
+            "remaining": None,
+            "remaining_label": "",
+            "percent": "",
+            "used_copy": "Railway estimate",
+            "allowance_copy": "Open billing",
+            "note": "Estimated from this deployment's current Railway usage.",
+        }
+
+    remaining = max(0.0, allowance - used_cost)
+    used_label = format_usd(used_cost)
+    allowance_label = format_usd(allowance)
+    if plan == "trial":
+        heading = "Railway trial credit"
+        primary_label = f"{allowance_label} included"
+        note = f"{used_label} estimated usage from this deployment. No card is required for the trial."
+    elif plan == "free":
+        heading = "Monthly Railway credit"
+        primary_label = f"{allowance_label} free"
+        note = f"{used_label} estimated usage from this deployment."
+    else:
+        heading = "Included Railway usage"
+        primary_label = f"{allowance_label} included"
+        note = f"{used_label} estimated usage from this deployment on the {plan_title(plan)} plan."
+    if used_cost > allowance:
+        note = (
+            f"{used_label} estimated usage from this deployment, above the "
+            f"{allowance_label} included amount. Railway shows the authoritative total."
+        )
+
+    return {
+        "plan": plan,
+        "heading": heading,
+        "primary_label": primary_label,
+        "used_label": used_label,
+        "allowance": allowance,
+        "allowance_label": allowance_label,
+        "remaining": remaining,
+        "remaining_label": format_usd(remaining),
+        "percent": "",
+        "used_copy": f"{used_label} estimated here",
+        "allowance_copy": "Railway shows the total",
+        "note": note,
+    }
+
+
+def railway_region_label(value):
+    region = str(value or "").strip().lower()
+    labels = {
+        "us-west": "US West",
+        "us-east": "US East",
+        "europe-west": "Europe West",
+        "europe-north": "Europe North",
+        "asia-southeast": "Southeast Asia",
+        "asia-east": "East Asia",
+    }
+    for prefix, label in labels.items():
+        if region.startswith(prefix):
+            return label
+    return str(value or "Unknown region").replace("_", " ")
+
+
+def runtime_status_label(value):
+    status = str(value or "").strip().lower()
+    if status in {"success", "ready"}:
+        return "Online and ready"
+    if status == "sleeping":
+        return "Ready, wakes on request"
+    if status:
+        return status.replace("_", " ").title()
+    return "Checking workspace"
 
 
 def railway_metrics_snapshot(access_token, connection, instance):
@@ -2021,6 +2109,7 @@ def railway_metrics_snapshot(access_token, connection, instance):
     except RailwayAPIError:
         usage = []
 
+    service_instance = data.get("serviceInstance") or {}
     project = data.get("project") or {}
     volumes = [edge.get("node") or {} for edge in ((project.get("volumes") or {}).get("edges") or [])]
     volume = volumes[0] if volumes else {}
@@ -2047,16 +2136,43 @@ def railway_metrics_snapshot(access_token, connection, instance):
     except (TypeError, ValueError):
         volume_current_gb = 0
     disk_used_gb = disk_now if disk_now is not None else volume_current_gb
-    deployment = (data.get("serviceInstance") or {}).get("latestDeployment") or {}
+    deployment = service_instance.get("latestDeployment") or {}
     deployment_status = (deployment.get("status") or instance["status"] or "").lower()
     used_cost = usage_cost(usage)
+    current_plan = normalize_plan_label(connection["cached_plan"])
+    plan_label = current_plan if current_plan != "unknown" else instance["plan_label"] or "unknown"
+    cost_context = usage_credit_context(plan_label, used_cost)
     network_spark = spark_percentages(metrics, "NETWORK_TX_GB")
+    service_domains = ((service_instance.get("domains") or {}).get("serviceDomains") or [])
+    custom_domains = ((service_instance.get("domains") or {}).get("customDomains") or [])
+    domain = next(
+        (
+            item.get("domain")
+            for item in custom_domains + service_domains
+            if item.get("domain")
+        ),
+        instance["railway_domain"] or "",
+    )
+    has_volume = bool((volume or {}).get("id") or instance["railway_volume_id"])
+    volume_state = str((volume_instance or {}).get("state") or "").strip().lower()
+    data_status = "Persistent and attached" if has_volume else "No volume attached"
+    if volume_state and volume_state not in {"ready", "active", "attached"}:
+        data_status = volume_state.replace("_", " ").title()
 
     return {
         "updated_at": now_iso(),
         "deployment_status": deployment_status,
-        "service_instance_id": (data.get("serviceInstance") or {}).get("id") or "",
+        "service_instance_id": service_instance.get("id") or "",
         "railway_project_name": project.get("name") or instance["railway_project_name"] or "",
+        "runtime": {
+            "status": deployment_status,
+            "status_label": runtime_status_label(deployment_status),
+            "region": service_instance.get("region") or "",
+            "region_label": railway_region_label(service_instance.get("region")),
+            "latest_deployment_at": deployment.get("updatedAt") or instance["updated_at"] or "",
+            "domain": domain,
+            "data_status": data_status,
+        },
         "cpu": {
             "value": cpu_now,
             "limit": cpu_limit,
@@ -2098,16 +2214,7 @@ def railway_metrics_snapshot(access_token, connection, instance):
             "rx_label": format_gb_label(usage_value(usage, "NETWORK_RX_GB")),
             "tx_label": format_gb_label(usage_value(usage, "NETWORK_TX_GB")),
         },
-        "cost": {
-            "available": bool(usage),
-            "used": used_cost,
-            "allowance": RAILWAY_TRIAL_ALLOWANCE_USD,
-            "label": format_usd(used_cost),
-            "used_label": format_usd(used_cost),
-            "allowance_label": format_usd(RAILWAY_TRIAL_ALLOWANCE_USD),
-            "percent": percent_label(used_cost, RAILWAY_TRIAL_ALLOWANCE_USD, decimals=1),
-            "note": "Current project usage to date. Billed by Railway.",
-        },
+        "cost": {"available": bool(usage), "used": used_cost, **cost_context},
     }
 
 
@@ -2676,38 +2783,55 @@ LAYOUT = """
     .login-card .provider-list button, .login-card-main > form .primary { min-height: 50px; font-size: 14px; }
     .login-after {
       display: grid;
-      gap: 10px;
+      gap: 12px;
       padding: 16px clamp(24px, 4vw, 34px);
       border-top: 1px solid var(--border-light);
       background: var(--surface3);
     }
-    .login-after strong { font-size: 12px; color: var(--text); }
-    .login-after span { color: var(--muted); font-size: 12px; line-height: 1.45; }
-    .login-after ol {
+    .login-after-head {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .login-after-head strong { color: var(--text); font-size: 12px; }
+    .login-after-head span { color: var(--muted); font-size: 11px; }
+    .login-dashboard-peek {
+      overflow: hidden;
+      border: 1px solid var(--border-light);
+      border-radius: 8px;
+      background: #0d0d0d;
+    }
+    .login-peek-status {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      padding: 9px 10px;
+      border-bottom: 1px solid var(--border-light);
+    }
+    .login-peek-status::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--ok);
+      flex: none;
+    }
+    .login-peek-status strong { color: var(--text); font-size: 11px; }
+    .login-peek-status span { margin-left: auto; color: var(--ok); font-size: 10px; font-weight: 700; }
+    .login-peek-actions {
       display: grid;
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 8px;
-      margin: 0;
-      padding: 0;
-      list-style: none;
-      counter-reset: launch-step;
+      gap: 0;
     }
-    .login-after li {
-      counter-increment: launch-step;
-      display: grid;
-      gap: 3px;
+    .login-peek-action {
+      padding: 9px 10px;
       min-width: 0;
-      color: var(--muted);
-      font-size: 10px;
-      line-height: 1.35;
     }
-    .login-after li::before {
-      content: "0" counter(launch-step);
-      color: #a992ff;
-      font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-      font-size: 9px;
-      font-weight: 700;
-    }
+    .login-peek-action + .login-peek-action { border-left: 1px solid var(--border-light); }
+    .login-peek-action strong, .login-peek-action span { display: block; }
+    .login-peek-action strong { color: var(--text); font-size: 10px; }
+    .login-peek-action span { margin-top: 1px; color: var(--muted); font-size: 9px; line-height: 1.3; }
     .login-trust {
       display: flex;
       align-items: flex-start;
@@ -2735,6 +2859,31 @@ LAYOUT = """
       line-height: 1.5;
     }
     .login-requirement strong { color: var(--text); }
+    .login-trial {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 2px 9px;
+      align-items: center;
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 11px;
+      line-height: 1.4;
+    }
+    .login-trial::before {
+      content: "✓";
+      grid-row: 1 / span 2;
+      width: 21px;
+      height: 21px;
+      display: grid;
+      place-items: center;
+      border-radius: 999px;
+      background: var(--ok-soft);
+      color: var(--ok);
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .login-trial strong { color: var(--text); font-size: 11px; }
+    .login-trial span { color: var(--muted); font-size: 10px; }
     .login-footer {
       display: flex;
       align-items: center;
@@ -3602,18 +3751,65 @@ LAYOUT = """
       border-top: 1px solid var(--border-light);
       padding-top: 15px;
     }
-    .budget-card {
+    .workspace-overview {
       display: grid;
-      grid-template-columns: minmax(0, 1fr) minmax(160px, 34%);
-      gap: 18px;
-      align-items: end;
+      grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.92fr);
+      overflow: hidden;
+      border: 1px solid var(--border-light);
       border-radius: var(--radius);
-      padding: 14px;
-      background:
-        linear-gradient(135deg, rgba(139, 108, 247, 0.13), rgba(16, 185, 129, 0.055)),
-        color-mix(in srgb, var(--surface3) 88%, transparent);
+      background: var(--surface3);
     }
-    .budget-copy {
+    .runtime-overview, .credit-overview { padding: 15px 16px; }
+    .credit-overview {
+      display: grid;
+      align-content: center;
+      gap: 10px;
+      border-left: 1px solid var(--border-light);
+      background: rgba(16, 185, 129, 0.035);
+    }
+    .runtime-heading {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text);
+      font-size: 14px;
+      font-weight: 720;
+    }
+    .runtime-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 999px;
+      background: var(--ok);
+      box-shadow: 0 0 12px color-mix(in srgb, var(--ok) 72%, transparent);
+      flex: none;
+    }
+    .runtime-copy {
+      margin: 4px 0 13px;
+      color: var(--muted);
+      font-size: 12px;
+    }
+    .runtime-facts {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin: 0;
+    }
+    .runtime-fact { min-width: 0; }
+    .runtime-fact dt {
+      color: var(--muted);
+      font-size: 10px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+    .runtime-fact dd {
+      margin: 3px 0 0;
+      color: var(--text);
+      font-size: 12px;
+      font-weight: 650;
+      line-height: 1.3;
+      overflow-wrap: anywhere;
+    }
+    .credit-copy {
       display: grid;
       gap: 4px;
       min-width: 0;
@@ -3624,36 +3820,45 @@ LAYOUT = """
       font-weight: 720;
       text-transform: uppercase;
     }
-    .budget-copy strong {
+    .credit-copy strong {
       color: var(--text);
-      font-size: 36px;
+      font-size: 28px;
       font-weight: 760;
       line-height: 1;
       font-variant-numeric: tabular-nums;
     }
-    .budget-copy p {
+    .credit-copy p {
       margin: 0;
       color: var(--muted);
       font-size: 12px;
     }
-    .budget-meter {
+    .credit-meter {
       display: grid;
-      gap: 8px;
+      gap: 7px;
       min-width: 0;
     }
-    .budget-pair {
+    .credit-pair {
       display: flex;
       align-items: baseline;
       justify-content: space-between;
       gap: 10px;
       color: var(--muted);
-      font-size: 12px;
+      font-size: 11px;
       white-space: nowrap;
     }
-    .budget-pair strong { color: var(--text); font-size: 15px; }
+    .credit-pair a { color: var(--muted); }
+    .credit-pair a:hover { color: var(--text); text-decoration: none; }
+    .resource-heading {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+    }
+    .resource-heading strong { color: var(--text); font-size: 12px; }
+    .resource-heading span { color: var(--muted); font-size: 11px; }
     .resource-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
       gap: 0;
     }
     .metric-tile {
@@ -3790,8 +3995,9 @@ LAYOUT = """
       }
       .deploy-button { width: 100%; }
       .limit-grid { grid-template-columns: 1fr; }
-      .budget-card { grid-template-columns: 1fr; }
-      .budget-copy strong { font-size: 30px; }
+      .workspace-overview { grid-template-columns: 1fr; }
+      .credit-overview { border-top: 1px solid var(--border-light); border-left: 0; }
+      .credit-copy strong { font-size: 26px; }
       .resource-grid { grid-template-columns: 1fr; }
       .metric-tile {
         min-height: 104px;
@@ -3815,8 +4021,7 @@ LAYOUT = """
       .login-continuity-frames { grid-template-columns: minmax(0, 1.8fr) minmax(82px, 0.7fr); gap: 8px; }
       .login-card-main { padding: 24px 20px; }
       .login-after { padding: 15px 20px; }
-      .login-after ol { grid-template-columns: 1fr; gap: 7px; }
-      .login-after li { grid-template-columns: 24px minmax(0, 1fr); gap: 4px; }
+      .runtime-facts { grid-template-columns: 1fr; gap: 9px; }
       .login-footer { align-items: flex-start; flex-direction: column; gap: 8px; }
     }
   </style>
@@ -3966,10 +4171,14 @@ def login_page():
             <p class="login-card-label">Launch dashboard</p>
             <h2>Start your private Möbius.</h2>
             <p class="login-card-copy">
-              Sign in to create a deployment, check its status, and return to manage it later.
+              Sign in to deploy your workspace, open it later, and see health, included usage, and recovery in one place.
             </p>
             {provider_block}
             {email_fallback}
+            <p class="login-trial">
+              <strong>$5 Railway trial credit</strong>
+              <span>New users can try it without a card.</span>
+            </p>
             <p class="login-trust">
               Your workspace stores its own conversations, files, apps, and agent activity.
               Möbius Launch only provisions and manages it.
@@ -3977,12 +4186,15 @@ def login_page():
             <p class="login-requirement"><strong>Agent access:</strong> connect a ChatGPT plan with Codex access or a supported Claude Code plan inside your workspace.</p>
           </div>
           <div class="login-after">
-            <strong>From the dashboard</strong>
-            <ol aria-label="Launch steps">
-              <li>Connect your Railway workspace</li>
-              <li>Create and open your deployment</li>
-              <li>Return anytime to manage it</li>
-            </ol>
+            <div class="login-after-head"><strong>After sign in</strong><span>Your control pane</span></div>
+            <div class="login-dashboard-peek" aria-label="A preview of the deployment control pane">
+              <div class="login-peek-status"><strong>My Möbius</strong><span>Ready</span></div>
+              <div class="login-peek-actions">
+                <div class="login-peek-action"><strong>Open</strong><span>Your workspace</span></div>
+                <div class="login-peek-action"><strong>Check</strong><span>Health and credit</span></div>
+                <div class="login-peek-action"><strong>Recover</strong><span>When needed</span></div>
+              </div>
+            </div>
           </div>
         </aside>
       </section>
@@ -4221,17 +4433,28 @@ def index():
         )
         metrics_markup = f"""
                 <div class="home-insights" data-metrics-url="{path('/instances/' + inst['id'] + '/metrics')}">
-                  <div class="budget-card">
-                    <div class="budget-copy">
-                      <span class="metric-label">Current spend</span>
-                      <strong data-metric="cost-current">--</strong>
-                      <p data-metric="cost-note">Current project usage to date. Billed by Railway.</p>
+                  <div class="workspace-overview">
+                    <div class="runtime-overview">
+                      <div class="runtime-heading"><span class="runtime-dot" aria-hidden="true"></span><span data-runtime="status">{h(runtime_status_label(status))}</span></div>
+                      <p class="runtime-copy">Live deployment details from Railway.</p>
+                      <dl class="runtime-facts">
+                        <div class="runtime-fact"><dt>Region</dt><dd data-runtime="region">Checking</dd></div>
+                        <div class="runtime-fact"><dt>Latest deploy</dt><dd data-runtime="deployed">Checking</dd></div>
+                        <div class="runtime-fact"><dt>Your data</dt><dd data-runtime="data">Persistent</dd></div>
+                      </dl>
                     </div>
-                    <div class="budget-meter">
-                      <div class="metric-bar"><span data-meter="cost"></span></div>
-                      <div class="budget-pair"><span>included trial</span><strong data-metric="cost-cap">$5</strong></div>
+                    <div class="credit-overview">
+                      <div class="credit-copy">
+                        <span class="metric-label" data-metric="cost-heading">Included usage</span>
+                        <strong data-metric="cost-primary">--</strong>
+                        <p data-metric="cost-note">Checking Railway credit and usage.</p>
+                      </div>
+                      <div class="credit-meter">
+                        <div class="credit-pair"><span data-metric="cost-used">Usage estimate</span><span data-metric="cost-cap">Railway credit</span></div>
+                      </div>
                     </div>
                   </div>
+                  <div class="resource-heading"><strong>Live resources</strong><span>Last hour</span></div>
                   <div class="resource-grid">
                     <div class="metric-tile">
                       <div class="metric-head"><span>CPU</span><strong data-metric="cpu">--</strong></div>
@@ -4247,6 +4470,11 @@ def index():
                       <div class="metric-head"><span>Storage</span><strong data-metric="volume">{h(volume_size_label(inst['volume_size_gb']))}</strong></div>
                       <div class="metric-bar"><span data-meter="volume"></span></div>
                       <svg class="spark" data-spark="volume" viewBox="0 0 100 34" preserveAspectRatio="none"></svg>
+                    </div>
+                    <div class="metric-tile">
+                      <div class="metric-head"><span>Network</span><strong data-metric="network">--</strong></div>
+                      <div class="metric-bar"><span data-meter="network"></span></div>
+                      <svg class="spark" data-spark="network" viewBox="0 0 100 34" preserveAspectRatio="none"></svg>
                     </div>
                   </div>
                 </div>
@@ -4443,6 +4671,18 @@ def index():
         if (!limit || limit === 'n/a') return label;
         return String(label || '').replace(/ vCPU$/, '') + ' / ' + limit;
       }
+      function relativeTime(value) {
+        var timestamp = Date.parse(value || '');
+        if (!isFinite(timestamp)) return 'Recently';
+        var seconds = Math.max(0, Math.round((Date.now() - timestamp) / 1000));
+        if (seconds < 60) return 'Just now';
+        var minutes = Math.floor(seconds / 60);
+        if (minutes < 60) return minutes + ' min ago';
+        var hours = Math.floor(minutes / 60);
+        if (hours < 24) return hours + ' hr ago';
+        var days = Math.floor(hours / 24);
+        return days + (days === 1 ? ' day ago' : ' days ago');
+      }
       function loadMetrics() {
         document.querySelectorAll('[data-metrics-url]').forEach(function (el) {
           if (el.getAttribute('data-loading') === '1') return;
@@ -4451,6 +4691,12 @@ def index():
             .then(function (r) { return r.json().catch(function () { return null; }); })
             .then(function (d) {
               if (!d) return;
+              if (d.runtime) {
+                setText(el, '[data-runtime="status"]', d.runtime.status_label);
+                setText(el, '[data-runtime="region"]', d.runtime.region_label);
+                setText(el, '[data-runtime="deployed"]', relativeTime(d.runtime.latest_deployment_at));
+                setText(el, '[data-runtime="data"]', d.runtime.data_status);
+              }
               if (d.cpu) {
                 setText(el, '[data-metric="cpu"]', cpuPair(d.cpu.label, d.cpu.limit_label));
                 setMeter(el, '[data-meter="cpu"]', d.cpu.percent);
@@ -4472,10 +4718,11 @@ def index():
                 setSpark(el, 'network', d.network.spark);
               }
               if (d.cost) {
-                setText(el, '[data-metric="cost-current"]', d.cost.label);
-                setText(el, '[data-metric="cost-cap"]', d.cost.allowance_label || '$5');
+                setText(el, '[data-metric="cost-heading"]', d.cost.heading);
+                setText(el, '[data-metric="cost-primary"]', d.cost.primary_label);
+                setText(el, '[data-metric="cost-used"]', d.cost.used_copy);
+                setText(el, '[data-metric="cost-cap"]', d.cost.allowance_copy);
                 setText(el, '[data-metric="cost-note"]', d.cost.note);
-                setMeter(el, '[data-meter="cost"]', d.cost.percent);
               }
               if (d.error) setText(el, '[data-metric="cost-note"]', d.error);
               var card = el.closest('.container-card');
@@ -4524,7 +4771,7 @@ def index():
     main_content = f"{instances_panel}{deploy_form}" if has_instances else f"{deploy_form}{instances_panel}"
     deployment_count = len(rows)
     dashboard_note = (
-        "Open a workspace, check its usage, or create another deployment."
+        "Open a workspace, see its health and included usage, or create another deployment."
         if deployment_count
         else "Create your first deployment, then return here whenever you want to manage it."
     )
