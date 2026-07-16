@@ -119,6 +119,7 @@ os.makedirs(DATA_DIR, exist_ok=True)
 STATIC_DIR = os.path.join(os.path.dirname(__file__), "static")
 LOGO_FILENAME = "moebius.png"
 PREVIEW_FILENAME = "app-store.png"
+SOCIAL_PREVIEW_FILENAME = "social-preview.png"
 
 
 def static_asset_version(filename):
@@ -131,6 +132,7 @@ def static_asset_version(filename):
 
 LOGO_VERSION = static_asset_version(LOGO_FILENAME)
 PREVIEW_VERSION = static_asset_version(PREVIEW_FILENAME)
+SOCIAL_PREVIEW_VERSION = static_asset_version(SOCIAL_PREVIEW_FILENAME)
 
 app = Flask(__name__)
 
@@ -230,6 +232,16 @@ def moebius_logo():
 @app.get("/workspace-preview.png")
 def workspace_preview():
     return send_from_directory(STATIC_DIR, PREVIEW_FILENAME, mimetype="image/png", max_age=86400)
+
+
+@app.get("/social-preview.png")
+def social_preview():
+    return send_from_directory(
+        STATIC_DIR,
+        SOCIAL_PREVIEW_FILENAME,
+        mimetype="image/png",
+        max_age=86400,
+    )
 
 
 @app.before_request
@@ -2533,6 +2545,20 @@ LAYOUT = """
   <meta name="description" content="Launch a private Möbius AI workspace in a Railway account you control.">
   <link rel="canonical" href="{{ canonical_url }}">
   <meta name="theme-color" content="#0d0d0d">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Möbius">
+  <meta property="og:url" content="{{ canonical_url }}">
+  <meta property="og:title" content="Möbius: Your own app-building workspace">
+  <meta property="og:description" content="Launch a private Möbius, then build and run personal software with capable agents.">
+  <meta property="og:image" content="{{ social_preview_url }}">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="Möbius app-building workspace on web and mobile">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Möbius: Your own app-building workspace">
+  <meta name="twitter:description" content="Launch a private Möbius, then build and run personal software with capable agents.">
+  <meta name="twitter:image" content="{{ social_preview_url }}">
+  <meta name="twitter:image:alt" content="Möbius app-building workspace on web and mobile">
   <title>Möbius: Your private AI workspace</title>
   <link rel="icon" type="image/png" href="{{ favicon_url }}">
   <link rel="apple-touch-icon" href="{{ favicon_url }}">
@@ -4061,6 +4087,11 @@ def render(body):
         body=body,
         favicon_url=logo_url(),
         canonical_url=PUBLIC_CANONICAL_URL + path("/"),
+        social_preview_url=(
+            PUBLIC_CANONICAL_URL
+            + path("/social-preview.png")
+            + f"?v={SOCIAL_PREVIEW_VERSION}"
+        ),
     )
 
 
