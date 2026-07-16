@@ -2584,6 +2584,23 @@ LAYOUT = """
       box-shadow: 0 8px 8px rgba(0, 0, 0, 0.24);
     }
     .login-card-main { padding: clamp(24px, 4vw, 34px); }
+    .login-card-label {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 16px;
+      color: #c7bcff;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .login-card-label::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      box-shadow: 0 0 0 4px var(--accent-dim);
+    }
     .login-card h2 { font-size: 25px; line-height: 1.08; }
     .login-card-copy { margin: 10px 0 24px; color: var(--muted); font-size: 14px; text-wrap: pretty; }
     .login-card .provider-list { margin: 0; }
@@ -3815,42 +3832,43 @@ def login_page():
       </header>
       <section class="login-layout" aria-labelledby="login-heading">
         <div class="login-story">
-          <p class="login-kicker">Community-built AGI app platform</p>
+          <p class="login-kicker">Community-built AGI, growing with its users</p>
           <h2 id="login-heading">Your own app-building workspace.</h2>
           <p class="login-lead">
-            Build apps with Codex or Claude Code, shape the platform, and use memory and
-            reflection to improve the next loop. Everything runs in a private deployment you control.
+            Turn repeated work into apps you keep. Use them on phone and web, personalize the
+            workspace, and let memory and reflection improve the next loop.
           </p>
           <div class="login-facts" aria-label="What to expect from Möbius">
-            <span>Build and keep apps</span>
+            <span>Apps for your work</span>
             <span>Phone and web</span>
-            <span>Memory and reflection</span>
+            <span>Personalized over time</span>
           </div>
           <figure class="login-product-preview">
             <img src="{preview_url()}" alt="The Möbius App Store with community apps for skills, tasks, memory, reflection, and editing">
-            <figcaption><strong>Inside Möbius</strong><span>Apps · memory · reflection</span></figcaption>
+            <figcaption><strong>Inside Möbius</strong><span>Apps · productivity · personalization</span></figcaption>
           </figure>
         </div>
         <aside class="login-card" aria-label="Sign in to Möbius Launch">
           <div class="login-card-main">
-            <h2>Launch your private Möbius.</h2>
+            <p class="login-card-label">Launch dashboard</p>
+            <h2>Start your private Möbius.</h2>
             <p class="login-card-copy">
-              Sign in to create and manage a Möbius deployment in a Railway account you control.
+              Sign in to create a deployment, check its status, and return to manage it later.
             </p>
             {provider_block}
             {email_fallback}
             <p class="login-trust">
-              Möbius Launch provisions your workspace. It does not store your conversations,
-              files, apps, or agent activity.
+              Your workspace stores its own conversations, files, apps, and agent activity.
+              Möbius Launch only provisions and manages it.
             </p>
             <p class="login-requirement"><strong>Agent access:</strong> connect a ChatGPT plan with Codex access or a supported Claude Code plan inside your workspace.</p>
           </div>
           <div class="login-after">
-            <strong>After sign-in</strong>
+            <strong>From the dashboard</strong>
             <ol aria-label="Launch steps">
               <li>Connect your Railway workspace</li>
-              <li>Review the private deployment</li>
-              <li>Open your Möbius instance</li>
+              <li>Create and open your deployment</li>
+              <li>Return anytime to manage it</li>
             </ol>
           </div>
         </aside>
