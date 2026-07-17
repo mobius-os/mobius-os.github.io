@@ -24,9 +24,7 @@ Möbius saves context and working patterns so the next task starts with more of 
 
 ## More than a screen
 
-![One Möbius app assembled from a user interface, agent, modular skills and system prompt, plus jobs and storage](assets/product/mobius-app-anatomy.webp)
-
-**UI · Agent · Skills · System prompt · Jobs + storage**
+A Möbius app can combine a focused UI, an embedded agent surface, reusable skills, app-specific guidance, storage, and scheduled or on-demand jobs. Skills and guidance stay modular, so each app adds only what it needs; system apps can also extend the shared system prompt.
 
 ## Continue from phone or web
 

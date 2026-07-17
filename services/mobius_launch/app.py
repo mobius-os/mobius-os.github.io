@@ -3879,6 +3879,15 @@ LAYOUT = """
       from { opacity: 0; transform: translateY(8px); }
       to { opacity: 1; transform: translateY(0); }
     }
+    @keyframes loginEnter {
+      from { opacity: 0; translate: 0 14px; }
+      to { opacity: 1; translate: 0 0; }
+    }
+    @media (prefers-reduced-motion: no-preference) {
+      .login-story { animation: loginEnter 560ms var(--spring) both; }
+      .login-card { animation: loginEnter 560ms 70ms var(--spring) both; }
+      .login-continuity { animation: loginEnter 560ms 140ms var(--spring) both; }
+    }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
         animation-duration: 1ms !important;

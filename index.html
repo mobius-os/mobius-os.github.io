@@ -55,7 +55,6 @@
       </a>
       <nav aria-label="Primary navigation">
         <a href="#apps">Apps</a>
-        <a href="#app-anatomy">Developers</a>
         <a href="#self-improvement">Self-improvement</a>
         <a class="nav-launch" href="https://mobius.you/">Launch</a>
       </nav>
@@ -165,22 +164,6 @@
       <a class="text-link" href="apps/">Browse the current catalog <span aria-hidden="true">→</span></a>
     </section>
 
-    <section class="app-anatomy" id="app-anatomy">
-      <div class="section-intro section-intro--wide">
-        <h2>More than a screen.</h2>
-      </div>
-      <figure class="app-anatomy-visual">
-        <img src="assets/product/mobius-app-anatomy.webp" alt="One Möbius app assembled from a user interface, agent conversation, modular skills and system prompt, plus jobs and storage" loading="lazy" width="1672" height="941">
-        <figcaption class="anatomy-labels">
-          <span class="anatomy-label anatomy-label--skills">Skills</span>
-          <span class="anatomy-label anatomy-label--prompt">System prompt</span>
-          <span class="anatomy-label anatomy-label--ui">UI</span>
-          <span class="anatomy-label anatomy-label--agent">Agent</span>
-          <span class="anatomy-label anatomy-label--work">Jobs + storage</span>
-        </figcaption>
-      </figure>
-    </section>
-
     <section class="personal-section" id="personalization">
       <div class="personal-copy">
         <h2>Your workspace should feel more like yours over time.</h2>
@@ -256,5 +239,49 @@
       <span><a href="https://mobius.you/">Launch</a> · <a href="apps/">Apps</a> · <a href="spec/">Spec</a> · <a href="https://github.com/mobius-os/mobius">GitHub</a></span>
     </div>
   </footer>
+  <script>
+    (() => {
+      if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+
+      const groups = [
+        ['.builder-section', ['.section-intro', '.continuity-stage']],
+        ['.atlas-feature', ['.atlas-media', '.atlas-copy']],
+        ['.app-gallery', [':scope > article']],
+        ['.personal-section', ['.personal-copy', '.personal-visual']],
+        ['.ecosystem-flow', ['.ecosystem-step']],
+        ['.final-cta', [':scope']]
+      ];
+
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          const selectors = entry.target.revealSelectors;
+          const items = selectors.flatMap((selector) => selector === ':scope'
+            ? [entry.target]
+            : [...entry.target.querySelectorAll(selector)]);
+
+          items.forEach((item, index) => item.animate([
+            { opacity: 0.12, translate: '0 18px', scale: 0.985 },
+            { opacity: 1, translate: '0 0', scale: 1 }
+          ], {
+            duration: 560,
+            delay: Math.min(index * 80, 240),
+            easing: 'cubic-bezier(.16, 1, .3, 1)',
+            fill: 'backwards'
+          }));
+
+          entry.target.closest('.ecosystem-stage')?.classList.add('is-in-view');
+          observer.unobserve(entry.target);
+        });
+      }, { threshold: 0.14, rootMargin: '0px 0px -8%' });
+
+      groups.forEach(([selector, revealSelectors]) => {
+        document.querySelectorAll(selector).forEach((element) => {
+          element.revealSelectors = revealSelectors;
+          observer.observe(element);
+        });
+      });
+    })();
+  </script>
 </body>
 </html>

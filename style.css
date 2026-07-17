@@ -454,6 +454,10 @@ p.muted, .muted { color: var(--muted); }
   font-weight: 700;
 }
 
+.text-link span {
+  transition: translate 180ms var(--spring);
+}
+
 .app-showcase {
   display: grid;
   gap: 32px;
@@ -535,66 +539,6 @@ p.muted, .muted { color: var(--muted); }
   border-radius: 16px;
   transform: rotate(0.45deg);
   box-shadow: 0 24px 66px rgba(0, 0, 0, 0.34);
-}
-
-.app-anatomy {
-  display: grid;
-  gap: 22px;
-}
-
-.app-anatomy .section-intro {
-  max-width: 900px;
-}
-
-.app-anatomy-visual {
-  position: relative;
-  overflow: hidden;
-  margin: 0;
-  border-radius: 16px;
-  background: #050609;
-}
-
-.app-anatomy-visual img {
-  display: block;
-  width: 100%;
-  height: auto;
-}
-
-.anatomy-label {
-  position: absolute;
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 6px 9px;
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  border-radius: 999px;
-  background: rgba(9, 9, 12, 0.82);
-  color: var(--text);
-  font-size: clamp(0.6rem, 0.9vw, 0.76rem);
-  font-weight: 720;
-  line-height: 1;
-  white-space: nowrap;
-  backdrop-filter: blur(8px);
-  transform: translate(-50%, -50%);
-}
-
-.anatomy-label::before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  flex: 0 0 auto;
-  border-radius: 50%;
-  background: var(--accent);
-}
-
-.anatomy-label--skills { top: 20%; left: 40%; }
-.anatomy-label--prompt { top: 20%; left: 58%; }
-.anatomy-label--ui { top: 50%; left: 43%; }
-.anatomy-label--agent { top: 49%; left: 75%; }
-.anatomy-label--work { top: 82%; left: 50%; }
-
-.anatomy-label--work::before {
-  background: var(--accent-strong);
 }
 
 .personal-section {
@@ -1117,25 +1061,38 @@ footer.site .inner {
   gap: 8px;
 }
 
-@keyframes heroDrift {
-  0%, 100% { transform: translateY(0) rotate(1.25deg); }
-  50% { transform: translateY(-6px) rotate(0.8deg); }
+@keyframes heroCopyIn {
+  from { opacity: 0; translate: 0 14px; }
+  to { opacity: 1; translate: 0 0; }
 }
 
-@keyframes noteDrift {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(-4px); }
+@keyframes heroProductIn {
+  from { opacity: 0; translate: 0 18px; scale: 0.985; }
+  to { opacity: 1; translate: 0 0; scale: 1; }
 }
 
 @keyframes ecosystemTravel {
-  0% { offset-distance: 0%; }
+  0% { offset-distance: 4%; }
   100% { offset-distance: 100%; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-  .hero-platform-window { animation: heroDrift 10s ease-in-out infinite; }
-  .hero-platform-note { animation: noteDrift 8s ease-in-out 1s infinite; }
-  .ecosystem-signal { animation: ecosystemTravel 12s linear infinite; }
+  .product-hero-copy > * {
+    animation: heroCopyIn 600ms var(--spring) both;
+  }
+  .product-hero-copy > :nth-child(2) { animation-delay: 50ms; }
+  .product-hero-copy > :nth-child(3) { animation-delay: 100ms; }
+  .product-hero-copy > :nth-child(4) { animation-delay: 150ms; }
+  .product-hero-copy > :nth-child(5) { animation-delay: 200ms; }
+  .hero-product { animation: heroProductIn 650ms 100ms var(--spring) both; }
+  .ecosystem-stage.is-in-view .ecosystem-signal {
+    animation: ecosystemTravel 4.6s var(--spring) both;
+  }
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .btn:hover { transform: translateY(-1px); }
+  .text-link:hover span { translate: 3px 0; }
 }
 
 @media (max-width: 980px) {
@@ -1181,13 +1138,6 @@ footer.site .inner {
   .phone-story { display: grid; grid-template-columns: minmax(150px, 210px) minmax(0, 1fr); column-gap: 28px; align-items: center; }
   .phone-story .showcase-phone { grid-row: 1 / span 3; margin: 0; }
   .news-story { padding-bottom: 0; }
-  .app-anatomy-visual { margin-inline: -10px; border-radius: 12px; }
-  .anatomy-label { gap: 4px; padding: 5px 7px; }
-  .anatomy-label::before { width: 5px; height: 5px; }
-  .anatomy-label--skills { left: 37%; }
-  .anatomy-label--prompt { left: 63%; }
-  .anatomy-label--ui { left: 39%; }
-  .anatomy-label--agent { left: 78%; }
   .ecosystem-flow { grid-template-columns: 1fr; gap: 34px; }
   .ecosystem-flow::before {
     content: "";
@@ -1247,6 +1197,8 @@ footer.site .inner {
 @media (prefers-reduced-motion: reduce) {
   .ecosystem-signal { display: none; }
   *, *::before, *::after {
+    animation-duration: 1ms !important;
+    animation-iteration-count: 1 !important;
     transition-duration: 1ms !important;
     scroll-behavior: auto !important;
   }
