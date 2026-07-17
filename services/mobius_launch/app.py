@@ -131,7 +131,6 @@ def static_asset_version(filename):
 
 
 LOGO_VERSION = static_asset_version(LOGO_FILENAME)
-PREVIEW_VERSION = static_asset_version(PREVIEW_FILENAME)
 SOCIAL_PREVIEW_VERSION = static_asset_version(SOCIAL_PREVIEW_FILENAME)
 
 app = Flask(__name__)
@@ -398,15 +397,6 @@ def path(route=""):
 
 def logo_url():
     return f"{path('/moebius.png')}?v={LOGO_VERSION}"
-
-
-def preview_url():
-    return f"{path('/workspace-preview.png')}?v={PREVIEW_VERSION}"
-
-
-def product_icon_url(name):
-    filename = f"{name}-icon.png"
-    return static_product_url(filename)
 
 
 def static_product_url(filename):
@@ -2542,24 +2532,24 @@ LAYOUT = """
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Launch a private Möbius AI workspace in a Railway account you control.">
+  <meta name="description" content="Build useful apps for the work you repeat with a private AI workspace. New Railway users can try Möbius with $5 credit and no card required.">
   <link rel="canonical" href="{{ canonical_url }}">
   <meta name="theme-color" content="#0d0d0d">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Möbius">
   <meta property="og:url" content="{{ canonical_url }}">
-  <meta property="og:title" content="Möbius: Your own app-building workspace">
-  <meta property="og:description" content="Launch a private Möbius, then build and run personal software with capable agents.">
+  <meta property="og:title" content="Möbius: Build apps. Get more done.">
+  <meta property="og:description" content="Turn repeated work into useful apps you can build, use, and improve on phone and web.">
   <meta property="og:image" content="{{ social_preview_url }}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Möbius app-building workspace on web and mobile">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Möbius: Your own app-building workspace">
-  <meta name="twitter:description" content="Launch a private Möbius, then build and run personal software with capable agents.">
+  <meta name="twitter:title" content="Möbius: Build apps. Get more done.">
+  <meta name="twitter:description" content="Turn repeated work into useful apps you can build, use, and improve on phone and web.">
   <meta name="twitter:image" content="{{ social_preview_url }}">
   <meta name="twitter:image:alt" content="Möbius app-building workspace on web and mobile">
-  <title>Möbius: Your private AI workspace</title>
+  <title>Möbius: Build apps. Get more done.</title>
   <link rel="icon" type="image/png" href="{{ favicon_url }}">
   <link rel="apple-touch-icon" href="{{ favicon_url }}">
   <link rel="preconnect" href="https://rsms.me/">
@@ -2641,12 +2631,16 @@ LAYOUT = """
     .login-nav a:hover { color: var(--text); text-decoration: none; }
     .login-layout {
       display: grid;
-      grid-template-columns: minmax(0, 0.95fr) minmax(380px, 0.72fr);
+      grid-template-columns: minmax(0, 1fr) minmax(360px, 0.66fr);
+      grid-template-areas:
+        "story card"
+        "proof card";
       align-items: start;
-      gap: clamp(44px, 7vw, 88px);
+      column-gap: clamp(44px, 7vw, 88px);
+      row-gap: 26px;
       width: 100%;
     }
-    .login-story { max-width: 630px; }
+    .login-story { grid-area: story; max-width: 630px; }
     .login-kicker {
       display: inline-flex;
       align-items: center;
@@ -2663,8 +2657,8 @@ LAYOUT = """
       border-radius: 999px;
       background: var(--accent);
     }
-    .login-story h2 {
-      max-width: 12ch;
+    .login-story h1 {
+      max-width: 10ch;
       font-size: clamp(42px, 5.4vw, 66px);
       font-weight: 730;
       line-height: 0.98;
@@ -2679,50 +2673,9 @@ LAYOUT = """
       line-height: 1.55;
       text-wrap: pretty;
     }
-    .login-principles {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
-      margin: 26px 0 0;
-      padding: 13px 0;
-      border-block: 1px solid var(--border-light);
-    }
-    .login-principle {
-      display: grid;
-      grid-template-columns: 36px minmax(0, 1fr);
-      align-items: center;
-      gap: 9px;
-      min-width: 0;
-    }
-    .login-principle img { display: block; width: 36px; height: 36px; object-fit: contain; }
-    .login-principle strong, .login-principle span { display: block; }
-    .login-principle strong { color: #dddddd; font-size: 12px; font-weight: 700; }
-    .login-principle span { margin-top: 1px; color: var(--muted); font-size: 10px; line-height: 1.25; }
-    .login-product-preview {
-      margin: 24px 0 0;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      background: #090909;
-    }
-    .login-product-preview img {
-      display: block;
-      width: 100%;
-      height: auto;
-    }
-    .login-product-preview figcaption {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 14px;
-      padding: 10px 12px;
-      border-top: 1px solid var(--border-light);
-      color: var(--muted);
-      font-size: 11px;
-    }
-    .login-product-preview strong { color: var(--text); font-size: 11px; }
     .login-continuity {
-      margin: 24px 0 0;
+      grid-area: proof;
+      margin: 0;
       padding: 14px;
       border: 1px solid var(--border);
       border-radius: 12px;
@@ -2738,6 +2691,7 @@ LAYOUT = """
       font-size: 11px;
     }
     .login-continuity figcaption strong { color: var(--text); font-size: 11px; }
+    .login-continuity figcaption span { text-align: right; }
     .login-continuity-frames {
       display: grid;
       grid-template-columns: minmax(0, 2.2fr) minmax(108px, 0.72fr);
@@ -2775,6 +2729,7 @@ LAYOUT = """
     }
     .login-phone-frame img { border-radius: 15px; }
     .login-card {
+      grid-area: card;
       position: sticky;
       top: 24px;
       width: 100%;
@@ -2790,8 +2745,8 @@ LAYOUT = """
       align-items: center;
       gap: 8px;
       margin: 0 0 16px;
-      color: #c7bcff;
-      font-size: 12px;
+      color: #d1c8ff;
+      font-size: 13px;
       font-weight: 700;
     }
     .login-card-label::before {
@@ -2802,62 +2757,11 @@ LAYOUT = """
       background: var(--accent);
       box-shadow: 0 0 0 4px var(--accent-dim);
     }
-    .login-card h2 { font-size: 25px; line-height: 1.08; }
-    .login-card-copy { margin: 10px 0 24px; color: var(--muted); font-size: 14px; text-wrap: pretty; }
+    .login-card h2 { font-size: 27px; line-height: 1.08; }
+    .login-card-copy { margin: 10px 0 20px; color: var(--muted); font-size: 14px; text-wrap: pretty; }
     .login-card .provider-list { margin: 0; }
     .login-card .provider-list form, .login-card .provider-list button { width: 100%; }
     .login-card .provider-list button, .login-card-main > form .primary { min-height: 50px; font-size: 14px; }
-    .login-after {
-      display: grid;
-      gap: 12px;
-      padding: 16px clamp(24px, 4vw, 34px);
-      border-top: 1px solid var(--border-light);
-      background: var(--surface3);
-    }
-    .login-after-head {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      gap: 12px;
-    }
-    .login-after-head strong { color: var(--text); font-size: 12px; }
-    .login-after-head span { color: var(--muted); font-size: 11px; }
-    .login-dashboard-peek {
-      overflow: hidden;
-      border: 1px solid var(--border-light);
-      border-radius: 8px;
-      background: #0d0d0d;
-    }
-    .login-peek-status {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      padding: 9px 10px;
-      border-bottom: 1px solid var(--border-light);
-    }
-    .login-peek-status::before {
-      content: "";
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: var(--ok);
-      flex: none;
-    }
-    .login-peek-status strong { color: var(--text); font-size: 11px; }
-    .login-peek-status span { margin-left: auto; color: var(--ok); font-size: 10px; font-weight: 700; }
-    .login-peek-actions {
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 0;
-    }
-    .login-peek-action {
-      padding: 9px 10px;
-      min-width: 0;
-    }
-    .login-peek-action + .login-peek-action { border-left: 1px solid var(--border-light); }
-    .login-peek-action strong, .login-peek-action span { display: block; }
-    .login-peek-action strong { color: var(--text); font-size: 10px; }
-    .login-peek-action span { margin-top: 1px; color: var(--muted); font-size: 9px; line-height: 1.3; }
     .login-trust {
       display: flex;
       align-items: flex-start;
@@ -2890,9 +2794,12 @@ LAYOUT = """
       grid-template-columns: auto minmax(0, 1fr);
       gap: 2px 9px;
       align-items: center;
-      margin: 16px 0 0;
+      margin: 14px 0 0;
+      padding: 12px;
+      border-radius: 8px;
+      background: var(--ok-soft);
       color: var(--muted);
-      font-size: 11px;
+      font-size: 12px;
       line-height: 1.4;
     }
     .login-trial::before {
@@ -2903,13 +2810,13 @@ LAYOUT = """
       display: grid;
       place-items: center;
       border-radius: 999px;
-      background: var(--ok-soft);
+      background: rgba(16, 185, 129, 0.18);
       color: var(--ok);
       font-size: 12px;
       font-weight: 800;
     }
-    .login-trial strong { color: var(--text); font-size: 11px; }
-    .login-trial span { color: var(--muted); font-size: 10px; }
+    .login-trial strong { color: var(--text); font-size: 12px; }
+    .login-trial span { color: #b7c9c2; font-size: 11px; }
     .login-footer {
       display: flex;
       align-items: center;
@@ -2939,7 +2846,8 @@ LAYOUT = """
       filter: drop-shadow(0 6px 18px rgba(139, 108, 247, 0.22));
     }
     h1, h2, h3 { margin: 0; line-height: 1.2; letter-spacing: 0; }
-    h1 { font-size: 20px; font-weight: 700; }
+    h1, .brand-name { font-size: 20px; font-weight: 700; }
+    .brand-name { display: block; line-height: 1.2; }
     h2 { font-size: 19px; font-weight: 700; }
     h3 { font-size: 15px; font-weight: 650; }
     .subtitle, .hint, .muted { color: var(--muted); }
@@ -3982,10 +3890,17 @@ LAYOUT = """
       .shell { padding: 18px 14px 48px; }
       .narrow { padding-top: 42px; }
       .login-shell { gap: 42px; padding-bottom: 24px; }
-      .login-layout { grid-template-columns: 1fr; gap: 38px; }
+      .login-layout {
+        grid-template-columns: 1fr;
+        grid-template-areas:
+          "story"
+          "card"
+          "proof";
+        gap: 30px;
+      }
       .login-story { max-width: 720px; }
-      .login-story h2 { max-width: 12ch; font-size: clamp(42px, 10vw, 68px); }
-      .login-card { max-width: 560px; order: -1; }
+      .login-story h1 { max-width: 10ch; font-size: clamp(42px, 10vw, 68px); }
+      .login-card { max-width: 560px; }
       .login-card { position: static; }
       .topbar { align-items: flex-start; flex-direction: column; }
       .dashboard-intro { align-items: flex-start; flex-direction: column; margin-top: 24px; }
@@ -4040,13 +3955,11 @@ LAYOUT = """
       .login-topbar { align-items: flex-start; }
       .login-nav { gap: 12px; }
       .login-nav a:first-child { display: none; }
-      .login-story h2 { font-size: clamp(38px, 13.5vw, 56px); letter-spacing: -0.03em; }
+      .login-story h1 { font-size: clamp(38px, 13.5vw, 56px); letter-spacing: -0.03em; }
       .login-lead { margin-top: 18px; }
-      .login-principles { margin-top: 22px; }
       .login-continuity { padding: 10px; }
       .login-continuity-frames { grid-template-columns: minmax(0, 1.8fr) minmax(82px, 0.7fr); gap: 8px; }
       .login-card-main { padding: 24px 20px; }
-      .login-after { padding: 15px 20px; }
       .runtime-facts { grid-template-columns: 1fr; gap: 9px; }
       .login-footer { align-items: flex-start; flex-direction: column; gap: 8px; }
     }
@@ -4110,12 +4023,13 @@ def icon(name):
     return f"""<svg class="icon-svg" viewBox="0 0 24 24" aria-hidden="true">{ICONS[name]}</svg>"""
 
 
-def brand(subtitle="Launch"):
+def brand(subtitle="Launch", *, decorative_name=False):
+    name = '<span class="brand-name">Möbius</span>' if decorative_name else "<h1>Möbius</h1>"
     return f"""
     <div class="brand">
       <img class="mark" src="{logo_url()}" alt="">
       <div>
-        <h1>Möbius</h1>
+        {name}
         <p class="subtitle">{h(subtitle)}</p>
       </div>
     </div>
@@ -4157,7 +4071,7 @@ def login_page():
     body = f"""
     <main class="shell login-shell">
       <header class="login-topbar">
-        {brand()}
+        {brand(decorative_name=True)}
         <nav class="login-nav" aria-label="About Möbius">
           <a href="https://mobius-os.github.io/">What is Möbius?</a>
           <a href="https://github.com/mobius-os/mobius">Open source</a>
@@ -4165,69 +4079,40 @@ def login_page():
       </header>
       <section class="login-layout" aria-labelledby="login-heading">
         <div class="login-story">
-          <p class="login-kicker">Open-source AGI, growing with its users</p>
-          <h2 id="login-heading">Your own app-building workspace.</h2>
+          <p class="login-kicker">Your private AI app workspace</p>
+          <h1 id="login-heading">Build apps. Get more done.</h1>
           <p class="login-lead">
-            Turn repeated work into apps you keep. Use them on phone and web, personalize the
-            workspace, and let memory and reflection improve the next loop.
+            Describe what you need. Möbius turns a sentence into an app for repeated work,
+            ready to use and improve on phone and web.
           </p>
-          <div class="login-principles" aria-label="How Möbius grows with you">
-            <div class="login-principle">
-              <img src="{product_icon_url('memory')}" alt="">
-              <div><strong>Memory</strong><span>Personalization</span></div>
-            </div>
-            <div class="login-principle">
-              <img src="{product_icon_url('reflection')}" alt="">
-              <div><strong>Reflection</strong><span>Self-improvement</span></div>
-            </div>
-            <div class="login-principle">
-              <img src="{product_icon_url('contribute')}" alt="">
-              <div><strong>Contribute</strong><span>Build it together</span></div>
-            </div>
-          </div>
-          <figure class="login-continuity">
-            <figcaption><strong>Start with one sentence</strong><span>The same workspace on web and phone</span></figcaption>
-            <div class="login-continuity-frames">
-              <div class="login-web-frame"><img src="{static_product_url('chat-web.png')}" alt="Möbius chat on the web with a Build an app action"></div>
-              <div class="login-phone-frame"><img src="{static_product_url('chat-mobile.png')}" alt="The same Möbius chat on a phone"></div>
-            </div>
-          </figure>
-          <figure class="login-product-preview">
-            <img src="{preview_url()}" alt="The Möbius App Store with community apps for skills, tasks, memory, reflection, and editing">
-            <figcaption><strong>Inside Möbius</strong><span>Apps · productivity · personalization</span></figcaption>
-          </figure>
         </div>
         <aside class="login-card" aria-label="Sign in to Möbius Launch">
           <div class="login-card-main">
-            <p class="login-card-label">Launch dashboard</p>
-            <h2>Start your private Möbius.</h2>
+            <p class="login-card-label">Free to try</p>
+            <h2>Start your private workspace.</h2>
             <p class="login-card-copy">
-              Sign in to deploy your workspace, open it later, and see health, included usage, and recovery in one place.
+              Sign in, connect Railway, and launch Möbius with a short guided setup.
             </p>
             {provider_block}
             {email_fallback}
             <p class="login-trial">
-              <strong>$5 Railway trial credit</strong>
-              <span>New users can try it without a card.</span>
+              <strong>Up to 30 days free</strong>
+              <span>New Railway users get $5 trial credit. No card required.</span>
             </p>
             <p class="login-trust">
-              Your workspace stores its own conversations, files, apps, and agent activity.
-              Möbius Launch only provisions and manages it.
+              Private by default. Your workspace keeps its own conversations, files, and apps;
+              Möbius Launch only manages deployment.
             </p>
-            <p class="login-requirement"><strong>Agent access:</strong> connect a ChatGPT plan with Codex access or a supported Claude Code plan inside your workspace.</p>
-          </div>
-          <div class="login-after">
-            <div class="login-after-head"><strong>After sign in</strong><span>Your control pane</span></div>
-            <div class="login-dashboard-peek" aria-label="A preview of the deployment control pane">
-              <div class="login-peek-status"><strong>My Möbius</strong><span>Ready</span></div>
-              <div class="login-peek-actions">
-                <div class="login-peek-action"><strong>Open</strong><span>Your workspace</span></div>
-                <div class="login-peek-action"><strong>Check</strong><span>Health and credit</span></div>
-                <div class="login-peek-action"><strong>Recover</strong><span>When needed</span></div>
-              </div>
-            </div>
+            <p class="login-requirement"><strong>Before you start:</strong> bring a ChatGPT plan with Codex access or a supported Claude Code plan. Railway may request GitHub verification for full trial access.</p>
           </div>
         </aside>
+        <figure class="login-continuity">
+          <figcaption><strong>Start with one sentence</strong><span>Keep shaping the same workspace on web and phone.</span></figcaption>
+          <div class="login-continuity-frames">
+            <div class="login-web-frame"><img src="{static_product_url('chat-web.png')}" alt="Möbius chat on the web with a Build an app action"></div>
+            <div class="login-phone-frame"><img src="{static_product_url('chat-mobile.png')}" alt="The same Möbius workspace on a phone"></div>
+          </div>
+        </figure>
       </section>
       <footer class="login-footer">
         <span>Möbius OS · Open source</span>
