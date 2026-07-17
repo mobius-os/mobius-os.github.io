@@ -539,123 +539,62 @@ p.muted, .muted { color: var(--muted); }
 
 .app-anatomy {
   display: grid;
-  gap: 34px;
+  gap: 22px;
 }
 
 .app-anatomy .section-intro {
   max-width: 900px;
 }
 
-.app-anatomy-stage {
-  overflow: hidden;
-  border: 1px solid rgba(139, 108, 247, 0.32);
-  border-radius: 16px;
-  background:
-    radial-gradient(circle at 50% 0%, rgba(139, 108, 247, 0.12), transparent 44%),
-    rgba(255, 255, 255, 0.015);
-}
-
-.anatomy-manifest {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 14px;
-  padding: 18px 24px;
-  border-bottom: 1px solid var(--border);
-  background: rgba(0, 0, 0, 0.18);
-  color: var(--muted);
-  font-size: 0.82rem;
-}
-
-.anatomy-manifest code {
-  padding: 5px 9px;
-  border-radius: 999px;
-  background: var(--accent-dim);
-  color: #d8ceff;
-  font-size: 0.78rem;
-  font-weight: 750;
-}
-
-.anatomy-flow {
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-}
-
-.anatomy-part {
+.app-anatomy-visual {
   position: relative;
-  min-width: 0;
-  min-height: 250px;
-  padding: clamp(26px, 3vw, 38px);
+  overflow: hidden;
+  margin: 0;
+  border-radius: 16px;
+  background: #050609;
 }
 
-.anatomy-part + .anatomy-part {
-  border-left: 1px solid var(--border);
-}
-
-.anatomy-part::before {
-  content: "";
+.app-anatomy-visual img {
   display: block;
-  width: 9px;
-  height: 9px;
-  margin-bottom: 38px;
+  width: 100%;
+  height: auto;
+}
+
+.anatomy-label {
+  position: absolute;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 9px;
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  border-radius: 999px;
+  background: rgba(9, 9, 12, 0.82);
+  color: var(--text);
+  font-size: clamp(0.6rem, 0.9vw, 0.76rem);
+  font-weight: 720;
+  line-height: 1;
+  white-space: nowrap;
+  backdrop-filter: blur(8px);
+  transform: translate(-50%, -50%);
+}
+
+.anatomy-label::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
   border-radius: 50%;
   background: var(--accent);
-  box-shadow: 0 0 0 6px var(--accent-dim);
 }
 
-.anatomy-verb {
-  display: block;
-  margin-bottom: 8px;
-  color: #b9a7ff;
-  font-size: 0.76rem;
-  font-weight: 720;
-}
+.anatomy-label--skills { top: 20%; left: 40%; }
+.anatomy-label--prompt { top: 20%; left: 58%; }
+.anatomy-label--ui { top: 50%; left: 43%; }
+.anatomy-label--agent { top: 49%; left: 75%; }
+.anatomy-label--work { top: 82%; left: 50%; }
 
-.anatomy-part h3 {
-  margin: 0;
-  font-size: clamp(1.3rem, 1.8vw, 1.7rem);
-  letter-spacing: -0.025em;
-}
-
-.anatomy-part p {
-  margin: 10px 0 0;
-  color: var(--muted);
-  font-size: 0.86rem;
-  text-wrap: pretty;
-}
-
-.anatomy-examples {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  border-block: 1px solid var(--border-light);
-}
-
-.anatomy-examples article {
-  padding: 22px clamp(0px, 2.4vw, 30px);
-}
-
-.anatomy-examples article:first-child {
-  padding-left: 0;
-}
-
-.anatomy-examples article:last-child {
-  padding-right: 0;
-}
-
-.anatomy-examples article + article {
-  border-left: 1px solid var(--border-light);
-}
-
-.anatomy-examples h3 {
-  margin: 0;
-  color: var(--text);
-  font-size: 0.9rem;
-}
-
-.anatomy-examples p {
-  margin: 7px 0 0;
-  color: var(--muted);
-  font-size: 0.82rem;
+.anatomy-label--work::before {
+  background: var(--accent-strong);
 }
 
 .personal-section {
@@ -1242,15 +1181,13 @@ footer.site .inner {
   .phone-story { display: grid; grid-template-columns: minmax(150px, 210px) minmax(0, 1fr); column-gap: 28px; align-items: center; }
   .phone-story .showcase-phone { grid-row: 1 / span 3; margin: 0; }
   .news-story { padding-bottom: 0; }
-  .anatomy-manifest { align-items: flex-start; flex-direction: column; }
-  .anatomy-flow, .anatomy-examples { grid-template-columns: 1fr; }
-  .anatomy-part { min-height: 0; padding: 26px 24px; }
-  .anatomy-part + .anatomy-part { border-top: 1px solid var(--border); border-left: 0; }
-  .anatomy-part::before { margin-bottom: 24px; }
-  .anatomy-examples article,
-  .anatomy-examples article:first-child,
-  .anatomy-examples article:last-child { padding: 18px 0; }
-  .anatomy-examples article + article { border-top: 1px solid var(--border-light); border-left: 0; }
+  .app-anatomy-visual { margin-inline: -10px; border-radius: 12px; }
+  .anatomy-label { gap: 4px; padding: 5px 7px; }
+  .anatomy-label::before { width: 5px; height: 5px; }
+  .anatomy-label--skills { left: 37%; }
+  .anatomy-label--prompt { left: 63%; }
+  .anatomy-label--ui { left: 39%; }
+  .anatomy-label--agent { left: 78%; }
   .ecosystem-flow { grid-template-columns: 1fr; gap: 34px; }
   .ecosystem-flow::before {
     content: "";
