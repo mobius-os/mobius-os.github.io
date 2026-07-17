@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Reflection · Möbius OS</title>
-  <meta name="description" content="While you sleep, Möbius reviews the system, proposes improvements, and leaves a one-page morning brief.">
+  <meta name="description" content="While you sleep, Möbius learns from recent work, improves its own approach, anticipates what may help next, and leaves a one-page morning brief.">
   <link rel="icon" type="image/png" href="https://raw.githubusercontent.com/mobius-os/app-reflection/main/icon.png">
   <link rel="preconnect" href="https://rsms.me/">
   <link rel="stylesheet" href="https://rsms.me/inter/inter.css">
@@ -33,7 +33,7 @@
       </div>
       <div class="app-hero-text">
         <h1>Reflection</h1>
-        <p class="muted">While you sleep, Möbius reviews the system, proposes improvements, and leaves a one-page morning brief.</p>
+        <p class="muted">While you sleep, Möbius learns from recent work, improves its own approach, anticipates what may help next, and leaves a one-page morning brief.</p>
       </div>
     </div>
     <div class="badges badges--lg">
@@ -43,12 +43,12 @@
     </div>
 
     <div class="meta">
-      <span>v2.7.9</span>
+      <span>v2.8.1</span>
       <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
       <span>MIT</span>
       <span><a href="https://github.com/mobius-os/app-reflection">Source ↗</a></span>
       <span>★ 0</span>
-      <span>updated 2026-07-16</span>
+      <span>updated 2026-07-17</span>
     </div>
 
     <h2>Install</h2>
@@ -66,8 +66,8 @@
       <pre><code>{
   "id": "reflection",
   "name": "Reflection",
-  "version": "2.7.9",
-  "description": "While you sleep, Möbius reviews the system, proposes improvements, and leaves a one-page morning brief.",
+  "version": "2.8.1",
+  "description": "While you sleep, Möbius learns from recent work, improves its own approach, anticipates what may help next, and leaves a one-page morning brief.",
   "author": "mobius-os",
   "license": "MIT",
   "homepage": "https://github.com/mobius-os/app-reflection",
@@ -118,6 +118,7 @@
   "embeds_agent": true,
   "source_files": [
     "reflection_runner.py",
+    "resource_monitor.py",
     "constants.js",
     "theme.js",
     "domain.js",
