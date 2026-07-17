@@ -2532,24 +2532,24 @@ LAYOUT = """
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Build useful apps for the work you repeat with a private AI workspace. New Railway users can try Möbius with $5 credit and no card required.">
+  <meta name="description" content="Build private apps for the work you repeat. One month free for new Railway users. Bring your own Claude or Codex agent.">
   <link rel="canonical" href="{{ canonical_url }}">
   <meta name="theme-color" content="#0d0d0d">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Möbius">
   <meta property="og:url" content="{{ canonical_url }}">
-  <meta property="og:title" content="Möbius: Build apps. Get more done.">
-  <meta property="og:description" content="Turn repeated work into useful apps you can build, use, and improve on phone and web.">
+  <meta property="og:title" content="Möbius: Build apps for the work you repeat">
+  <meta property="og:description" content="Tell Möbius what slows you down. Build a private app you can use and improve on phone and web.">
   <meta property="og:image" content="{{ social_preview_url }}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Möbius app-building workspace on web and mobile">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Möbius: Build apps. Get more done.">
-  <meta name="twitter:description" content="Turn repeated work into useful apps you can build, use, and improve on phone and web.">
+  <meta name="twitter:title" content="Möbius: Build apps for the work you repeat">
+  <meta name="twitter:description" content="Tell Möbius what slows you down. Build a private app you can use and improve on phone and web.">
   <meta name="twitter:image" content="{{ social_preview_url }}">
   <meta name="twitter:image:alt" content="Möbius app-building workspace on web and mobile">
-  <title>Möbius: Build apps. Get more done.</title>
+  <title>Möbius: Build apps for the work you repeat</title>
   <link rel="icon" type="image/png" href="{{ favicon_url }}">
   <link rel="apple-touch-icon" href="{{ favicon_url }}">
   <link rel="preconnect" href="https://rsms.me/">
@@ -4080,34 +4080,34 @@ def login_page():
       <section class="login-layout" aria-labelledby="login-heading">
         <div class="login-story">
           <p class="login-kicker">Your private AI app workspace</p>
-          <h1 id="login-heading">Build apps. Get more done.</h1>
+          <h1 id="login-heading">Build apps for the work you repeat.</h1>
           <p class="login-lead">
-            Describe what you need. Möbius turns a sentence into an app for repeated work,
-            ready to use and improve on phone and web.
+            Tell Möbius what slows you down. It builds a private app you can use and improve
+            on phone and web.
           </p>
         </div>
         <aside class="login-card" aria-label="Sign in to Möbius Launch">
           <div class="login-card-main">
-            <p class="login-card-label">Free to try</p>
-            <h2>Start your private workspace.</h2>
+            <p class="login-card-label">One month free</p>
+            <h2>Start with one useful app.</h2>
             <p class="login-card-copy">
-              Sign in, connect Railway, and launch Möbius with a short guided setup.
+              Continue with Google, connect Railway, and follow the guided setup.
             </p>
             {provider_block}
             {email_fallback}
             <p class="login-trial">
-              <strong>Up to 30 days free</strong>
-              <span>New Railway users get $5 trial credit. No card required.</span>
+              <strong>One month free included</strong>
+              <span>No card required for new Railway users.</span>
             </p>
             <p class="login-trust">
               Private by default. Your workspace keeps its own conversations, files, and apps;
               Möbius Launch only manages deployment.
             </p>
-            <p class="login-requirement"><strong>Before you start:</strong> bring a ChatGPT plan with Codex access or a supported Claude Code plan. Railway may request GitHub verification for full trial access.</p>
+            <p class="login-requirement"><strong>Bring your own agent:</strong> connect Claude Code or a ChatGPT plan with Codex access. Railway may request GitHub verification for full trial access.</p>
           </div>
         </aside>
         <figure class="login-continuity">
-          <figcaption><strong>Start with one sentence</strong><span>Keep shaping the same workspace on web and phone.</span></figcaption>
+          <figcaption><strong>Start with the work you repeat</strong><span>Keep shaping the same workspace on web and phone.</span></figcaption>
           <div class="login-continuity-frames">
             <div class="login-web-frame"><img src="{static_product_url('chat-web.png')}" alt="Möbius chat on the web with a Build an app action"></div>
             <div class="login-phone-frame"><img src="{static_product_url('chat-mobile.png')}" alt="The same Möbius workspace on a phone"></div>
@@ -4542,7 +4542,7 @@ def index():
                 </div>
               </div>
                 <div class="signal-strip">
-                  <span class="signal"><strong>$5</strong> included</span>
+                  <span class="signal"><strong>One month</strong> free included</span>
                   <span class="signal">Usage-based</span>
                   <span class="signal">Hard limits stop spend</span>
                 </div>

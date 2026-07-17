@@ -537,6 +537,127 @@ p.muted, .muted { color: var(--muted); }
   box-shadow: 0 24px 66px rgba(0, 0, 0, 0.34);
 }
 
+.app-anatomy {
+  display: grid;
+  gap: 34px;
+}
+
+.app-anatomy .section-intro {
+  max-width: 900px;
+}
+
+.app-anatomy-stage {
+  overflow: hidden;
+  border: 1px solid rgba(139, 108, 247, 0.32);
+  border-radius: 16px;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(139, 108, 247, 0.12), transparent 44%),
+    rgba(255, 255, 255, 0.015);
+}
+
+.anatomy-manifest {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  padding: 18px 24px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(0, 0, 0, 0.18);
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.anatomy-manifest code {
+  padding: 5px 9px;
+  border-radius: 999px;
+  background: var(--accent-dim);
+  color: #d8ceff;
+  font-size: 0.78rem;
+  font-weight: 750;
+}
+
+.anatomy-flow {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.anatomy-part {
+  position: relative;
+  min-width: 0;
+  min-height: 250px;
+  padding: clamp(26px, 3vw, 38px);
+}
+
+.anatomy-part + .anatomy-part {
+  border-left: 1px solid var(--border);
+}
+
+.anatomy-part::before {
+  content: "";
+  display: block;
+  width: 9px;
+  height: 9px;
+  margin-bottom: 38px;
+  border-radius: 50%;
+  background: var(--accent);
+  box-shadow: 0 0 0 6px var(--accent-dim);
+}
+
+.anatomy-verb {
+  display: block;
+  margin-bottom: 8px;
+  color: #b9a7ff;
+  font-size: 0.76rem;
+  font-weight: 720;
+}
+
+.anatomy-part h3 {
+  margin: 0;
+  font-size: clamp(1.3rem, 1.8vw, 1.7rem);
+  letter-spacing: -0.025em;
+}
+
+.anatomy-part p {
+  margin: 10px 0 0;
+  color: var(--muted);
+  font-size: 0.86rem;
+  text-wrap: pretty;
+}
+
+.anatomy-examples {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  border-block: 1px solid var(--border-light);
+}
+
+.anatomy-examples article {
+  padding: 22px clamp(0px, 2.4vw, 30px);
+}
+
+.anatomy-examples article:first-child {
+  padding-left: 0;
+}
+
+.anatomy-examples article:last-child {
+  padding-right: 0;
+}
+
+.anatomy-examples article + article {
+  border-left: 1px solid var(--border-light);
+}
+
+.anatomy-examples h3 {
+  margin: 0;
+  color: var(--text);
+  font-size: 0.9rem;
+}
+
+.anatomy-examples p {
+  margin: 7px 0 0;
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
 .personal-section {
   display: grid;
   grid-template-columns: minmax(0, 0.78fr) minmax(480px, 1.22fr);
@@ -1121,6 +1242,15 @@ footer.site .inner {
   .phone-story { display: grid; grid-template-columns: minmax(150px, 210px) minmax(0, 1fr); column-gap: 28px; align-items: center; }
   .phone-story .showcase-phone { grid-row: 1 / span 3; margin: 0; }
   .news-story { padding-bottom: 0; }
+  .anatomy-manifest { align-items: flex-start; flex-direction: column; }
+  .anatomy-flow, .anatomy-examples { grid-template-columns: 1fr; }
+  .anatomy-part { min-height: 0; padding: 26px 24px; }
+  .anatomy-part + .anatomy-part { border-top: 1px solid var(--border); border-left: 0; }
+  .anatomy-part::before { margin-bottom: 24px; }
+  .anatomy-examples article,
+  .anatomy-examples article:first-child,
+  .anatomy-examples article:last-child { padding: 18px 0; }
+  .anatomy-examples article + article { border-top: 1px solid var(--border-light); border-left: 0; }
   .ecosystem-flow { grid-template-columns: 1fr; gap: 34px; }
   .ecosystem-flow::before {
     content: "";

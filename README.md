@@ -23,6 +23,32 @@ Apps are the main surface. Personalization carries useful context, preferences, 
 
 Möbius saves context and working patterns so the next task starts with more of what it needs.
 
+## Build more than a screen
+
+A Möbius app can package its interface, agent interaction, guidance, state, and jobs in one inspectable repository. The manifest shows these capabilities and permissions before installation.
+
+```mermaid
+flowchart LR
+  R["App repository"] --> M["mobius.json"]
+  M --> U["Interface"]
+  M --> A["Agent surface"]
+  M --> G["Agent guidance"]
+  M --> W["Work and state"]
+```
+
+Every app declares an interface. The other layers are optional:
+
+- **Interface**: React user interface for representation and direct control
+- **Agent surface**: app-owned conversations with context about the app, its source, and its state
+- **Agent guidance**: reusable skills and app-scoped instructions; system apps may also extend the shared agent instructions
+- **Work and state**: per-app storage plus jobs that run on demand or on a schedule
+
+Current apps combine these layers in different ways:
+
+- **Web Studio**: an editor and live preview with an embedded agent and on-demand build job
+- **News**: a digest reader with an embedded agent, editorial settings, and scheduled generation
+- **Memory**: a graph interface with a reusable skill, system-level instructions, and background indexing
+
 ## Continue from phone or web
 
 Editor keeps the files behind your apps close at hand. Browse the project and change its source on a computer. Open the same code on your phone without setting up another development environment.

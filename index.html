@@ -55,7 +55,7 @@
       </a>
       <nav aria-label="Primary navigation">
         <a href="#apps">Apps</a>
-        <a href="#personalization">Personalization</a>
+        <a href="#app-anatomy">Developers</a>
         <a href="#self-improvement">Self-improvement</a>
         <a class="nav-launch" href="https://mobius.you/">Launch</a>
       </nav>
@@ -75,7 +75,7 @@
           <a class="btn" href="https://mobius.you/">Start your Möbius</a>
           <a class="btn secondary" href="https://github.com/mobius-os/mobius">Explore the source</a>
         </div>
-        <p class="hero-note">Bring a ChatGPT plan with Codex access or a supported Claude Code plan. Your data stays in the deployment you control.</p>
+        <p class="hero-note">Bring your own agent through Claude Code or ChatGPT with Codex access. Your data stays in the deployment you control.</p>
       </div>
 
       <div class="hero-product" aria-label="The Möbius app platform">
@@ -164,6 +164,61 @@
         </article>
       </div>
       <a class="text-link" href="apps/">Browse the current catalog <span aria-hidden="true">→</span></a>
+    </section>
+
+    <section class="app-anatomy" id="app-anatomy">
+      <div class="section-intro section-intro--wide">
+        <h2>A Möbius app is more than a screen.</h2>
+        <p>
+          One repository can define what people see and how they work with an agent.
+          It can also package instructions and background work.
+        </p>
+      </div>
+
+      <div class="app-anatomy-stage" aria-label="The four layers a Möbius app can combine">
+        <div class="anatomy-manifest">
+          <code>mobius.json</code>
+          <span>One manifest installs every layer together.</span>
+        </div>
+        <div class="anatomy-flow">
+          <article class="anatomy-part">
+            <span class="anatomy-verb">See and control</span>
+            <h3>Interface</h3>
+            <p>Give people a focused view of the work and controls that change it.</p>
+          </article>
+          <article class="anatomy-part">
+            <span class="anatomy-verb">Ask and direct</span>
+            <h3>Agent surface</h3>
+            <p>Embed conversation inside the app, with the right files and state already in context.</p>
+          </article>
+          <article class="anatomy-part">
+            <span class="anatomy-verb">Teach and personalize</span>
+            <h3>Agent guidance</h3>
+            <p>Ship reusable skills and app-scoped instructions. System apps can also extend shared agent instructions.</p>
+          </article>
+          <article class="anatomy-part">
+            <span class="anatomy-verb">Run and persist</span>
+            <h3>Work engine</h3>
+            <p>Use app storage and jobs for scheduled or on-demand work.</p>
+          </article>
+        </div>
+      </div>
+
+      <div class="anatomy-examples" aria-label="Examples of agent-native Möbius apps">
+        <article>
+          <h3>Web Studio</h3>
+          <p>Edit and preview a site while an embedded agent changes the same files.</p>
+        </article>
+        <article>
+          <h3>News</h3>
+          <p>Tune the editorial brief while a scheduled job creates each digest.</p>
+        </article>
+        <article>
+          <h3>Memory</h3>
+          <p>Pair a graph interface with a reusable skill and system-level context.</p>
+        </article>
+      </div>
+      <a class="text-link" href="docs/contributing.html">Build a Möbius app <span aria-hidden="true">→</span></a>
     </section>
 
     <section class="personal-section" id="personalization">
