@@ -2534,19 +2534,19 @@ LAYOUT = """
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="description" content="Build private apps for the work you repeat. One month free for new Railway users. Bring your own Claude or Codex agent.">
   <link rel="canonical" href="{{ canonical_url }}">
-  <meta name="theme-color" content="#0d0d0d">
+  <meta name="theme-color" content="#09090a">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Möbius">
   <meta property="og:url" content="{{ canonical_url }}">
   <meta property="og:title" content="Möbius: Build apps for the work you repeat">
-  <meta property="og:description" content="Tell Möbius what slows you down. Build a private app you can use and improve on phone and web.">
+  <meta property="og:description" content="Bring a task you repeat. Your agent builds a private app you can use and improve on phone or web.">
   <meta property="og:image" content="{{ social_preview_url }}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
   <meta property="og:image:alt" content="Möbius app-building workspace on web and mobile">
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:title" content="Möbius: Build apps for the work you repeat">
-  <meta name="twitter:description" content="Tell Möbius what slows you down. Build a private app you can use and improve on phone and web.">
+  <meta name="twitter:description" content="Bring a task you repeat. Your agent builds a private app you can use and improve on phone or web.">
   <meta name="twitter:image" content="{{ social_preview_url }}">
   <meta name="twitter:image:alt" content="Möbius app-building workspace on web and mobile">
   <title>Möbius: Build apps for the work you repeat</title>
@@ -2557,18 +2557,18 @@ LAYOUT = """
   <style>
     :root {
       color-scheme: dark;
-      --bg: #0d0d0d;
-      --surface: #171717;
-      --surface2: #212121;
-      --surface3: #111111;
-      --border: #2a2a2a;
-      --border-light: #1f1f1f;
-      --text: #ececec;
-      --muted: #a8a8a8;
-      --accent: #8b6cf7;
-      --accent-hover: #7c5ce6;
-      --accent-active: #6d4bd7;
-      --accent-dim: rgba(139, 108, 247, 0.14);
+      --bg: #09090a;
+      --surface: #151416;
+      --surface2: #1e1c20;
+      --surface3: #101011;
+      --border: #302d33;
+      --border-light: #222024;
+      --text: #f3f1f5;
+      --muted: #b4b0b8;
+      --accent: #9b82ff;
+      --accent-hover: #8063eb;
+      --accent-active: #7052dc;
+      --accent-dim: rgba(155, 130, 255, 0.14);
       --ok: #10b981;
       --ok-soft: rgba(16, 185, 129, 0.14);
       --warn: #f0c674;
@@ -2576,7 +2576,7 @@ LAYOUT = """
       --danger: #f87171;
       --danger-soft: rgba(248, 113, 113, 0.13);
       --radius: 8px;
-      --spring: cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
     }
 
     * { box-sizing: border-box; }
@@ -2584,7 +2584,8 @@ LAYOUT = """
     html, body { margin: 0; min-height: 100%; }
     body {
       background:
-        linear-gradient(180deg, rgba(255,255,255,0.025), rgba(255,255,255,0) 220px),
+        radial-gradient(circle at 76% -8%, rgba(155, 130, 255, 0.08), transparent 34rem),
+        linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0) 220px),
         var(--bg);
       color: var(--text);
       font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
@@ -2979,7 +2980,7 @@ LAYOUT = """
       justify-content: center;
       gap: 8px;
       white-space: nowrap;
-      transition: transform 120ms var(--spring), background 180ms ease, border-color 180ms ease, color 180ms ease, box-shadow 180ms ease;
+      transition: transform 120ms var(--ease-out-expo), background 180ms ease, border-color 180ms ease, color 180ms ease, box-shadow 180ms ease;
       touch-action: manipulation;
     }
     .button.subtle, button.subtle { background: transparent; color: var(--muted); }
@@ -3142,7 +3143,7 @@ LAYOUT = """
       gap: 12px;
       position: relative;
       overflow: hidden;
-      animation: enter 260ms var(--spring);
+      animation: enter 260ms var(--ease-out-expo);
     }
     .instance details { grid-column: 1 / -1; margin-top: 2px; }
     .instance-main { min-width: 0; }
@@ -3592,7 +3593,7 @@ LAYOUT = """
       background: var(--surface2);
       color: var(--muted);
       flex: none;
-      transition: transform 180ms var(--spring), background 180ms ease, color 180ms ease;
+      transition: transform 180ms var(--ease-out-expo), background 180ms ease, color 180ms ease;
     }
     .create-drawer[open] .create-plus { transform: rotate(45deg); background: var(--accent-dim); color: var(--accent); }
     .create-drawer[open] summary {
@@ -3623,7 +3624,7 @@ LAYOUT = """
       padding: 18px;
       display: grid;
       gap: 16px;
-      animation: enter 260ms var(--spring);
+      animation: enter 260ms var(--ease-out-expo);
     }
     .container-top {
       display: grid;
@@ -3876,17 +3877,17 @@ LAYOUT = """
       to { transform: translateX(240%); }
     }
     @keyframes enter {
-      from { opacity: 0; transform: translateY(8px); }
-      to { opacity: 1; transform: translateY(0); }
+      from { transform: translateY(8px); }
+      to { transform: translateY(0); }
     }
     @keyframes loginEnter {
-      from { opacity: 0; translate: 0 14px; }
-      to { opacity: 1; translate: 0 0; }
+      from { translate: 0 12px; }
+      to { translate: 0 0; }
     }
     @media (prefers-reduced-motion: no-preference) {
-      .login-story { animation: loginEnter 560ms var(--spring) both; }
-      .login-card { animation: loginEnter 560ms 70ms var(--spring) both; }
-      .login-continuity { animation: loginEnter 560ms 140ms var(--spring) both; }
+      .login-story { animation: loginEnter 520ms var(--ease-out-expo) backwards; }
+      .login-card { animation: loginEnter 520ms 70ms var(--ease-out-expo) backwards; }
+      .login-continuity { animation: loginEnter 520ms 140ms var(--ease-out-expo) backwards; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
@@ -4066,6 +4067,12 @@ def login_page():
               {google_button}
             </div>
         """
+    if google_oauth_configured():
+        sign_in_copy = "Continue with Google, connect Railway, and follow the guided setup."
+    elif email_login_enabled():
+        sign_in_copy = "Enter your email, connect Railway, and follow the guided setup."
+    else:
+        sign_in_copy = "Connect your account and follow the guided setup."
     email_fallback = ""
     if email_login_enabled():
         email_fallback = f"""
@@ -4088,25 +4095,25 @@ def login_page():
       </header>
       <section class="login-layout" aria-labelledby="login-heading">
         <div class="login-story">
-          <p class="login-kicker">Your private AI app workspace</p>
+          <p class="login-kicker">A private app workspace for your agent</p>
           <h1 id="login-heading">Build apps for the work you repeat.</h1>
           <p class="login-lead">
-            Tell Möbius what slows you down. It builds a private app you can use and improve
-            on phone and web.
+            Bring a task you repeat. Your agent builds a private app you can use and improve
+            on phone or web.
           </p>
         </div>
         <aside class="login-card" aria-label="Sign in to Möbius Launch">
           <div class="login-card-main">
-            <p class="login-card-label">One month free</p>
+            <p class="login-card-label">One month included</p>
             <h2>Start with one useful app.</h2>
             <p class="login-card-copy">
-              Continue with Google, connect Railway, and follow the guided setup.
+              {sign_in_copy}
             </p>
             {provider_block}
             {email_fallback}
             <p class="login-trial">
-              <strong>One month free included</strong>
-              <span>No card required for new Railway users.</span>
+              <strong>No card required</strong>
+              <span>For new Railway users.</span>
             </p>
             <p class="login-trust">
               Private by default. Your workspace keeps its own conversations, files, and apps;

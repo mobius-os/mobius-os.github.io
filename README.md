@@ -2,9 +2,11 @@
   <img src="mobius-brand.png" width="76" alt="Möbius OS">
 </p>
 
-# Möbius product site and launcher
+<h1 align="center">Möbius</h1>
 
-This repository contains the [Möbius product site](https://mobius-os.github.io/) and [Möbius Launch](https://mobius.you/). It also publishes the app catalog and documentation for people building Möbius apps.
+<p align="center"><strong>A private app workspace shaped by the coding agent you already use.</strong></p>
+<p align="center">Turn repeated work into focused apps. Use them on phone or web, personalize the workspace, and improve it over time.</p>
+<p align="center"><strong>One month free</strong> · Bring Claude Code or Codex · Private by default · Open source</p>
 
 <p align="center">
   <a href="https://mobius.you/"><strong>Launch Möbius</strong></a> ·
@@ -12,11 +14,13 @@ This repository contains the [Möbius product site](https://mobius-os.github.io/
   <a href="https://github.com/mobius-os/mobius">Platform source</a>
 </p>
 
+This repository publishes the Möbius product site, launch service, app catalog, and public documentation.
+
 ![Editor showing the files and source behind a Möbius app](assets/product/editor-desktop.png)
 
 ## Build the apps that fit your life
 
-Möbius is a community-built AGI app platform. A capable coding agent can build an app beside the conversation, then leave it in the same workspace where you use it.
+Möbius is a community-built AGI app platform. A capable coding agent can build an app beside the conversation, then leave it in the same private workspace where you use it.
 
 Apps are the main surface. Personalization carries useful context, preferences, files, and themes across the workspace. Memory and Reflection help turn repeated friction into a better default, a skill, or an app change.
 

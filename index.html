@@ -8,7 +8,7 @@
   <meta name="keywords" content="Möbius OS, personal AI, open source AI, self-hosted AI, AI app builder, AI agents, adaptive apps, personalization, reflection, self-improvement">
   <link rel="canonical" href="https://mobius-os.github.io/">
   <link rel="icon" type="image/png" href="mobius-brand.png">
-  <meta name="theme-color" content="#0d0d0d">
+  <meta name="theme-color" content="#09090a">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Möbius OS">
   <meta property="og:url" content="https://mobius-os.github.io/">
@@ -67,14 +67,14 @@
         <p class="eyebrow">Open-source AGI app platform</p>
         <h1>Build the apps that fit your life.</h1>
         <p class="hero-lead">
-          Möbius gives a capable coding agent a workspace it can shape. Build useful apps,
-          open them anywhere, and improve the system through memory, reflection, and use.
+          Tell Möbius what slows you down. Your agent turns repeated work into a focused app
+          you can use on phone or web—and keep improving as your needs change.
         </p>
         <div class="hero-actions">
-          <a class="btn" href="https://mobius.you/">Start your Möbius</a>
+          <a class="btn" href="https://mobius.you/">Start free for one month</a>
           <a class="btn secondary" href="https://github.com/mobius-os/mobius">Explore the source</a>
         </div>
-        <p class="hero-note">Bring your own agent through Claude Code or ChatGPT with Codex access. Your data stays in the deployment you control.</p>
+        <p class="hero-note">Bring Claude Code or Codex. Your data stays in the deployment you control.</p>
       </div>
 
       <div class="hero-product" aria-label="The Möbius app platform">
@@ -85,11 +85,11 @@
       </div>
     </section>
 
-    <section class="product-thread" aria-label="Möbius product principles">
-      <span>Build useful apps</span>
-      <span>Use them on phone and web</span>
-      <span>Personalize the workspace</span>
-      <span>Improve the loop</span>
+    <section class="product-thread" aria-label="Möbius assurances">
+      <span>One month free</span>
+      <span>Bring your own agent</span>
+      <span>Private by default</span>
+      <span>Open source</span>
     </section>
 
     <section class="builder-section">
@@ -227,7 +227,7 @@
       <h2>Build something you will want to open tomorrow.</h2>
       <p>Launch a private workspace with Codex or Claude Code, or explore the open-source platform and community apps.</p>
       <div class="hero-actions">
-        <a class="btn" href="https://mobius.you/">Start your Möbius</a>
+        <a class="btn" href="https://mobius.you/">Start free for one month</a>
         <a class="btn secondary" href="https://github.com/mobius-os/mobius">Visit GitHub</a>
       </div>
     </section>
@@ -236,39 +236,45 @@
   <footer class="site">
     <div class="inner">
       <span>Möbius OS · Open source · MIT</span>
-      <span><a href="https://mobius.you/">Launch</a> · <a href="apps/">Apps</a> · <a href="spec/">Spec</a> · <a href="https://github.com/mobius-os/mobius">GitHub</a></span>
+      <span><a href="https://mobius.you/">Launch</a> · <a href="apps/">Apps</a> · <a href="https://mobius.you/transparency">Data transparency</a> · <a href="spec/">Spec</a> · <a href="https://github.com/mobius-os/mobius">GitHub</a></span>
     </div>
   </footer>
   <script>
     (() => {
-      if (matchMedia('(prefers-reduced-motion: reduce)').matches || !('IntersectionObserver' in window)) return;
+      if (
+        matchMedia('(prefers-reduced-motion: reduce)').matches ||
+        !('IntersectionObserver' in window) ||
+        !('animate' in Element.prototype) ||
+        !('CSS' in window) ||
+        !CSS.supports('translate', '0 1px')
+      ) return;
 
       const groups = [
         ['.builder-section', ['.section-intro', '.continuity-stage']],
         ['.atlas-feature', ['.atlas-media', '.atlas-copy']],
-        ['.app-gallery', [':scope > article']],
+        ['.app-gallery', ['article']],
         ['.personal-section', ['.personal-copy', '.personal-visual']],
         ['.ecosystem-flow', ['.ecosystem-step']],
-        ['.final-cta', [':scope']]
+        ['.final-cta', [null]]
       ];
 
       const observer = new IntersectionObserver((entries) => {
         entries.forEach((entry) => {
           if (!entry.isIntersecting) return;
           const selectors = entry.target.revealSelectors;
-          const items = selectors.flatMap((selector) => selector === ':scope'
-            ? [entry.target]
-            : [...entry.target.querySelectorAll(selector)]);
+          const items = selectors.flatMap((selector) => selector
+            ? [...entry.target.querySelectorAll(selector)]
+            : [entry.target]);
 
-          items.forEach((item, index) => item.animate([
-            { opacity: 0.12, translate: '0 18px', scale: 0.985 },
-            { opacity: 1, translate: '0 0', scale: 1 }
-          ], {
-            duration: 560,
-            delay: Math.min(index * 80, 240),
-            easing: 'cubic-bezier(.16, 1, .3, 1)',
-            fill: 'backwards'
-          }));
+          items.forEach((item, index) => {
+            setTimeout(() => item.animate([
+              { translate: '0 14px' },
+              { translate: '0 0' }
+            ], {
+              duration: 520,
+              easing: 'cubic-bezier(.16, 1, .3, 1)'
+            }), Math.min(index * 70, 210));
+          });
 
           entry.target.closest('.ecosystem-stage')?.classList.add('is-in-view');
           observer.unobserve(entry.target);
