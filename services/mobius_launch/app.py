@@ -3143,7 +3143,6 @@ LAYOUT = """
       gap: 12px;
       position: relative;
       overflow: hidden;
-      animation: enter 260ms var(--ease-out-expo);
     }
     .instance details { grid-column: 1 / -1; margin-top: 2px; }
     .instance-main { min-width: 0; }
@@ -3624,7 +3623,6 @@ LAYOUT = """
       padding: 18px;
       display: grid;
       gap: 16px;
-      animation: enter 260ms var(--ease-out-expo);
     }
     .container-top {
       display: grid;
@@ -3875,19 +3873,6 @@ LAYOUT = """
     @keyframes sweep {
       from { transform: translateX(-100%); }
       to { transform: translateX(240%); }
-    }
-    @keyframes enter {
-      from { transform: translateY(8px); }
-      to { transform: translateY(0); }
-    }
-    @keyframes loginEnter {
-      from { translate: 0 12px; }
-      to { translate: 0 0; }
-    }
-    @media (prefers-reduced-motion: no-preference) {
-      .login-story { animation: loginEnter 520ms var(--ease-out-expo) backwards; }
-      .login-card { animation: loginEnter 520ms 70ms var(--ease-out-expo) backwards; }
-      .login-continuity { animation: loginEnter 520ms 140ms var(--ease-out-expo) backwards; }
     }
     @media (prefers-reduced-motion: reduce) {
       *, *::before, *::after {
