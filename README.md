@@ -4,8 +4,8 @@
 
 <h1 align="center">Möbius</h1>
 
-<p align="center"><strong>A private app workspace shaped by the coding agent you already use.</strong></p>
-<p align="center">Turn repeated work into focused apps. Use them on phone or web, personalize the workspace, and improve it over time.</p>
+<p align="center"><strong>Your private agentic workspace—and an app platform we build together.</strong></p>
+<p align="center">Start with community apps, shape them with your agent, and personalize the whole workspace while keeping control of your data.</p>
 <p align="center"><strong>One month free</strong> · Bring Claude Code or Codex · Private by default · Open source</p>
 
 <p align="center">
@@ -18,9 +18,9 @@ This repository publishes the Möbius product site, launch service, app catalog,
 
 ![Editor showing the files and source behind a Möbius app](assets/product/editor-desktop.png)
 
-## Build the apps that fit your life
+## Make Möbius your own
 
-Möbius is a community-built AGI app platform. A capable coding agent can build an app beside the conversation, then leave it in the same private workspace where you use it.
+Möbius is a private agentic workspace, community app store, and open platform. Start with what the community has built, then use a capable coding agent to change an app or create something new beside the conversation.
 
 Apps are the main surface. Personalization carries useful context, preferences, files, and themes across the workspace. Memory and Reflection help turn repeated friction into a better default, a skill, or an app change.
 
