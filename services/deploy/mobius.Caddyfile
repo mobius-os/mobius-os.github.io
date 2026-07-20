@@ -8,12 +8,12 @@
 		# OAuth starts can redirect top-level navigations through provider hosts.
 		# Keep form submissions tight, but allow the public launcher hosts and
 		# known provider targets so auth buttons do not appear inert.
-		Content-Security-Policy "default-src 'self'; base-uri 'self'; connect-src 'self'; form-action 'self' https://mobius.page https://mobius.you https://accounts.google.com https://backboard.railway.com https://railway.com; frame-ancestors 'none'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
+		Content-Security-Policy "default-src 'self'; base-uri 'self'; connect-src 'self'; form-action 'self' https://mobius.page https://www.mobius.page https://mobius.you https://www.mobius.you https://accounts.google.com https://backboard.railway.com https://railway.com; frame-ancestors 'none'; img-src 'self' data: https:; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline'"
 		-Server
 	}
 }
 
-mobius.page, mobius.you {
+www.mobius.page, www.mobius.you {
 	import mobius_launch_headers
 	encode gzip
 	request_body {
@@ -33,10 +33,10 @@ mobius.page, mobius.you {
 	}
 }
 
-www.mobius.page {
-	redir https://mobius.page{uri} permanent
+mobius.page {
+	redir https://www.mobius.page{uri} permanent
 }
 
-www.mobius.you {
-	redir https://mobius.you{uri} permanent
+mobius.you {
+	redir https://www.mobius.you{uri} permanent
 }

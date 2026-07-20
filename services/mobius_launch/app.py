@@ -25,11 +25,14 @@ DATA_DIR = os.environ.get("DATA_DIR", "/data")
 DB_PATH = os.path.join(DATA_DIR, "mobius_launch.sqlite3")
 SECRET_PATH = os.path.join(DATA_DIR, "session-secret.txt")
 APP_BASE_PATH = os.environ.get("APP_BASE_PATH", "").rstrip("/")
-PUBLIC_BASE_URL = os.environ.get("PUBLIC_BASE_URL", "https://mobius.you").rstrip("/")
-PUBLIC_CANONICAL_URL = os.environ.get("PUBLIC_CANONICAL_URL", "https://mobius.you").rstrip("/")
+PUBLIC_BASE_URL = os.environ.get("PUBLIC_BASE_URL", "https://www.mobius.you").rstrip("/")
+PUBLIC_CANONICAL_URL = os.environ.get("PUBLIC_CANONICAL_URL", "https://www.mobius.you").rstrip("/")
 PUBLIC_HOSTS = {
     host.strip().lower()
-    for host in os.environ.get("PUBLIC_HOSTS", "mobius.page,mobius.you").split(",")
+    for host in os.environ.get(
+        "PUBLIC_HOSTS",
+        "www.mobius.you,mobius.you,www.mobius.page,mobius.page",
+    ).split(",")
     if host.strip()
 }
 PUBLIC_BASE_HOST = urllib.parse.urlparse(PUBLIC_BASE_URL).netloc.lower()
@@ -403,14 +406,91 @@ def static_product_url(filename):
     return f"{path('/static/' + filename)}?v={static_asset_version(filename)}"
 
 
-def current_public_base_url():
+def render_build_companion(step_text):
+    stories = [
+        {
+            "image": logo_url(),
+            "title": "No inside, no outside",
+            "body": "Mobius takes its name from the strip: one continuous surface. Platform and apps are not separate worlds here; the agent can move through both.",
+            "alt": "Mobius mark",
+        },
+        {
+            "image": static_product_url("reflection-icon.png"),
+            "title": "A system that can redraw itself",
+            "body": "Like Escher's drawing hands, Mobius is built so the maker can also work on the making place. You can ask it to change the shell, not just build inside it.",
+            "alt": "Reflection icon",
+        },
+        {
+            "image": static_product_url("contribute-icon.png"),
+            "title": "Made to flow back",
+            "body": "The App Store and Contribute app are the community layer: install what others build, improve your own place, and send useful pieces back out.",
+            "alt": "Contribute app icon",
+        },
+        {
+            "image": static_product_url("memory-icon.png"),
+            "title": "Your agent's own room",
+            "body": "Railway is building an isolated home for your agent and its data. The launcher can deploy and check status, but your workspace belongs inside your container.",
+            "alt": "Memory icon",
+        },
+    ]
+    slides = []
+    dots = []
+    for idx, story in enumerate(stories):
+        active = " active" if idx == 0 else ""
+        slides.append(f"""
+          <article class="build-slide{active}" data-build-slide="{idx}" aria-hidden="{'false' if idx == 0 else 'true'}">
+            <img src="{h(story['image'])}" alt="{h(story['alt'])}">
+            <div>
+              <h4>{h(story['title'])}</h4>
+              <p>{h(story['body'])}</p>
+            </div>
+          </article>
+        """)
+        dots.append(f"""<button type="button" class="build-dot{active}" data-build-dot="{idx}" aria-label="Show build story {idx + 1}"></button>""")
+    return f"""
+      <div class="build-companion" data-build-companion>
+        <div class="build-status">
+          <span class="build-pulse" aria-hidden="true"></span>
+          <div>
+            <p>Building your private Mobius</p>
+            <strong data-build-step>{h(step_text or 'Starting deployment')}</strong>
+          </div>
+        </div>
+        <div class="build-stage">
+          {''.join(slides)}
+        </div>
+        <div class="build-nav">
+          <button type="button" class="button subtle icon" data-build-prev aria-label="Previous build story">{icon('chevron-left')}</button>
+          <div class="build-dots">{''.join(dots)}</div>
+          <button type="button" class="button subtle icon" data-build-next aria-label="Next build story">{icon('chevron-right')}</button>
+        </div>
+      </div>
+    """
+
+
+def current_request_host():
     forwarded_host = (request.headers.get("X-Forwarded-Host") or "").split(",")[0].strip()
-    host = (forwarded_host or request.host or "").split(":", 1)[0].lower()
-    if host.startswith("www."):
-        host = host[4:]
+    return (forwarded_host or request.host or "").split(":", 1)[0].lower()
+
+
+def current_public_base_url():
+    host = current_request_host()
     if host in PUBLIC_HOSTS:
         return f"https://{host}"
     return PUBLIC_BASE_URL
+
+
+def current_canonical_base_url():
+    host = current_request_host()
+    if host in {"mobius.you", "www.mobius.you"}:
+        return "https://www.mobius.you"
+    if host in {"mobius.page", "www.mobius.page"}:
+        return "https://www.mobius.page"
+    if host in PUBLIC_HOSTS:
+        if not host.startswith("www.") and f"www.{host}" in PUBLIC_HOSTS:
+            return f"https://www.{host}"
+        return f"https://{host}"
+    return PUBLIC_CANONICAL_URL
 
 
 def google_redirect_uri():
@@ -2532,24 +2612,24 @@ LAYOUT = """
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Build private apps for the work you repeat. One month free for new Railway users. Bring your own Claude or Codex agent.">
+  <meta name="description" content="Launch a private AI workspace where your agent can build apps, share improvements, code the platform, and keep working on phone or web.">
   <link rel="canonical" href="{{ canonical_url }}">
   <meta name="theme-color" content="#09090a">
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="Möbius">
   <meta property="og:url" content="{{ canonical_url }}">
-  <meta property="og:title" content="Möbius: Build apps for the work you repeat">
-  <meta property="og:description" content="Bring a task you repeat. Your agent builds a private app you can use and improve on phone or web.">
+  <meta property="og:title" content="Möbius: Build apps and shape your AI workspace">
+  <meta property="og:description" content="A private home for your agent: build and share apps, automate repeated work, and code the platform itself on phone or web.">
   <meta property="og:image" content="{{ social_preview_url }}">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="Möbius app-building workspace on web and mobile">
+  <meta property="og:image:alt" content="Möbius AI workspace for building apps on web and mobile">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Möbius: Build apps for the work you repeat">
-  <meta name="twitter:description" content="Bring a task you repeat. Your agent builds a private app you can use and improve on phone or web.">
+  <meta name="twitter:title" content="Möbius: Build apps and shape your AI workspace">
+  <meta name="twitter:description" content="A private home for your agent: build and share apps, automate repeated work, and code the platform itself on phone or web.">
   <meta name="twitter:image" content="{{ social_preview_url }}">
-  <meta name="twitter:image:alt" content="Möbius app-building workspace on web and mobile">
-  <title>Möbius: Build apps for the work you repeat</title>
+  <meta name="twitter:image:alt" content="Möbius AI workspace for building apps on web and mobile">
+  <title>Möbius: Build apps and shape your AI workspace</title>
   <link rel="icon" type="image/png" href="{{ favicon_url }}">
   <link rel="apple-touch-icon" href="{{ favicon_url }}">
   <link rel="preconnect" href="https://rsms.me/">
@@ -2659,7 +2739,7 @@ LAYOUT = """
       background: var(--accent);
     }
     .login-story h1 {
-      max-width: 10ch;
+      max-width: 13ch;
       font-size: clamp(42px, 5.4vw, 66px);
       font-weight: 730;
       line-height: 0.98;
@@ -2673,6 +2753,47 @@ LAYOUT = """
       font-size: clamp(16px, 1.8vw, 19px);
       line-height: 1.55;
       text-wrap: pretty;
+    }
+    .login-promises {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin: 26px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+    .login-promise {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
+      gap: 10px;
+      align-items: start;
+      min-height: 78px;
+      padding: 13px 14px;
+      border: 1px solid var(--border-light);
+      border-radius: 12px;
+      background: color-mix(in srgb, var(--surface2) 66%, transparent);
+    }
+    .login-promise::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      margin-top: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 5px var(--accent-dim);
+    }
+    .login-promise strong {
+      display: block;
+      color: var(--text);
+      font-size: 13px;
+      line-height: 1.25;
+    }
+    .login-promise span {
+      display: block;
+      margin-top: 3px;
+      color: var(--muted);
+      font-size: 12px;
+      line-height: 1.4;
     }
     .login-continuity {
       grid-area: proof;
@@ -3220,6 +3341,120 @@ LAYOUT = """
       background: linear-gradient(90deg, transparent, var(--accent), transparent);
       animation: sweep 1.4s ease-in-out infinite;
     }
+    .build-companion {
+      display: grid;
+      gap: 12px;
+      border: 1px solid var(--border-light);
+      border-radius: var(--radius);
+      background: color-mix(in srgb, var(--surface2) 58%, transparent);
+      padding: 14px;
+    }
+    .build-status {
+      display: flex;
+      align-items: center;
+      gap: 11px;
+      min-width: 0;
+    }
+    .build-status p {
+      margin: 0 0 2px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .build-status strong {
+      display: block;
+      color: var(--text);
+      font-size: 14px;
+      line-height: 1.3;
+    }
+    .build-pulse {
+      width: 11px;
+      height: 11px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 0 0 rgba(139, 108, 247, 0.42);
+      animation: build-pulse 1.8s ease-out infinite;
+      flex: none;
+    }
+    @keyframes build-pulse {
+      0% { box-shadow: 0 0 0 0 rgba(139, 108, 247, 0.42); }
+      70%, 100% { box-shadow: 0 0 0 12px rgba(139, 108, 247, 0); }
+    }
+    .build-stage {
+      min-height: 134px;
+      overflow: hidden;
+      border-radius: 10px;
+      border: 1px solid var(--border-light);
+      background: var(--bg);
+    }
+    .build-slide {
+      display: none;
+      grid-template-columns: 76px minmax(0, 1fr);
+      gap: 14px;
+      align-items: center;
+      padding: 14px;
+    }
+    .build-slide.active {
+      display: grid;
+      animation: build-slide-in 180ms ease both;
+    }
+    @keyframes build-slide-in {
+      from { opacity: 0; transform: translateX(8px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    .build-slide img {
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
+      border-radius: 16px;
+      background: color-mix(in srgb, var(--surface2) 70%, transparent);
+      border: 1px solid var(--border-light);
+      padding: 8px;
+      box-sizing: border-box;
+    }
+    .build-slide h4 {
+      margin: 0 0 5px;
+      color: var(--text);
+      font-size: 15px;
+      line-height: 1.25;
+    }
+    .build-slide p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.42;
+    }
+    .build-nav {
+      display: grid;
+      grid-template-columns: 40px minmax(0, 1fr) 40px;
+      align-items: center;
+      gap: 8px;
+    }
+    .build-dots {
+      display: flex;
+      justify-content: center;
+      gap: 7px;
+    }
+    .build-dot {
+      min-height: 26px;
+      width: 26px;
+      height: 26px;
+      padding: 0;
+      border-radius: 999px;
+      border-color: transparent;
+      background: transparent;
+      box-shadow: none;
+    }
+    .build-dot::before {
+      content: "";
+      display: block;
+      width: 7px;
+      height: 7px;
+      margin: auto;
+      border-radius: 999px;
+      background: var(--border);
+    }
+    .build-dot.active::before { background: var(--accent); }
     .command {
       border-radius: 8px;
       border: 1px solid var(--border);
@@ -3894,7 +4129,7 @@ LAYOUT = """
         gap: 30px;
       }
       .login-story { max-width: 720px; }
-      .login-story h1 { max-width: 10ch; font-size: clamp(42px, 10vw, 68px); }
+      .login-story h1 { max-width: 13ch; font-size: clamp(42px, 10vw, 68px); }
       .login-card { max-width: 560px; }
       .login-card { position: static; }
       .topbar { align-items: flex-start; flex-direction: column; }
@@ -3944,6 +4179,12 @@ LAYOUT = """
         border-left: 0;
         border-top: 1px solid var(--border-light);
       }
+      .build-slide {
+        grid-template-columns: 1fr;
+        align-content: center;
+        text-align: center;
+      }
+      .build-slide img { margin: 0 auto; }
     }
     @media (max-width: 520px) {
       .login-shell { gap: 34px; }
@@ -3952,6 +4193,8 @@ LAYOUT = """
       .login-nav a:first-child { display: none; }
       .login-story h1 { font-size: clamp(38px, 13.5vw, 56px); letter-spacing: -0.03em; }
       .login-lead { margin-top: 18px; }
+      .login-promises { grid-template-columns: 1fr; }
+      .login-promise { min-height: 0; }
       .login-continuity { padding: 10px; }
       .login-continuity-frames { grid-template-columns: minmax(0, 1.8fr) minmax(82px, 0.7fr); gap: 8px; }
       .login-card-main { padding: 24px 20px; }
@@ -3990,13 +4233,14 @@ LAYOUT = """
 
 
 def render(body):
+    canonical_base_url = current_canonical_base_url()
     return render_template_string(
         LAYOUT,
         body=body,
         favicon_url=logo_url(),
-        canonical_url=PUBLIC_CANONICAL_URL + path("/"),
+        canonical_url=canonical_base_url + path("/"),
         social_preview_url=(
-            PUBLIC_CANONICAL_URL
+            canonical_base_url
             + path("/social-preview.png")
             + f"?v={SOCIAL_PREVIEW_VERSION}"
         ),
@@ -4004,6 +4248,8 @@ def render(body):
 
 
 ICONS = {
+    "chevron-left": """<path d="m15 18-6-6 6-6"></path>""",
+    "chevron-right": """<path d="m9 18 6-6-6-6"></path>""",
     "copy": """<rect x="9" y="9" width="13" height="13" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path>""",
     "external": """<path d="M15 3h6v6"></path><path d="M10 14 21 3"></path><path d="M21 14v5a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5"></path>""",
     "lifebuoy": """<circle cx="12" cy="12" r="10"></circle><circle cx="12" cy="12" r="4"></circle><path d="m4.93 4.93 4.24 4.24"></path><path d="m14.83 14.83 4.24 4.24"></path><path d="m14.83 9.17 4.24-4.24"></path><path d="m4.93 19.07 4.24-4.24"></path>""",
@@ -4053,11 +4299,11 @@ def login_page():
             </div>
         """
     if google_oauth_configured():
-        sign_in_copy = "Continue with Google, connect Railway, and follow the guided setup."
+        sign_in_copy = "Continue with Google, connect Railway, and launch your private workspace."
     elif email_login_enabled():
-        sign_in_copy = "Enter your email, connect Railway, and follow the guided setup."
+        sign_in_copy = "Enter your email, connect Railway, and launch your private workspace."
     else:
-        sign_in_copy = "Connect your account and follow the guided setup."
+        sign_in_copy = "Connect your account and launch your private workspace."
     email_fallback = ""
     if email_login_enabled():
         email_fallback = f"""
@@ -4080,17 +4326,31 @@ def login_page():
       </header>
       <section class="login-layout" aria-labelledby="login-heading">
         <div class="login-story">
-          <p class="login-kicker">A private app workspace for your agent</p>
-          <h1 id="login-heading">Build apps for the work you repeat.</h1>
+          <p class="login-kicker">An AI workspace that can build itself</p>
+          <h1 id="login-heading">Build apps, share them, and shape the platform.</h1>
           <p class="login-lead">
-            Bring a task you repeat. Your agent builds a private app you can use and improve
-            on phone or web.
+            Mobius is a private home for your agent: an app builder, productivity workspace,
+            and agentic coding environment that runs on phone and web.
           </p>
+          <ul class="login-promises" aria-label="What Mobius helps you do">
+            <li class="login-promise">
+              <div><strong>Build useful apps</strong><span>Turn repeated workflows into tools you keep using.</span></div>
+            </li>
+            <li class="login-promise">
+              <div><strong>Share and contribute</strong><span>Install community apps and send improvements back out.</span></div>
+            </li>
+            <li class="login-promise">
+              <div><strong>Code with agents</strong><span>Ask Claude Code or Codex to change apps and the shell itself.</span></div>
+            </li>
+            <li class="login-promise">
+              <div><strong>Work anywhere</strong><span>Use the same private workspace from mobile or desktop.</span></div>
+            </li>
+          </ul>
         </div>
         <aside class="login-card" aria-label="Sign in to Möbius Launch">
           <div class="login-card-main">
             <p class="login-card-label">One month included</p>
-            <h2>Start with one useful app.</h2>
+            <h2>Launch your private Mobius.</h2>
             <p class="login-card-copy">
               {sign_in_copy}
             </p>
@@ -4108,7 +4368,7 @@ def login_page():
           </div>
         </aside>
         <figure class="login-continuity">
-          <figcaption><strong>Start with the work you repeat</strong><span>Keep shaping the same workspace on web and phone.</span></figcaption>
+          <figcaption><strong>Build once, keep evolving</strong><span>The same agent workspace follows you on web and phone.</span></figcaption>
           <div class="login-continuity-frames">
             <div class="login-web-frame"><img src="{static_product_url('chat-web.png')}" alt="Möbius chat on the web with a Build an app action"></div>
             <div class="login-phone-frame"><img src="{static_product_url('chat-mobile.png')}" alt="The same Möbius workspace on a phone"></div>
@@ -4214,7 +4474,7 @@ def index():
                     <div>
                       <p class="kicker">One-click Railway deployment</p>
                       <h2>Deploy Möbius.</h2>
-                      <p class="hint">Three steps: create a Railway account, connect it, and deploy your private Möbius.</p>
+                      <p class="hint">Three steps: continue to Railway, connect it back here, and deploy your private Möbius.</p>
                     </div>
                   </div>
                 </div>
@@ -4223,12 +4483,12 @@ def index():
                     <span class="step-num">1</span>
                     <div class="step-body">
                       <div class="step-head">
-                        <h3>Create your Railway account</h3>
+                        <h3>Create or sign in to Railway</h3>
                         <span class="step-done-badge">Opened &#8599;</span>
                       </div>
-                      <p class="hint">Free for a month, no card needed. You'll accept Railway's terms here.</p>
+                      <p class="hint">Railway opens in a separate tab so this page stays here. New accounts can use the referral credit from this link.</p>
                       <a class="button primary large step-cta step-create" href="{h(RAILWAY_SIGNUP_URL)}" target="_blank" rel="noopener noreferrer" data-step1>
-                        <span>Create Railway account</span>{icon('external')}
+                        <span>Continue to Railway</span>{icon('external')}
                       </a>
                     </div>
                   </li>
@@ -4236,7 +4496,7 @@ def index():
                     <span class="step-num">2</span>
                     <div class="step-body">
                       <h3>Connect Railway</h3>
-                      <p class="hint">Authorize Möbius to deploy on your behalf. Already have a Railway account? You can start here.</p>
+                      <p class="hint">Come back here and authorize Möbius to create the project, volume, and public link for you.</p>
                       {connect_action}
                     </div>
                   </li>
@@ -4344,7 +4604,7 @@ def index():
         )
         poll_flag = "1" if status in {"queued", "creating", "deploying"} else "0"
         progress_markup = (
-            """<div class="progress-line" aria-hidden="true"><span></span></div>"""
+            f"""<div class="progress-line" aria-hidden="true"><span></span></div>{render_build_companion(step_text)}"""
             if status in {"queued", "creating", "deploying"}
             else ""
         )
@@ -4600,6 +4860,32 @@ def index():
         var days = Math.floor(hours / 24);
         return days + (days === 1 ? ' day ago' : ' days ago');
       }
+      function initBuildCompanions() {
+        document.querySelectorAll('[data-build-companion]').forEach(function (el) {
+          if (el.getAttribute('data-build-ready') === '1') return;
+          el.setAttribute('data-build-ready', '1');
+          var slides = Array.prototype.slice.call(el.querySelectorAll('[data-build-slide]'));
+          var dots = Array.prototype.slice.call(el.querySelectorAll('[data-build-dot]'));
+          if (!slides.length) return;
+          var index = 0;
+          function show(next) {
+            index = (next + slides.length) % slides.length;
+            slides.forEach(function (slide, i) {
+              slide.classList.toggle('active', i === index);
+              slide.setAttribute('aria-hidden', i === index ? 'false' : 'true');
+            });
+            dots.forEach(function (dot, i) { dot.classList.toggle('active', i === index); });
+          }
+          var prev = el.querySelector('[data-build-prev]');
+          var next = el.querySelector('[data-build-next]');
+          if (prev) prev.addEventListener('click', function () { show(index - 1); });
+          if (next) next.addEventListener('click', function () { show(index + 1); });
+          dots.forEach(function (dot, i) {
+            dot.addEventListener('click', function () { show(i); });
+          });
+          show(0);
+        });
+      }
       function loadMetrics() {
         document.querySelectorAll('[data-metrics-url]').forEach(function (el) {
           if (el.getAttribute('data-loading') === '1') return;
@@ -4660,12 +4946,15 @@ def index():
               if (!d) return;
               var stepEl = el.querySelector('[data-step]');
               if (stepEl && d.current_step) stepEl.textContent = d.current_step;
+              var buildStepEl = el.querySelector('[data-build-step]');
+              if (buildStepEl && d.current_step) buildStepEl.textContent = d.current_step;
               if (d.status !== el.getAttribute('data-status')) location.reload();
             })
             .catch(function () {});
         });
         loadMetrics();
       }
+      initBuildCompanions();
       loadMetrics();
       if (document.querySelector('.container-card[data-poll="1"]')) setInterval(poll, 5000);
       if (document.querySelector('[data-metrics-url]')) setInterval(loadMetrics, 30000);

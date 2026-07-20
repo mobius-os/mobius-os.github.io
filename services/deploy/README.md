@@ -1,8 +1,9 @@
 # Möbius Launch Deployment
 
 This stack is the org-owned deployment source for the launcher at
-`https://mobius.you` and `https://mobius.page`. The static Pages site can stay
-on `mobius-os.github.io`; this service owns only the dynamic launcher.
+`https://www.mobius.you` and `https://www.mobius.page`. The bare domains
+redirect to their matching `www` host; this service owns only the dynamic
+launcher.
 
 `mobius.Caddyfile` is the org-owned edge fragment for the public launcher
 domains. On a shared VPS, the host's edge proxy serves that fragment while
@@ -13,8 +14,8 @@ continuing to serve unrelated hosts from their own repos' fragments.
 - A VPS or equivalent host with Docker and Docker Compose.
 - Root `A` or `AAAA` records for `mobius.you` and `mobius.page` pointing to
   this host.
-- Optional `www` records for both domains pointing to the same host.
-- Google and Railway OAuth apps with both callback hosts registered.
+- `www` records for both domains pointing to the same host.
+- Google and Railway OAuth apps with both `www` callback hosts registered.
 
 There are two supported deployment modes:
 
@@ -63,19 +64,22 @@ Do not remove the `deploy_mobius_launch_data` volume.
 Operational checks:
 
 ```bash
-curl https://mobius.you/health
-curl https://mobius.page/health
-curl https://mobius.you/version
+curl https://www.mobius.you/health
+curl https://www.mobius.page/health
+curl https://www.mobius.you/version
 ```
 
 ## OAuth Callbacks
 
-Register all of these URLs so users can stay on either host:
+Register all of these URLs so users can stay on either primary host:
 
-- Google: `https://mobius.you/auth/google/callback`
-- Google alternate: `https://mobius.page/auth/google/callback`
-- Railway: `https://mobius.you/railway/callback`
-- Railway alternate: `https://mobius.page/railway/callback`
+- Google: `https://www.mobius.you/auth/google/callback`
+- Google alternate: `https://www.mobius.page/auth/google/callback`
+- Railway: `https://www.mobius.you/railway/callback`
+- Railway alternate: `https://www.mobius.page/railway/callback`
+
+Keeping the old bare-domain callbacks registered is harmless during migration,
+but new sessions should be generated on the `www` hosts.
 
 ## Data Migration
 

@@ -32,9 +32,9 @@ services:
     environment:
       - MOBIUS_LAUNCH_DEPLOY_MODE=${MOBIUS_LAUNCH_DEPLOY_MODE:-dedicated}
       - APP_BASE_PATH=
-      - PUBLIC_BASE_URL=${PUBLIC_BASE_URL:-https://mobius.you}
-      - PUBLIC_CANONICAL_URL=${PUBLIC_CANONICAL_URL:-https://mobius.you}
-      - PUBLIC_HOSTS=${PUBLIC_HOSTS:-mobius.page,mobius.you}
+      - PUBLIC_BASE_URL=${PUBLIC_BASE_URL:-https://www.mobius.you}
+      - PUBLIC_CANONICAL_URL=${PUBLIC_CANONICAL_URL:-https://www.mobius.you}
+      - PUBLIC_HOSTS=${PUBLIC_HOSTS:-www.mobius.you,mobius.you,www.mobius.page,mobius.page}
       - DATA_DIR=/data
       - RAILWAY_CLIENT_ID=${RAILWAY_CLIENT_ID:-}
       - RAILWAY_CLIENT_SECRET=${RAILWAY_CLIENT_SECRET:-}
