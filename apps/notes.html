@@ -38,15 +38,16 @@
     </div>
     <div class="badges badges--lg">
       <span class="badge">Works offline</span>
+      <span class="badge">Runs daily</span>
     </div>
 
     <div class="meta">
-      <span>v1.2.32</span>
+      <span>v1.2.33</span>
       <span>by <a href="https://github.com/mobius-os">mobius-os</a></span>
       <span>MIT</span>
       <span><a href="https://github.com/mobius-os/app-notes">Source ↗</a></span>
       <span>★ 0</span>
-      <span>updated 2026-07-21</span>
+      <span>updated 2026-07-22</span>
     </div>
 
     <h2>Install</h2>
@@ -64,7 +65,7 @@
       <pre><code>{
   "id": "notes",
   "name": "Notes",
-  "version": "1.2.32",
+  "version": "1.2.33",
   "description": "Markdown notes that render as you type, with checklists, pins, colors, search, and images.",
   "author": "mobius-os",
   "license": "MIT",
@@ -110,6 +111,8 @@
     "execution": "full"
   },
   "schedule": {
+    "default": "*/10 * * * *",
+    "user_configurable": false,
     "job": "job.sh"
   }
 }</code></pre>
